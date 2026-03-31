@@ -1,0 +1,29 @@
+{
+  "classical": {
+    "name": "Classical (Centralized)",
+    "accuracy": 0.9449,
+    "precision": 0.945,
+    "recall": 0.9449,
+    "f1_score": 0.9449,
+    "auc_attack": 0.9887,
+    "training_time_sec": 1776.76
+  },
+  "fl_best": {
+    "name": "FL Best (FedAvg, non-IID qty)",
+    "accuracy": 0.9162,
+    "precision": 0.9178,
+    "recall": 0.9162,
+    "f1_score": 0.9162,
+    "auc_attack": 0.9708,
+    "training_time_sec": 6004.03
+  },
+  "difference": {
+    "accuracy": 0.028699999999999948,
+    "precision": 0.027200000000000002,
+    "recall": 0.028699999999999948,
+    "f1_score": 0.028699999999999948,
+    "auc_attack": 0.017900000000000027,
+    "training_time_sec": -4227.2699999999995
+  },
+  "conclusion": "Classical (Centralized) outperforms FL Best by ~2.9% in F1-score, but FL provides privacy-preserving distributed training capability."
+}

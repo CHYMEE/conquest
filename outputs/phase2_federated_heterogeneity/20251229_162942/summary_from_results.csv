@@ -1,0 +1,2 @@
+aggregator,heterogeneity,dirichlet_alpha,accuracy,precision,recall,f1_score,auc_attack,time_sec
+fedavg,non_iid_quantity,0.1,0.9162430202516877,0.917789799356363,0.9162430202516877,0.9161656587307112,0.9708209701616937,6004.032474994659

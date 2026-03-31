@@ -1,0 +1,22 @@
+{
+  "trial": 0,
+  "lstm_units": 256,
+  "attention_heads": 2,
+  "dropout_rate": 0.2,
+  "latent_dim": 64,
+  "learning_rate": 0.001,
+  "batch_size": 32,
+  "num_features_to_select": 20,
+  "qubits": 2,
+  "feature_method": "variance",
+  "subsample_size": 20000,
+  "time_steps": 10,
+  "n_features_selected": 20,
+  "val_best_accuracy": 0.7698465585708618,
+  "test_accuracy": 0.7492497499166388,
+  "test_precision": 0.7652047517847133,
+  "test_recall": 0.7492497499166388,
+  "test_f1": 0.7454057114197457,
+  "test_mse": 0.16530898213386536,
+  "epochs_trained": 8
+}

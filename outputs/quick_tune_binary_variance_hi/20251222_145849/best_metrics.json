@@ -1,0 +1,40 @@
+{
+  "accuracy": 0.9464122010167514,
+  "precision": 0.9482195711701925,
+  "recall": 0.9464122010167514,
+  "f1_score": 0.9463579753943899,
+  "mse": 0.0420360341668129,
+  "training_time_sec": 1864.9897434711456,
+  "inference_time_sec": 3.6042685508728027,
+  "qpso_time_sec": 0.0,
+  "total_time_sec": 1868.5940120220184,
+  "memory_mb": 0.0,
+  "far_per_class": {
+    "Attack": 0.08534755792631964,
+    "Benign": 0.02183333333333297
+  },
+  "missed_detections_per_class": {
+    "Attack": {
+      "count": 131,
+      "rate": 0.02183333333333297
+    },
+    "Benign": {
+      "count": 512,
+      "rate": 0.08534755792631964
+    }
+  },
+  "auc_roc_per_class": {
+    "Attack": 0.9878612268711452,
+    "Benign": 0.987861240762349
+  },
+  "confusion_matrix": [
+    [
+      5869,
+      131
+    ],
+    [
+      512,
+      5487
+    ]
+  ]
+}

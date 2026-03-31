@@ -1,0 +1,6 @@
+# Large dataset files (exceeds GitHub 100MB limit)
+0.ACI-IoT-2023.csv
+
+# Python cache
+__pycache__/
+*.pyc

@@ -1,0 +1,11 @@
+{
+  "aggregator": "fedprox",
+  "heterogeneity": "non_iid_quantity",
+  "dirichlet_alpha": 0.1,
+  "accuracy": 0.8911575964663722,
+  "precision": 0.8911717354124008,
+  "recall": 0.8911575964663722,
+  "f1_score": 0.8911566439284884,
+  "auc_attack": 0.9407456659443241,
+  "time_sec": 21943.437116384506
+}

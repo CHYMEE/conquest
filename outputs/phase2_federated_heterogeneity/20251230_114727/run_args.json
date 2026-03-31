@@ -1,0 +1,23 @@
+{
+  "csv": "0.ACI-IoT-2023.csv",
+  "task": "binary",
+  "seed": 42,
+  "subsample_size": 80000,
+  "time_steps": 10,
+  "feature_method": "qpso",
+  "qubits": 6,
+  "qpso_particles": 20,
+  "qpso_iterations": 30,
+  "num_features_to_select": 40,
+  "num_clients": 5,
+  "num_rounds": 60,
+  "local_epochs": 2,
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "client_fraction": 0.8,
+  "fedprox_mu": 0.001,
+  "aggregators": "fedprox",
+  "heterogeneity": "non_iid_quantity",
+  "dirichlet_alphas": "0.1",
+  "output_dir": "outputs/phase2_federated_heterogeneity"
+}

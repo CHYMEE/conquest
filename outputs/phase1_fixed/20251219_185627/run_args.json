@@ -1,0 +1,13 @@
+{
+  "csv": "0.ACI-IoT-2023.csv",
+  "label_col": "Label",
+  "order_col": "Timestamp",
+  "time_steps": 10,
+  "max_per_class": 15000,
+  "max_samples": null,
+  "mode": "random",
+  "n_trials": 12,
+  "epochs": 50,
+  "patience": 8,
+  "seed": 42
+}

@@ -1,0 +1,63 @@
+
+================================================================================
+HORIZONTAL FEDERATED LEARNING JUSTIFICATION FOR IoV/IoD
+================================================================================
+
+1. WHY HORIZONTAL FEDERATED LEARNING?
+
+   Internet of Vehicles (IoV):
+   - Privacy: Driving/location data stays on vehicle
+   - Bandwidth: V2X limited to ~27 Mbps
+   - Scale: Millions of connected vehicles
+   - Compliance: GDPR, CCPA requirements
+
+   Internet of Drones (IoD):
+   - Security: Military/surveillance data classified
+   - Connectivity: Intermittent in remote areas
+   - Resources: Edge devices have limited compute
+   - Sovereignty: Data cannot cross borders
+
+2. EXPERIMENTAL SETUP
+
+   Feature Selection: 3-Qubit QPSO (15 features)
+   Optimizer: AdamW (best from Step 2)
+   Clients: 5 edge devices
+   Rounds: 10 federated rounds
+   Local Epochs: 3 per round
+
+3. RESULTS
+
+   Best Strategy: FLAME-IID
+   - Accuracy: 0.4894
+   - F1-Score: 0.4475
+   - Precision: 0.4976
+   - Recall: 0.4894
+
+   Strategy Comparison:
+   ┌────────────────────┬──────────┬──────────┬────────────────────────┐
+   │ Strategy           │ Accuracy │ F1-Score │ Best For               │
+   ├────────────────────┼──────────┼──────────┼────────────────────────┤
+   │ FedAvg-IID         │ 0.4761   │ 0.4173   │ Homogeneous fleet      │
+   │ FedAvg-NonIID      │ 0.3798   │ 0.2843   │ Mixed environments     │
+   │ SCAFFOLD-NonIID    │ 0.0830   │ 0.0534   │ High heterogeneity     │
+   │ FLAME-NonIID       │ 0.3046   │ 0.1797   │ Adversarial settings   │
+   └────────────────────┴──────────┴──────────┴────────────────────────┘
+
+4. KEY CONTRIBUTIONS
+
+   a) Novel Integration:
+      - First QPSO + Horizontal FL for IoV/IoD
+      - Semantic attention for traffic understanding
+      - AdamW for stable federated training
+
+   b) Privacy-Preserving:
+      - Raw data never leaves devices
+      - Only model weights transmitted
+      - GDPR/CCPA compliant
+
+   c) Deployment Recommendations:
+      - FedAvg: Homogeneous vehicle/drone fleets
+      - SCAFFOLD: Urban/rural mix, multi-mission drones
+      - FLAME: Adversarial environments, compromised nodes
+
+================================================================================

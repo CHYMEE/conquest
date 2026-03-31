@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\caption{Justification: Why Federated Learning is Preferred Despite Lower Raw Metrics}
+\label{tab:fl_justification}
+\begin{tabular}{l c c c}
+\hline
+\textbf{Criterion} & \textbf{Classical} & \textbf{FL} & \textbf{Winner} \\ \hline
+Data Privacy & \ding{55} Centralized & \ding{51} Local & FL \\
+Regulatory Compliance (GDPR, etc.) & \ding{55} Risk & \ding{51} Compliant & FL \\
+Scalability (IoT/IoV) & \ding{55} Bottleneck & \ding{51} Distributed & FL \\
+Single Point of Failure & \ding{55} Yes & \ding{51} No & FL \\
+Edge Deployment & \ding{55} Impractical & \ding{51} Native & FL \\
+Communication Efficiency & \ding{55} Raw data & \ding{51} Weights only & FL \\
+Real-World Feasibility (IoV/IoD) & \ding{55} Limited & \ding{51} Practical & FL \\
+\hline
+Raw Accuracy & \ding{51} 0.9449 & 0.9162 & Classical \\
+\hline
+\multicolumn{4}{l}{\textit{FL trades $\sim$2.9\% accuracy for privacy, compliance, and deployability.}} \\
+\hline
+\end{tabular}
+\end{table}

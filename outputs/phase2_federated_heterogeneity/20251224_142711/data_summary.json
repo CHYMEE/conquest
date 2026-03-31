@@ -1,0 +1,21 @@
+{
+  "class_names": [
+    "Attack",
+    "Benign"
+  ],
+  "num_classes": 2,
+  "subsample_size": 80000,
+  "n_selected": 40,
+  "qpso_time_sec": 20.209596872329712,
+  "qpso_mem_mb": 24.838793754577637,
+  "X_train": [
+    55993,
+    10,
+    40
+  ],
+  "X_test": [
+    11999,
+    10,
+    40
+  ]
+}

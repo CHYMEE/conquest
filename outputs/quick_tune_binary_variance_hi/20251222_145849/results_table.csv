@@ -1,0 +1,9 @@
+Metric,Value
+Accuracy,0.9464
+Precision,0.9482
+Recall,0.9464
+F1-score,0.9464
+ROC-AUC (Attack),0.9879
+Training time,1864.99 s (31.08 min)
+Inference time,3.60 s (0.06 min)
+Total time,1868.59 s (31.14 min)

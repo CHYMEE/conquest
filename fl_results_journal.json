@@ -1,0 +1,57 @@
+{
+  "config": {
+    "num_clients": 5,
+    "rounds": 10,
+    "local_epochs": 3,
+    "qpso_qubits": 2,
+    "optimizer": "SGD (momentum=0.9, nesterov=True)",
+    "features": 20,
+    "sequence_length": 8,
+    "num_classes": 12
+  },
+  "results": {
+    "FedAvg-IID": {
+      "final_accuracy": 0.4761022627353668,
+      "final_f1": 0.4172915489167564,
+      "final_precision": 0.4675395551890208,
+      "final_recall": 0.476102260096332,
+      "time": 467.8510925769806
+    },
+    "FedAvg-NonIID": {
+      "final_accuracy": 0.37977027893066406,
+      "final_f1": 0.28425260949678793,
+      "final_precision": 0.4453032227875982,
+      "final_recall": 0.37977028529084844,
+      "time": 581.3740413188934
+    },
+    "SCAFFOLD-IID": {
+      "final_accuracy": 0.119673952460289,
+      "final_f1": 0.10104995423191691,
+      "final_precision": 0.12927391782701483,
+      "final_recall": 0.11967395331604298,
+      "time": 729.7209310531616
+    },
+    "SCAFFOLD-NonIID": {
+      "final_accuracy": 0.08299370110034943,
+      "final_f1": 0.053433994622918896,
+      "final_precision": 0.1073851042078164,
+      "final_recall": 0.08299370137087811,
+      "time": 878.3032233715057
+    },
+    "FLAME-IID": {
+      "final_accuracy": 0.48944053053855896,
+      "final_f1": 0.44748580455869874,
+      "final_precision": 0.49761973683057636,
+      "final_recall": 0.48944053353093736,
+      "time": 1021.7843918800354
+    },
+    "FLAME-NonIID": {
+      "final_accuracy": 0.3045572340488434,
+      "final_f1": 0.17965865088539518,
+      "final_precision": 0.22877995944137033,
+      "final_recall": 0.30455724342349016,
+      "time": 1163.9432864189148
+    }
+  },
+  "best_strategy": "FLAME-IID"
+}

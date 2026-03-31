@@ -1,0 +1,17 @@
+
+\begin{table*}[htbp]
+\centering
+\caption{QPSO-LSTM-VAE+SGD Model Performance Across Different Qubit Configurations}
+\label{tab:qubit_ablation}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+\textbf{Qubits} & \textbf{Acc. (\%)} & \textbf{Prec. (\%)} & \textbf{Rec. (\%)} & \textbf{F1-Sc. (\%)} & \textbf{MSE} & \textbf{Time (s)} & \textbf{Memory (MB)} \\
+\hline
+1 & 72.35 & 75.09 & 72.35 & 70.45 & 0.0317 & 333.6 & 66.2 \\
+2 & 86.38 & 87.09 & 86.38 & 85.82 & 0.0198 & 438.0 & 65.8 \\
+3 & 84.30 & 84.78 & 84.30 & 83.31 & 0.0219 & 362.2 & 65.8 \\
+4 & 68.93 & 69.11 & 68.93 & 64.83 & 0.0336 & 440.0 & 65.8 \\
+8 & 69.25 & 68.61 & 69.25 & 65.68 & 0.0315 & 592.0 & 65.8 \\
+\hline
+\end{tabular}
+\end{table*}

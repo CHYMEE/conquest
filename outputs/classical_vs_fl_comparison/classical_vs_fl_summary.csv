@@ -1,0 +1,4 @@
+Approach,Accuracy,Precision,Recall,F1-Score,AUC (Attack),Training Time (s)
+Classical (Centralized),0.9449,0.9450,0.9449,0.9449,0.9887,1776.76
+"FL Best (FedAvg, non-IID qty)",0.9162,0.9178,0.9162,0.9162,0.9708,6004.03
+Difference (Classical - FL),+0.0287,+0.0272,+0.0287,+0.0287,+0.0179,-4227.27

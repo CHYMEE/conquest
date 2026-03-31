@@ -1,0 +1,21 @@
+{
+  "csv": "0.ACI-IoT-2023.csv",
+  "seed": 42,
+  "task": "binary",
+  "subsample_size": 80000,
+  "time_steps": 10,
+  "qubits": "1,2,3,4,5,6,7,8",
+  "qpso_particles": 20,
+  "qpso_iterations": 30,
+  "num_features_to_select": 40,
+  "epochs": 35,
+  "patience": 6,
+  "repeats": 5,
+  "lstm_units": 256,
+  "attention_heads": 2,
+  "dropout_rate": 0.2,
+  "latent_dim": 64,
+  "learning_rate": 0.001,
+  "batch_size": 32,
+  "output_dir": "outputs\\qubit_ablation_improved"
+}

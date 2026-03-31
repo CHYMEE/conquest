@@ -1,0 +1,10 @@
+{
+  "heterogeneity": "non_iid_quantity",
+  "dirichlet_alpha": 0.1,
+  "accuracy": 0.8688224018668222,
+  "precision": 0.8688264641797337,
+  "recall": 0.8688224018668222,
+  "f1_score": 0.8688220192005474,
+  "auc_attack": 0.9256727093404455,
+  "time_sec": 668.3735971450806
+}

@@ -1,0 +1,56 @@
+{
+  "Adam": {
+    "accuracy": 0.8962770883496944,
+    "precision": 0.9002213924428072,
+    "recall": 0.8962770883496944,
+    "f1_score": 0.89359217046575,
+    "training_time": 189.76085448265076,
+    "epochs_trained": 15,
+    "best_val_acc": 0.8868099451065063
+  },
+  "SGD": {
+    "accuracy": 0.8788664567512502,
+    "precision": 0.8871735008797533,
+    "recall": 0.8788664567512502,
+    "f1_score": 0.8759640695890305,
+    "training_time": 216.2453327178955,
+    "epochs_trained": 14,
+    "best_val_acc": 0.8749536871910095
+  },
+  "Adagrad": {
+    "accuracy": 0.9181329875902945,
+    "precision": 0.9206581635392455,
+    "recall": 0.9181329875902945,
+    "f1_score": 0.9166606601127886,
+    "training_time": 424.6387994289398,
+    "epochs_trained": 30,
+    "best_val_acc": 0.9101518988609314
+  },
+  "RMSprop": {
+    "accuracy": 0.8827560659381367,
+    "precision": 0.9095044209512287,
+    "recall": 0.8827560659381367,
+    "f1_score": 0.8585557025438668,
+    "training_time": 324.3916985988617,
+    "epochs_trained": 22,
+    "best_val_acc": 0.8743979334831238
+  },
+  "AdamW": {
+    "accuracy": 0.8947953324689757,
+    "precision": 0.9166487048878839,
+    "recall": 0.8947953324689757,
+    "f1_score": 0.8697616294106202,
+    "training_time": 344.1462433338165,
+    "epochs_trained": 25,
+    "best_val_acc": 0.8871804475784302
+  },
+  "Newton-Hessian": {
+    "accuracy": 0.8797925541766994,
+    "precision": 0.8901143442156149,
+    "recall": 0.8797925541766994,
+    "f1_score": 0.8761903445440008,
+    "training_time": 252.70564556121826,
+    "epochs_trained": 28,
+    "best_val_acc": 0.8697665929794312
+  }
+}

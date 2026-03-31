@@ -1,0 +1,14 @@
+{
+  "csv": "0.ACI-IoT-2023.csv",
+  "seed": 42,
+  "subsample_size": 30000,
+  "time_steps": 10,
+  "qubits": 2,
+  "qpso_particles": 10,
+  "qpso_iterations": 10,
+  "feature_choices": "20",
+  "n_trials": 8,
+  "epochs": 25,
+  "patience": 4,
+  "output_dir": "outputs/quick_tune_fast"
+}

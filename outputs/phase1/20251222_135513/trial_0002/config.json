@@ -1,0 +1,9 @@
+{
+  "latent_dim": 16,
+  "lstm_hidden": 64,
+  "lstm_layers": 2,
+  "dropout": 0.0,
+  "lr": 0.001,
+  "batch_size": 128,
+  "threshold_method": "percentile_90"
+}

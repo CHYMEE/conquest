@@ -1,0 +1,17 @@
+{
+  "40": {
+    "n_selected": 40,
+    "prep_time": 0.8173267841339111,
+    "n_features": 40
+  },
+  "80": {
+    "n_selected": 80,
+    "prep_time": 1.5042872428894043,
+    "n_features": 80
+  },
+  "60": {
+    "n_selected": 60,
+    "prep_time": 1.1508915424346924,
+    "n_features": 60
+  }
+}
