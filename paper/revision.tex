@@ -70,7 +70,7 @@ CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberw
 
 \begin{abstract}
 AI-aided cyberworms capable of adaptive propagation and traffic mimicry pose severe threats to mission-critical IoT/IoV/IoD networks, rendering static intrusion detection defences ineffective. This paper proposes CONQUEST, a context-aware quantum-inspired intrusion detection framework combining seed-controlled context feature representation, variable-qubit Quantum-Inspired Particle Swarm Optimization (QPSO), and supervised LSTM(+VAE) temporal classification for cyberworm 
-detection. A controlled ablation over $Q\in\{1,\dots,8\}$ \rev{R1.2}\textcolor{red}{with ten seeds shows that detection is statistically insensitive to the QPSO register size (Friedman $p{=}0.12$). With $Q{=}2$ selected on validation data, CONQUEST achieves, under leakage-free centralized evaluation on ACI-IoT, 97.11\% accuracy, 97.12\% F1-score, 0.9921 AUC, and 0.0246 MSE.}
+detection. A controlled ablation over $Q\in\{1,\dots,8\}$ \rev{R1.2}\textcolor{red}{with ten seeds shows that detection is statistically insensitive to the QPSO register size (Friedman $p{=}0.53$). With $Q{=}6$ selected on validation data, CONQUEST achieves, under leakage-free centralized evaluation on ACI-IoT, 97.13\% accuracy, 97.13\% F1-score, 0.9924 AUC, and 0.0246 MSE.}
 % TODO(C10): add measured per-window latency and peak memory to the abstract. Under horizontal federated learning 
 across IID, label-skew, quantity-skew, and Dirichlet regimes, CONQUEST achieves F1\,${=}$\,0.9162 and AUC\,${=}$\,0.9708 in the strongest heterogeneous setting, stabilizing at $R_{90}{=}25$ rounds with worst-client F1\,${=}$\,0.893 and $\sigma(\mathrm{F1}){=}$\,0.017, demonstrating reproducible,
 \textcolor{red}{raw-data-local}, and deployment-feasible cyberworm detection for mission-critical distributed environments.
@@ -267,7 +267,7 @@ four heterogeneity regimes \\
 Mission-critical cyberworm IDS: centralized
 and federated robustness &
 Seed-controlled context-aware representation;
-variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}2$ by validation});
+variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation});
 supervised LSTM(+VAE)+SGD; HFL under IID,
 label-skew, quantity-skew, Dirichlet &
 Additional training-time overhead from
@@ -297,7 +297,7 @@ The core contributions of this manuscript, which significantly advance the preli
 \begin{itemize}
     \item \textbf{Framework Reproducibility and Contextual Synergy:} We propose \textit{CONQUEST}, a high-fidelity, seed-controlled IDS framework that uniquely harmonizes context-aware feature engineering with quantum-inspired optimization. By enforcing a global deterministic protocol, governing both Stage $\mathcal{Q}_{Q}$ mask sampling and Stage D neural weight initialization, \textcolor{red}{and by re-executing QPSO for every seed so that reported variance includes the optimizer's own stochasticity, we make the run-to-run variability of quantum-inspired selection explicit and measurable.}
 
-    \item \textbf{\rev{R1.1, R1.2}\textcolor{red}{Characterization of the Qubit-Register Size}:} Through an extensive variable-qubit ablation study ($Q \in \{1, \dots, 8\}$), we characterize the expressiveness-stability trade-off in QPSO-based feature selection. \textcolor{red}{We make explicit how $Q$ enters the search, show that it interpolates between near-random exploration (small $Q$) and frozen exploitation (large $Q$), and show, with Friedman and Holm-corrected Wilcoxon tests over ten seeds and a search-budget sensitivity analysis, that detection is statistically insensitive to $Q$ within the tested range, so the operating point $Q^{*}{=}2$ is fixed by a pre-declared validation rule.}
+    \item \textbf{\rev{R1.1, R1.2}\textcolor{red}{Characterization of the Qubit-Register Size}:} Through an extensive variable-qubit ablation study ($Q \in \{1, \dots, 8\}$), we characterize the expressiveness-stability trade-off in QPSO-based feature selection. \textcolor{red}{We make explicit how $Q$ enters the search, show that it interpolates between near-random exploration (small $Q$) and frozen exploitation (large $Q$), and show, with Friedman and Holm-corrected Wilcoxon tests over ten seeds and a search-budget sensitivity analysis, that detection is statistically insensitive to $Q$ within the tested range, so the operating point $Q^{*}{=}6$ is fixed by a pre-declared validation rule rather than claimed as an optimum.}
 
     \item \textbf{Stress-Testing Federated Robustness under Heterogeneity:} We provide the first systematic evaluation of quantum-inspired IDS under four distinct federated heterogeneity regimes: IID, label-skew, quantity-skew, and Dirichlet partitions. By introducing mission-centric metrics—specifically thresholded stabilization ($R_{90}=25$), worst-client reliability ($\min_{k} F1_{k}=0.893$), and inter-client dispersion ($\sigma(F1)=0.017$), we demonstrate that \textit{CONQUEST} bounds the centralized-to-federated performance gap to a marginal 2.9\%. \textcolor{red}{We further vary the number of clients ($K\in\{5,10,20\}$) and compare three privacy-compatible mask-construction modes for non-IID clients.}
 
@@ -580,7 +580,7 @@ where $\mathbf{F}_s$ denotes static flow descriptors
 (\textcolor{red}{ports, protocol, flow duration, packet and byte
 counts, packet-length statistics, inter-arrival times, flag
 counts, and bulk and activity statistics produced by
-CICFlowMeter, $|\mathbf{F}_s|=75$; flow identifiers, IP
+CICFlowMeter, $|\mathbf{F}_s|=69$; flow identifiers, IP
 addresses, and timestamps are excluded from the feature vector to
 prevent identity shortcuts, and so are the four \texttt{Idle}
 fields, which in ACI-IoT store absolute epoch timestamps and would
@@ -636,7 +636,17 @@ Transition & Protocol switch vs.\ previous flow (0/1) & -- & 1 \\
 \end{tabular}
 \end{table}
 
-\textcolor{red}{The fused representation has $d=92$ features.
+\textcolor{red}{Six CICFlowMeter fields (\texttt{Bwd PSH Flags},
+\texttt{Bwd URG Flags}, \texttt{Fwd Bytes/Bulk Avg},
+\texttt{Fwd Packet/Bulk Avg}, \texttt{Fwd Bulk Rate Avg},
+\texttt{Subflow Bwd Packets}) are constant on $\mathcal{D}_{\rm tr}$
+and are removed by a zero-variance filter fitted on
+$\mathcal{D}_{\rm tr}$ only.} \rev{R1.4}\textcolor{red}{Constant columns
+carry no information, yet they leave both sums of the trace-ratio
+fitness~\eqref{eq:qpsobj} unchanged, so without this filter they
+could be selected at no cost and occupy mask slots.}
+\textcolor{red}{The fused representation has $d=86$ features
+($69$ static and $17$ context).
 A class-balanced subsample of 80{,}000 flows (40{,}000 benign,
 40{,}000 attack; attack-type proportions preserved) is drawn with
 a fixed seed and re-sorted chronologically. ACI-IoT attacks are
@@ -774,7 +784,7 @@ places where $Q$ enters.}}
 \centering
 \scriptsize
 \caption{\rev{R1.1}\textcolor{red}{Search constants set by the register size
-$Q$ ($d=92$). $\rho$: relative initial perturbation; $\phi_{\max}$:
+$Q$ ($d=86$). $\rho$: relative initial perturbation; $\phi_{\max}$:
 rotation-angle bound; $2^{-Q}$: per-amplitude collapse probability;
 $d\,2^{-Q}$: expected resets per particle and iteration.}}
 \label{tab:q_constants}
@@ -785,16 +795,16 @@ $d\,2^{-Q}$: expected resets per particle and iteration.}}
 \hline\toprule
 $Q$ & $\rho(Q)$ & $\phi_{\max}$ (deg) & $2^{-Q}$ & $d\,2^{-Q}$ & Regime \\
 \hline\toprule
-1  & 0.71 & 90.0 & 0.500  & 46.0 & near-random \\
-2  & 0.40 & 45.0 & 0.250  & 23.0 & exploratory \\
-3  & 0.28 & 30.0 & 0.125  & 11.5 & exploratory \\
-4  & 0.24 & 22.5 & 0.063  & 5.75 & balanced \\
-5  & 0.22 & 18.0 & 0.031  & 2.88 & balanced \\
-6  & 0.22 & 15.0 & 0.016  & 1.44 & balanced \\
-7  & 0.23 & 12.9 & 0.008  & 0.72 & exploitative \\
-8  & 0.25 & 11.3 & 0.004  & 0.36 & exploitative \\
-9  & 0.29 & 10.0 & 0.002  & 0.18 & near-frozen \\
-10 & 0.32 & 9.0  & 0.001  & 0.09 & near-frozen \\
+1  & 0.71 & 90.0 & 0.500  & 43.0 & near-random \\
+2  & 0.40 & 45.0 & 0.250  & 21.5 & exploratory \\
+3  & 0.28 & 30.0 & 0.125  & 10.8 & exploratory \\
+4  & 0.24 & 22.5 & 0.063  & 5.38 & balanced \\
+5  & 0.22 & 18.0 & 0.031  & 2.69 & balanced \\
+6  & 0.22 & 15.0 & 0.016  & 1.34 & balanced \\
+7  & 0.23 & 12.9 & 0.008  & 0.67 & exploitative \\
+8  & 0.25 & 11.3 & 0.004  & 0.34 & exploitative \\
+9  & 0.29 & 10.0 & 0.002  & 0.17 & near-frozen \\
+10 & 0.32 & 9.0  & 0.001  & 0.08 & near-frozen \\
 \hline\toprule
 \end{tabular}
 \end{table}
@@ -831,18 +841,19 @@ classifier. Three regimes appear. For $Q=1$, the amplitude entropy
 drops only to $0.75$ and stays there, because about half of all
 amplitudes are reset at every iteration; the swarm keeps sampling
 almost uniformly. For $Q\in\{4,\dots,7\}$, entropy falls to
-$0.26$--$0.34$ within a few iterations, and swarm diversity dips
-most strongly for $Q\in\{3,\dots,6\}$, i.e.\ the search
-concentrates on a feature subset.
-For $Q\ge 9$, entropy decreases slowly and remains near $0.5$--$0.6$,
-because the small rotation angle and rare collapses barely move the
-particles from their initialization. The best Fisher fitness found
-follows the same pattern: it is highest at intermediate $Q$
-($5034\pm374$ at $Q=5$) and lowest at the extremes
-($4544\pm344$ at $Q=1$, $4574\pm304$ at $Q=10$). Returning the
-best evaluated mask matters most in the exploitative regime: a
-fresh measurement of the final global-best amplitude retains $98\%$
-of the best fitness at $Q=1$ but only $45\%$ at $Q=10$, because the
+$0.25$--$0.35$ within a few iterations, and swarm diversity dips
+most strongly for $Q\in\{4,5,6\}$, i.e.\ the search concentrates
+on a feature subset.
+For $Q\ge 9$, entropy decreases slowly and remains near
+$0.54$--$0.66$, because the small rotation angle and rare collapses
+barely move the particles from their initialization. The best
+Fisher fitness found is highest at $Q=4$ ($4836\pm335$) and lower
+at both extremes ($4448\pm185$ at $Q=1$, $4426\pm336$ at $Q=10$),
+although these differences are within about one standard
+deviation. Returning the best evaluated mask matters most in the
+exploitative regime: a fresh measurement of the final global-best
+amplitude retains $91\%$ of the best fitness at $Q=1$ but only
+$44$--$52\%$ at $Q\ge9$, because the
 amplitudes at large $Q$ stay close to their spread-out
 initialization, so re-sampling them rarely reproduces the best
 subset.}
@@ -851,7 +862,7 @@ subset.}
 \centering
 \includegraphics[width=0.95\linewidth]{images/qpso_dynamics_vs_Q.png}
 \caption{\rev{R1.1}\textcolor{red}{QPSO search dynamics versus register size
-$Q$ on $\mathcal{D}_{\rm tr}$ ($P=20$, $I=30$, $k=40$, $d=92$;
+$Q$ on $\mathcal{D}_{\rm tr}$ ($P=20$, $I=30$, $k=40$, $d=86$;
 mean$\pm$std over ten seeds; no classifier training). Left:
 normalized entropy of the measurement distribution
 $\pi_{i,j}\propto a_{i,j}^2$, averaged over particles (1 = uniform).
@@ -904,7 +915,7 @@ deviation and lower validation MSE and $\Delta_{\rm bal}$, where}
 excluded from the inference path and $k$ is fixed, deployment
 latency and memory do not depend on $Q$
 (Section~\ref{subsec:latency_design}). The rule selects
-$Q^{*}=2$. Test-set results and statistical comparisons
+$Q^{*}=6$. Test-set results and statistical comparisons
 (Table~\ref{tab:qubit_ablation_improved_robust}) show that no
 $Q$ in the tested range is significantly better than any other,
 so $Q^{*}$ should be read as a reproducible default rather than
@@ -1435,26 +1446,24 @@ separation.
 \centering
 \caption{\rev{R1.2}\textcolor{red}{Variable-qubit QPSO ablation for LSTM(+VAE)+SGD on ACI-IoT (context features on,
 $P{=}20$, $I{=}30$, $k{=}40$; mean$\pm$std over ten seeds, QPSO re-executed per seed). FAR: benign flows
-flagged as attack; MD: attacks missed (both \%). $p_{Q^*}$, $p_{6}$: Holm-adjusted two-sided Wilcoxon
-signed-rank $p$-values of test F1 against $Q^{*}{=}2$ (selected by validation F1) and against
-$Q{=}6$ (the operating point of the original submission). Friedman test across $Q$: test F1
-$\chi^2_{7}{=}11.33$, $p{=}0.12$; test AUC $p{=}0.91$; validation F1 $p{=}0.65$.}}
+flagged as attack; MD: attacks missed (both \%). $p_{Q^*}$: Holm-adjusted two-sided Wilcoxon signed-rank $p$-value of test F1 against $Q^{*}{=}6$, selected by validation F1 (it coincides with the operating point of the original submission). Friedman test across $Q$: test F1
+$\chi^2_{7}{=}6.07$, $p{=}0.53$; test AUC $p{=}0.63$; validation F1 $p{=}0.54$.}}
 \label{tab:qubit_ablation_improved_robust}
 \color{red}
 \setlength{\tabcolsep}{3.5pt}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{cccccccccc}
+\begin{tabular}{ccccccccc}
 \hline\toprule
-$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p_{Q^*}$ & $p_{6}$ \\
+$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p_{Q^*}$ \\
 \hline\toprule
-1 & 97.29$\pm$0.29 & 97.30$\pm$0.29 & 0.9919$\pm$0.0013 & 0.0239$\pm$0.0025 & 2.15$\pm$0.33 & 3.11$\pm$0.42 & 95.15$\pm$1.02 & 0.96 & 0.74 \\
-\textbf{2}$^{*}$ & \textbf{97.11$\pm$0.07} & \textbf{97.12$\pm$0.07} & \textbf{0.9921$\pm$0.0011} & \textbf{0.0246$\pm$0.0013} & \textbf{1.83$\pm$0.36} & \textbf{3.65$\pm$0.34} & \textbf{95.68$\pm$0.95} & -- & 1.00 \\
-3 & 96.98$\pm$0.41 & 96.98$\pm$0.41 & 0.9914$\pm$0.0014 & 0.0258$\pm$0.0022 & 2.27$\pm$0.52 & 3.57$\pm$0.91 & 95.19$\pm$1.07 & 1.00 & 1.00 \\
-4 & 97.12$\pm$0.30 & 97.13$\pm$0.30 & 0.9921$\pm$0.0009 & 0.0248$\pm$0.0025 & 2.18$\pm$0.60 & 3.38$\pm$0.82 & 95.01$\pm$0.70 & 1.00 & 1.00 \\
-5 & 96.94$\pm$0.42 & 96.94$\pm$0.42 & 0.9922$\pm$0.0012 & 0.0263$\pm$0.0033 & 1.94$\pm$0.42 & 3.87$\pm$0.78 & 95.17$\pm$1.19 & 1.00 & 1.00 \\
-6 & 97.00$\pm$0.27 & 97.01$\pm$0.26 & 0.9920$\pm$0.0017 & 0.0263$\pm$0.0027 & 2.09$\pm$0.58 & 3.66$\pm$0.71 & 95.31$\pm$1.00 & 1.00 & -- \\
-7 & 96.90$\pm$0.24 & 96.91$\pm$0.24 & 0.9916$\pm$0.0017 & 0.0262$\pm$0.0025 & 1.99$\pm$0.49 & 3.90$\pm$0.66 & 95.22$\pm$1.34 & 0.34 & 1.00 \\
-8 & 96.91$\pm$0.35 & 96.91$\pm$0.35 & 0.9918$\pm$0.0023 & 0.0262$\pm$0.0025 & 1.99$\pm$0.46 & 3.89$\pm$0.59 & 95.51$\pm$1.48 & 1.00 & 1.00 \\
+1 & 97.20$\pm$0.23 & 97.20$\pm$0.22 & 0.9926$\pm$0.0009 & 0.0243$\pm$0.0024 & 1.90$\pm$0.29 & 3.45$\pm$0.53 & 95.27$\pm$0.74 & 1.00 \\
+2 & 97.08$\pm$0.17 & 97.09$\pm$0.17 & 0.9918$\pm$0.0011 & 0.0253$\pm$0.0019 & 2.19$\pm$0.58 & 3.44$\pm$0.55 & 95.00$\pm$1.58 & 1.00 \\
+3 & 96.96$\pm$0.37 & 96.96$\pm$0.37 & 0.9916$\pm$0.0016 & 0.0263$\pm$0.0026 & 2.10$\pm$0.52 & 3.72$\pm$0.85 & 95.56$\pm$1.18 & 0.59 \\
+4 & 96.94$\pm$0.49 & 96.95$\pm$0.49 & 0.9917$\pm$0.0021 & 0.0268$\pm$0.0039 & 1.93$\pm$0.29 & 3.87$\pm$0.81 & 95.38$\pm$1.58 & 1.00 \\
+5 & 97.05$\pm$0.42 & 97.06$\pm$0.41 & 0.9925$\pm$0.0012 & 0.0249$\pm$0.0026 & 1.92$\pm$0.34 & 3.69$\pm$0.86 & 95.70$\pm$1.24 & 1.00 \\
+\textbf{6}$^{*}$ & \textbf{97.13$\pm$0.31} & \textbf{97.13$\pm$0.31} & \textbf{0.9924$\pm$0.0016} & \textbf{0.0246$\pm$0.0028} & \textbf{2.24$\pm$0.58} & \textbf{3.33$\pm$0.44} & \textbf{96.00$\pm$1.04} & -- \\
+7 & 97.17$\pm$0.32 & 97.17$\pm$0.32 & 0.9919$\pm$0.0012 & 0.0248$\pm$0.0024 & 2.05$\pm$0.33 & 3.39$\pm$0.69 & 95.75$\pm$0.84 & 1.00 \\
+8 & 97.07$\pm$0.26 & 97.08$\pm$0.26 & 0.9918$\pm$0.0008 & 0.0249$\pm$0.0013 & 2.03$\pm$0.34 & 3.57$\pm$0.52 & 95.59$\pm$0.95 & 1.00 \\
 \hline\toprule
 \end{tabular}}
 \end{table*}
@@ -1526,26 +1535,27 @@ QPSO overhead does not affect real-time decision execution.
 \rev{R1.2}\textcolor{red}{Table~\ref{tab:qubit_ablation_improved_robust} and
 Fig.~\ref{fig:q_boxplot} report the ablation over
 $Q\in\{1,\dots,8\}$ with ten seeds, re-executing QPSO in every run.
-Test F1 ranges only from $96.91\%$ ($Q=7,8$) to $97.30\%$ ($Q=1$):
-the $0.39$\,pp spread of the means is comparable to the average
-seed-to-seed standard deviation ($0.29$\,pp). A Friedman test finds
-no significant effect of $Q$ on test F1 ($\chi^2_7=11.33$,
-$p=0.12$), test AUC ($p=0.91$), or validation F1 ($p=0.65$), and
-no Holm-adjusted pairwise Wilcoxon comparison is significant (all
-$p\ge0.34$). In particular, $Q=6$ is statistically
-indistinguishable from every other setting (Holm $p\ge0.74$), so
-the original description of $Q=6$ as a stability-optimal regime,
-which rested on three seeds with a single QPSO run per $Q$, is
-not supported and has been withdrawn. Following the pre-declared
-rule of Section~\ref{subsec:qpsomethod}, the operating point is
-$Q^{*}=2$, which also shows the smallest seed-to-seed variability
-(F1 $97.12\pm0.07\%$); we report this observation without claiming
-significance.}
+Test F1 ranges only from $96.95\%$ ($Q=4$) to $97.20\%$ ($Q=1$):
+the $0.25$\,pp spread of the means is smaller than the average
+seed-to-seed standard deviation ($0.32$\,pp). A Friedman test finds
+no significant effect of $Q$ on test F1 ($\chi^2_7=6.07$,
+$p=0.53$), test AUC ($p=0.63$), or validation F1 ($p=0.54$).
+Following the pre-declared rule of Section~\ref{subsec:qpsomethod},
+the operating point is $Q^{*}=6$, which coincides with the setting
+of the original submission. However, $Q^{*}=6$ is statistically
+indistinguishable from every other setting (Holm-adjusted Wilcoxon
+$p\ge0.59$). The original description of $Q=6$ as a
+stability-optimal regime, which rested on three seeds with a single
+QPSO run per $Q$, is therefore not supported and has been
+withdrawn: $Q=6$ is retained as a reproducible default selected by
+a validation rule, not as an optimum. The two settings beyond the
+tested range, evaluated with five seeds each, fall in the same band
+(test F1 $97.30\%$ at $Q=9$ and $97.25\%$ at $Q=10$).}
 
 \rev{R1.2}\textcolor{red}{Together with Fig.~\ref{fig:qpso_dynamics}, these
 results give a consistent picture: $Q$ strongly changes how the
 swarm searches (amplitude entropy and the fitness of the best
-subset), but with $k=40$ of $d=92$ features, including 17
+subset), but with $k=40$ of $d=86$ features, including 17
 informative context features, many subsets support equally
 accurate detectors, so the downstream classifier is robust to $Q$.
 In practice $Q$ does not need fine tuning: every
@@ -1553,16 +1563,16 @@ $Q\in\{1,\dots,8\}$ yields about $97\%$ test F1. The tested range
 is justified by Table~\ref{tab:q_constants} and
 Fig.~\ref{fig:qpso_dynamics}: for $Q\ge9$ the search is
 near-frozen around its initialization.}
-% TODO(C3): add Q=9,10 test F1 from block B (budget sensitivity) here and in the box plot.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{images/q_ablation_boxplot.png}
 \caption{\rev{R1.2}\textcolor{red}{Test F1 of QCIDS versus QPSO register size
 $Q$ (ten seeds per $Q$, QPSO re-executed per seed; dots are
-individual runs). $Q^{*}=2$, marked *, is selected by validation
-F1. The Friedman test finds no significant effect of $Q$
-($p=0.12$).}}
+individual runs). $Q^{*}=6$, marked *, is selected by validation
+F1. The Friedman test over $Q\in\{1,\dots,8\}$ finds no significant
+effect of $Q$ ($p=0.53$). Hatched boxes: $Q=9,10$ (five seeds each),
+beyond the tested range.}}
 \label{fig:q_boxplot}
 \end{figure}
 
@@ -1881,7 +1891,7 @@ AMSWS + transformer + focal loss &
 Acc/F1\,$=$\,99.6/99.2\%; 10.8\,ms/sample;
 37.2M params; centralized &
 High complexity; no FL or resource bounds &
-Adds bounded QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}2$}, 922\,MB) and FL
+Adds bounded QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$}, 922\,MB) and FL
 evaluation under four heterogeneity regimes \\
 \midrule
 
@@ -1964,7 +1974,7 @@ four heterogeneity regimes \\
 \textbf{Journal CONQUEST:
 seed-controlled CAP
 + variable-qubit QPSO
-(\rev{R1.2}\textcolor{red}{$Q^{*}{=}2$}) + supervised
+(\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$}) + supervised
 LSTM(+VAE)+SGD;
 centralized \& HFL,
 ACI-IoT} &
@@ -2092,9 +2102,9 @@ $Q\in\{1,\dots,8\}$ establishes that \rev{R1.1}\textcolor{red}{$Q$ controls
 the exploration--exploitation balance of QPSO, with intermediate
 values concentrating the search most effectively.}
 \rev{R1.2}\textcolor{red}{Detection, however, is statistically insensitive to
-$Q$ (Friedman $p=0.12$ over ten seeds): every tested setting
-yields about $97\%$ F1, and the validation-selected $Q^{*}=2$
-delivers $97.11\%$ accuracy, $97.12\%$ F1, $0.9921$ AUC, and
+$Q$ (Friedman $p=0.53$ over ten seeds): every tested setting
+yields about $97\%$ F1, and the validation-selected $Q^{*}=6$
+delivers $97.13\%$ accuracy, $97.13\%$ F1, $0.9924$ AUC, and
 $0.0246$ MSE under leakage-free centralized evaluation.}
 % TODO(C6/C10): add the OS-CIDS comparison (block C) and measured latency/memory.
 

@@ -2,26 +2,24 @@
 \centering
 \caption{\textcolor{red}{Variable-qubit QPSO ablation for LSTM(+VAE)+SGD on ACI-IoT (context features on,
 $P{=}20$, $I{=}30$, $k{=}40$; mean$\pm$std over ten seeds, QPSO re-executed per seed). FAR: benign flows
-flagged as attack; MD: attacks missed (both \%). $p_{Q^*}$, $p_{6}$: Holm-adjusted two-sided Wilcoxon
-signed-rank $p$-values of test F1 against $Q^{*}{=}2$ (selected by validation F1) and against
-$Q{=}6$ (the operating point of the original submission). Friedman test across $Q$: test F1
-$\chi^2_{7}{=}11.33$, $p{=}0.12$; test AUC $p{=}0.91$; validation F1 $p{=}0.65$.}}
+flagged as attack; MD: attacks missed (both \%). $p_{Q^*}$: Holm-adjusted two-sided Wilcoxon signed-rank $p$-value of test F1 against $Q^{*}{=}6$, selected by validation F1 (it coincides with the operating point of the original submission). Friedman test across $Q$: test F1
+$\chi^2_{7}{=}6.07$, $p{=}0.53$; test AUC $p{=}0.63$; validation F1 $p{=}0.54$.}}
 \label{tab:qubit_ablation_improved_robust}
 \color{red}
 \setlength{\tabcolsep}{3.5pt}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{cccccccccc}
+\begin{tabular}{ccccccccc}
 \hline\toprule
-$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p_{Q^*}$ & $p_{6}$ \\
+$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p_{Q^*}$ \\
 \hline\toprule
-1 & 97.29$\pm$0.29 & 97.30$\pm$0.29 & 0.9919$\pm$0.0013 & 0.0239$\pm$0.0025 & 2.15$\pm$0.33 & 3.11$\pm$0.42 & 95.15$\pm$1.02 & 0.96 & 0.74 \\
-\textbf{2}$^{*}$ & \textbf{97.11$\pm$0.07} & \textbf{97.12$\pm$0.07} & \textbf{0.9921$\pm$0.0011} & \textbf{0.0246$\pm$0.0013} & \textbf{1.83$\pm$0.36} & \textbf{3.65$\pm$0.34} & \textbf{95.68$\pm$0.95} & -- & 1.00 \\
-3 & 96.98$\pm$0.41 & 96.98$\pm$0.41 & 0.9914$\pm$0.0014 & 0.0258$\pm$0.0022 & 2.27$\pm$0.52 & 3.57$\pm$0.91 & 95.19$\pm$1.07 & 1.00 & 1.00 \\
-4 & 97.12$\pm$0.30 & 97.13$\pm$0.30 & 0.9921$\pm$0.0009 & 0.0248$\pm$0.0025 & 2.18$\pm$0.60 & 3.38$\pm$0.82 & 95.01$\pm$0.70 & 1.00 & 1.00 \\
-5 & 96.94$\pm$0.42 & 96.94$\pm$0.42 & 0.9922$\pm$0.0012 & 0.0263$\pm$0.0033 & 1.94$\pm$0.42 & 3.87$\pm$0.78 & 95.17$\pm$1.19 & 1.00 & 1.00 \\
-6 & 97.00$\pm$0.27 & 97.01$\pm$0.26 & 0.9920$\pm$0.0017 & 0.0263$\pm$0.0027 & 2.09$\pm$0.58 & 3.66$\pm$0.71 & 95.31$\pm$1.00 & 1.00 & -- \\
-7 & 96.90$\pm$0.24 & 96.91$\pm$0.24 & 0.9916$\pm$0.0017 & 0.0262$\pm$0.0025 & 1.99$\pm$0.49 & 3.90$\pm$0.66 & 95.22$\pm$1.34 & 0.34 & 1.00 \\
-8 & 96.91$\pm$0.35 & 96.91$\pm$0.35 & 0.9918$\pm$0.0023 & 0.0262$\pm$0.0025 & 1.99$\pm$0.46 & 3.89$\pm$0.59 & 95.51$\pm$1.48 & 1.00 & 1.00 \\
+1 & 97.20$\pm$0.23 & 97.20$\pm$0.22 & 0.9926$\pm$0.0009 & 0.0243$\pm$0.0024 & 1.90$\pm$0.29 & 3.45$\pm$0.53 & 95.27$\pm$0.74 & 1.00 \\
+2 & 97.08$\pm$0.17 & 97.09$\pm$0.17 & 0.9918$\pm$0.0011 & 0.0253$\pm$0.0019 & 2.19$\pm$0.58 & 3.44$\pm$0.55 & 95.00$\pm$1.58 & 1.00 \\
+3 & 96.96$\pm$0.37 & 96.96$\pm$0.37 & 0.9916$\pm$0.0016 & 0.0263$\pm$0.0026 & 2.10$\pm$0.52 & 3.72$\pm$0.85 & 95.56$\pm$1.18 & 0.59 \\
+4 & 96.94$\pm$0.49 & 96.95$\pm$0.49 & 0.9917$\pm$0.0021 & 0.0268$\pm$0.0039 & 1.93$\pm$0.29 & 3.87$\pm$0.81 & 95.38$\pm$1.58 & 1.00 \\
+5 & 97.05$\pm$0.42 & 97.06$\pm$0.41 & 0.9925$\pm$0.0012 & 0.0249$\pm$0.0026 & 1.92$\pm$0.34 & 3.69$\pm$0.86 & 95.70$\pm$1.24 & 1.00 \\
+\textbf{6}$^{*}$ & \textbf{97.13$\pm$0.31} & \textbf{97.13$\pm$0.31} & \textbf{0.9924$\pm$0.0016} & \textbf{0.0246$\pm$0.0028} & \textbf{2.24$\pm$0.58} & \textbf{3.33$\pm$0.44} & \textbf{96.00$\pm$1.04} & -- \\
+7 & 97.17$\pm$0.32 & 97.17$\pm$0.32 & 0.9919$\pm$0.0012 & 0.0248$\pm$0.0024 & 2.05$\pm$0.33 & 3.39$\pm$0.69 & 95.75$\pm$0.84 & 1.00 \\
+8 & 97.07$\pm$0.26 & 97.08$\pm$0.26 & 0.9918$\pm$0.0008 & 0.0249$\pm$0.0013 & 2.03$\pm$0.34 & 3.57$\pm$0.52 & 95.59$\pm$0.95 & 1.00 \\
 \hline\toprule
 \end{tabular}}
 \end{table*}
