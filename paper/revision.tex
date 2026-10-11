@@ -902,13 +902,54 @@ Table~\ref{tab:impl_setup}, with three experiments sharing the
 machine, it takes a median of $1.7$\,min ($5.0$\,min at the
 largest trained budget, $P=40$, $I=60$).}
 
-\textcolor{red}{\textit{Data usage.} To rule out test-set leakage,
-each selection step uses the following splits: QPSO and PSO
-fitness, variance-based selection, and normalization statistics
-use $\mathcal{D}_{\rm tr}$ only; selection of $Q$, of the search
-budget, and early stopping use $\mathcal{D}_{\rm va}$ only;
-$\mathcal{D}_{\rm te}$ is used once per configuration, for the
-final metrics. No fitness weights are tuned.}
+\rev{R1.5}\textcolor{red}{\textit{Data usage.} Table~\ref{tab:data_usage}
+lists the data used by every step that fits, selects, or stops
+anything. The QPSO fitness~\eqref{eq:qpsobj} is a label-based
+filter criterion evaluated on $\mathcal{D}_{\rm tr}$ only; it
+contains no F1, AUC, MSE, or error-balance terms and therefore has
+no weights to tune. The register size $Q^{*}$ is chosen on
+$\mathcal{D}_{\rm va}$, early stopping and the learning-rate
+schedule monitor the $\mathcal{D}_{\rm va}$ loss, and the decision
+rule is a fixed $\arg\max$ over the two class probabilities. The
+search budget ($P=20$, $I=30$), the subset size $k=40$, and the
+classifier hyperparameters were fixed before the experiments and
+were not tuned on any split. $\mathcal{D}_{\rm te}$ is therefore
+never used for fitness evaluation, $Q$ selection, weight or
+hyperparameter tuning, or early stopping: it is evaluated once per
+trained model, after training, to report the final metrics.}
+
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.5}\textcolor{red}{Data used by every fitting,
+selection, and stopping step. Only the final evaluation touches
+$\mathcal{D}_{\rm te}$.}}
+\label{tab:data_usage}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{p{2.6cm} p{3.4cm} c}
+\hline\toprule
+\textbf{Step} & \textbf{Data used} & $\mathcal{D}_{\rm te}$? \\
+\hline\toprule
+Zero-variance filter & $\mathcal{D}_{\rm tr}$ (features only) & no \\
+Context features $\mathbf{F}_c$ & Earlier flows of the same source, unlabelled & no \\
+Min--max normalization & $\mathcal{D}_{\rm tr}$ (features only) & no \\
+QPSO / PSO fitness $\mathcal{J}$ & $\mathcal{D}_{\rm tr}$ & no \\
+Variance selection (OS-CIDS) & $\mathcal{D}_{\rm tr}$ (features only) & no \\
+Consensus mask $\mathbf{m}^{*}_{\rm cons}$ & Ten masks fitted on $\mathcal{D}_{\rm tr}$ & no \\
+Selection of $Q^{*}$ & $\mathcal{D}_{\rm va}$, mean F1 over seeds & no \\
+Early stopping, LR schedule & $\mathcal{D}_{\rm va}$ loss & no \\
+Budget, $k$, hyperparameters & Fixed a priori & no \\
+Decision rule & Fixed $\arg\max$ & no \\
+FL masks (proxy/vote/central) & Proxy slice / client partitions / all of $\mathcal{D}_{\rm tr}$ & no \\
+FL per-client evaluation & Held-out part of each client's $\mathcal{D}_{\rm tr}$ partition & no \\
+FL stopping & Fixed $R=30$ rounds & no \\
+\midrule
+Reported metrics & $\mathcal{D}_{\rm te}$, once per trained model & yes \\
+\hline\toprule
+\end{tabular}
+\end{table}
 
 \rev{R1.2}\textcolor{red}{\textit{Selection of $Q$.} The ablation over
 $Q\in\{1,\dots,8\}$ selects the setting with the highest mean
@@ -1126,7 +1167,7 @@ QPSO           & Particles / iters   &
   $P=20$;\ $I=30$ \rev{R1.3}\textcolor{red}{(sensitivity: $P\in\{20,40\}$, $I\in\{30,60\}$)} &
   Per QPSO run \\
                & \textcolor{red}{Selected features} &
-  \textcolor{red}{$k=40$; fitness on $\mathcal{D}_{\rm tr}$ only} &
+  \rev{R1.5}\textcolor{red}{$k=40$; fitness on $\mathcal{D}_{\rm tr}$ only} &
   \textcolor{red}{All selectors} \\
                & Qubit sweep / seeds &
   $Q\in\{1,\dots,8\}$;\
@@ -1171,7 +1212,7 @@ $\mathcal{D}=\mathcal{D}_{\rm tr}\cup\mathcal{D}_{\rm va}
 and normalization $\mathcal{N}$ are held constant across all
 configurations. Model selection and early stopping use only
 $\mathcal{D}_{\rm va}$; all reported metrics are from
-$\mathcal{D}_{\rm te}$:
+$\mathcal{D}_{\rm te}$ \rev{R1.5}\textcolor{red}{(Table~\ref{tab:data_usage})}:
 \begin{align}
 \mathbf{m}_{\rm eval} = \bigl\{
 &\,\mathrm{Acc},\;\mathrm{F1},\;\mathrm{AUC},\;\mathrm{MSE},\;
@@ -1385,7 +1426,11 @@ R_{90}=\min\bigl\{r:\mathrm{F1}^{(r)}\ge
 \label{eq:r90}
 \end{equation}
 which remains comparable across heterogeneity regimes and
-aggregators by normalizing to terminal performance. Per-client
+aggregators by normalizing to terminal performance.
+\rev{R1.5}\textcolor{red}{The per-round global F1 on
+$\mathcal{D}_{\rm te}$ is logged only to describe convergence; the
+reported federated model is always the one after the fixed final
+round, never a round selected on $\mathcal{D}_{\rm te}$.} Per-client
 consistency is tracked via worst-case performance
 $\min_k\mathrm{F1}_k^{(r)}$ and inter-client dispersion:
 \begin{equation}
