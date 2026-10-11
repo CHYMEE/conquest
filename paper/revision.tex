@@ -102,34 +102,38 @@ cyberworm propagation; (\textit{ii})~variable-qubit QPSO for \rev{R1.4}\textcolo
 (\textit{iii})~an LSTM(+VAE) temporal classifier that captures subtle attack-state transitions. Unlike conventional IDS pipelines, this study explicitly decouples training-time feature optimization from
 deployment-time inference, ensuring that runtime latency is independent of \rev{R1.1}\textcolor{red}{the QPSO register size $Q$}. This journal extension substantially advances
 the conference prototype~\cite{ajakweconquest} by introducing a strong
-optimized non-quantum baseline, a controlled variable-qubit ablation study over $Q\in\{1,\dots,8\}$, and a federated robustness evaluation under IID, label-skew, quantity-skew, and Dirichlet heterogeneity regimes. \textcolor{red}{Table~\ref{tab:conf_vs_journal} itemizes the methodological, experimental, and analytical differences between the two works.}
+optimized non-quantum baseline, a controlled variable-qubit ablation study over $Q\in\{1,\dots,8\}$, and a federated robustness evaluation under IID, label-skew, quantity-skew, and Dirichlet heterogeneity regimes. \rev{R2.5}\textcolor{red}{Table~\ref{tab:conf_vs_journal} itemizes the methodological, experimental, and analytical differences between the two works.}
 
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\textcolor{red}{Distinction between the CONQUEST conference prototype~\cite{ajakweconquest} and this journal extension.}}
+\caption{\rev{R2.5}\textcolor{red}{Distinction between the CONQUEST conference prototype~\cite{ajakweconquest} and this journal extension.}}
 \label{tab:conf_vs_journal}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.10}
 \color{red}
-\begin{tabular}{p{1.5cm} p{2.9cm} p{3.4cm}}
+\begin{tabular}{p{1.5cm} p{2.4cm} p{3.9cm}}
 \hline\toprule
 \textbf{Aspect} & \textbf{Conference~\cite{ajakweconquest}} & \textbf{This journal extension} \\
 \hline\toprule
 \multicolumn{3}{l}{\textit{Methodological}} \\
-Context features & Described qualitatively & 17 causal per-source features with explicit windows and dimensions (Table~\ref{tab:context_features}) \\
-QPSO & Fixed qubit setting; selection on pooled data & Variable register size $Q$ with explicit role in initialization, rotation, and collapse (Eqs.~\eqref{eq:qpso_init}--\eqref{eq:qpso_measure}); fitted on the training split only \\
-Classifier & LSTM-VAE, optimizer comparison & LSTM(+VAE) with attention, SGD, KL-regularized latent, deterministic inference \\
-Training regime & Centralized only & Centralized and horizontal FL with three mask-construction modes \\
+Data protocol & Random split of pooled data & Blocked temporal split; every fitting step on $\mathcal{D}_{\rm tr}$ only (Table~\ref{tab:data_usage}); zero-variance filter \\
+Context features & Described qualitatively & 17 causal per-source features with exact definitions, windows, and dimensions (Table~\ref{tab:context_features}) \\
+QPSO & Fixed qubit setting & Explicit role of $Q$ (Eqs.~\eqref{eq:qpso_init}--\eqref{eq:qpso_measure}, Algorithm~\ref{alg:qpso}); best-evaluated mask; consensus mask over seeds \\
+Classifier & LSTM-VAE; optimizer comparison & LSTM(+VAE) with attention, SGD, KL-regularized latent, deterministic inference \\
+Training regime & Centralized & Centralized and horizontal FL with three mask-construction modes; DP-FedAvg variant \\
 \midrule
 \multicolumn{3}{l}{\textit{Experimental}} \\
-Baselines & Optimizer variants & OS-CIDS, classical PSO at equal budget, context on/off $\times$ selector ablation \\
-Qubit study & None & $Q\in\{1,\dots,8\}$, 10 seeds with per-seed QPSO, budget sensitivity, statistical tests \\
-FL evaluation & None & IID, label-, quantity-skew, Dirichlet; FedAvg, SCAFFOLD, FLAME; $K\in\{5,10,20\}$ \\
+Baselines & Optimizer variants & OS-CIDS; context on/off $\times$ selector ablation; classical PSO at equal budget \\
+Qubit study & None & $Q\in\{1,\dots,10\}$, ten seeds with per-seed QPSO; budget sensitivity up to $8\times$ evaluations \\
+Feature subset & Not reported & Selected features, selection frequency, stability, consensus mask, $k\in\{10,20,40\}$ \\
+FL evaluation & None & IID, label-, quantity-skew, Dirichlet; FedAvg, SCAFFOLD, FLAME; $K\in\{5,10,20\}$; privacy--utility trade-off \\
 \midrule
 \multicolumn{3}{l}{\textit{Analytical}} \\
-Reported metrics & DR, FPR & F1, AUC, MSE, per-class FAR/MD, selected-feature stability, per-sample latency, peak memory, $R_{90}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
-Reproducibility & Single run & Seed-controlled, leakage-free chronological protocol, released masks \\
+Metrics & Detection rate, FPR & F1, AUC, MSE, FAR/MD, per-window latency, peak memory, $R_{90}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$, $\varepsilon$ \\
+Statistics & Single run & Mean$\pm$std over seeds; Friedman and Holm-corrected Wilcoxon tests \\
+Search analysis & None & QPSO search dynamics versus $Q$ (Fig.~\ref{fig:qpso_dynamics}) \\
+Privacy & Not analyzed & Threat model and privacy scope (Table~\ref{tab:privacy_scope}) \\
 \hline\toprule
 \end{tabular}
 \end{table}
@@ -446,7 +450,8 @@ quantity-skew. The conference prototype of
 CONQUEST~\cite{ajakweconquest} established the feasibility of
 QPSO-based feature selection with a temporal backbone for centralized
 cyberworm detection; the present journal extension closes the
-remaining gaps by adding a controlled variable-qubit ablation over
+remaining gaps \rev{R2.5}\textcolor{red}{(itemized in
+Table~\ref{tab:conf_vs_journal})} by adding a controlled variable-qubit ablation over
 $Q\in\{1,\dots,8\}$, a strong optimized non-quantum baseline for
 rigorous comparison, and a comprehensive federated evaluation across
 IID, label-skew, quantity-skew, and Dirichlet regimes quantified
@@ -2381,7 +2386,13 @@ experimentally.
 The conference prototype~\cite{ajakweconquest} reported
 97.5\% detection rate and 0.8\% FPR on ACI-IoT under
 centralized evaluation, establishing the first
-cyberworm-focused CONQUEST result. The journal extension
+cyberworm-focused CONQUEST result. \rev{R2.5}\textcolor{red}{The
+two works differ in method, experiments, and analysis
+(Table~\ref{tab:conf_vs_journal}). Methodologically, the extension
+replaces random splitting of pooled data with a blocked temporal,
+training-only protocol, defines the context features and the role
+of $Q$ exactly, and adds federated training. Experimentally and
+analytically,} the journal extension
 advances this in three ways that are not incremental: (i)~a
 controlled variable-qubit ablation over $Q\in\{1,\dots,8\}$
 that \rev{R1.1}\textcolor{red}{makes the role of $Q$ explicit and
