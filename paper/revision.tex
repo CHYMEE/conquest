@@ -1073,9 +1073,15 @@ deterministic.} The total training objective is:
 \label{eq:total_loss}
 \end{equation}
 \textcolor{red}{where $\mathcal{L}_{\rm CE}$ is the two-class
-cross-entropy and $\gamma=10^{-3}$. Parameters $\theta$ are
+cross-entropy and $\gamma=10^{-3}$.} \rev{R1.11}\textcolor{red}{Parameters $\theta$ are
 optimized with SGD (learning rate $10^{-3}$, Nesterov momentum 0.9,
-batch size 32) for all results reported in this paper. Training
+batch size 32) for all results reported in this paper: every
+centralized configuration (S-CIDS is quoted from~\cite{ajakweconquest}),
+the $Q$ ablation, the budget and selector comparisons, and the local
+updates of all federated clients (batch size 64). Adam is not used
+in any reported experiment; the comparison of SGD, Adam, and
+Newton--Hessian updates belongs to the conference
+version~\cite{ajakweconquest}, which retained SGD.} \textcolor{red}{Training
 runs for at most 35 epochs; early stopping monitors validation
 loss with patience 6 and restores the best weights, and the
 learning rate is halved after 3 epochs without validation-loss
@@ -1176,7 +1182,7 @@ Data           & Batch / sequence    &
   \textcolor{red}{Fixed split seed 42} \\
 \hline
 Training       & Optimizer / LR      &
-  \textcolor{red}{SGD (Nesterov, momentum 0.9)},\ $10^{-3}$ &
+  \rev{R1.11}\textcolor{red}{SGD (Nesterov, momentum 0.9)},\ $10^{-3}$ &
   Centralized + local FL \\
                & Epoch cap / stopping&
   \textcolor{red}{35 epochs;\ patience 6, best weights restored} &
