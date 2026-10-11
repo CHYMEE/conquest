@@ -98,7 +98,7 @@ challenge~\cite{ajakwe2025eqai,vivekquantum}. QPSO introduces probabilistic sear
 
 In this study, we proffer a context-aware quantum-inspired intrusion detection framework for AI-aided cyberworm detection in mission-critical networks. Here, we integrate three complementary
 components: (\textit{i})~seed-controlled context-aware feature representation capturing temporal and behavioral cues relevant to
-cyberworm propagation; (\textit{ii})~variable-qubit QPSO for compact, discriminative, and bounded feature selection; and
+cyberworm propagation; (\textit{ii})~variable-qubit QPSO for \rev{R1.4}\textcolor{red}{discriminative, budget-bounded selection of a fixed-size feature subset}; and
 (\textit{iii})~an LSTM(+VAE) temporal classifier that captures subtle attack-state transitions. Unlike conventional IDS pipelines, this study explicitly decouples training-time feature optimization from
 deployment-time inference, ensuring that runtime latency is independent of \rev{R1.1}\textcolor{red}{the QPSO register size $Q$}. This journal extension substantially advances
 the conference prototype~\cite{ajakweconquest} by introducing a strong
@@ -745,6 +745,13 @@ PSO. Hence $k$ is a fixed design parameter ($k=40$ in all
 experiments), and $Q$ shapes \emph{which} $k$ features are found,
 not how many. Algorithm~\ref{alg:qpso} summarizes the procedure and
 Table~\ref{tab:q_constants} lists the constants set by each $Q$.}
+\rev{R1.4}\textcolor{red}{Because a single run's mask depends on its
+seed, the deployed detector uses a consensus mask
+$\mathbf{m}^{*}_{\rm cons}$: the $k$ features selected most often
+across the ten QPSO runs at the selected $Q^{*}$, with ties broken
+by the summed fitness of the runs that selected them. All ten masks
+are fitted on $\mathcal{D}_{\rm tr}$, so the consensus uses no
+validation or test information.}
 
 \begin{algorithm}[!t]
 \caption{\rev{R1.1}\textcolor{red}{Variable-qubit QPSO feature selection
@@ -1671,6 +1678,93 @@ $20\times30$, $40\times60$ and $80\times60$ particles$\times$iterations.
 budgets. A larger budget finds fitter subsets, but detection is
 unchanged (Friedman over budgets $p=0.50$).}}
 \label{fig:budget}
+\end{figure*}
+
+\rev{R1.4}\textcolor{red}{\textit{Selected features and selection
+stability.} Every mask contains exactly $k=\|\mathbf{m}\|_0=40$ of
+the $d=86$ features ($47\%$); $k$ is a design parameter fixed for
+all selectors, so QPSO determines which features are kept, not how
+many. Fig.~\ref{fig:feature_heatmap} shows how often each feature is
+selected across seeds for every $Q$. A small core is selected
+consistently at every $Q$: the context feature
+\texttt{syn\_frac\_src\_60} appears in all 90 masks for
+$Q\in\{1,\dots,10\}$ and \texttt{Protocol} in $92\%$ of them on
+average, whereas \texttt{Src Port}, \texttt{Subflow Fwd Packets},
+and \texttt{dport\_switch} are never selected. Beyond this core the
+masks vary between seeds: at $Q^{*}=6$ the mean pairwise Jaccard
+index of the selected sets is $0.36$, against $0.30$ for two
+random 40-feature subsets of 86, and it lies between $0.34$ and
+$0.38$ for every $Q$. Much of this variation is substitution
+between redundant features. Grouping features whose
+$|\text{Spearman}\ \rho|\ge0.9$ on $\mathcal{D}_{\rm tr}$ gives 52
+redundancy families, and at the family level the Jaccard index
+rises to $0.53$ ($0.45$ for random subsets). Seed-to-seed variation
+in the mask therefore does not translate into variation in
+detection (test F1 $97.13\pm0.31\%$ at $Q^{*}=6$,
+Table~\ref{tab:qubit_ablation_improved_robust}).}
+
+\rev{R1.4}\textcolor{red}{Table~\ref{tab:selected_features} lists the
+deployed consensus mask $\mathbf{m}^{*}_{\rm cons}$ at $Q^{*}=6$.
+Every feature in it is selected in at least half of the ten runs,
+8 of the 40 are context features, and its trace-ratio fitness
+($5089$) exceeds that of the individual runs ($4401\pm297$).
+Because $k=40$ retains $47\%$ of the features, we no longer describe
+the selected subset as compact; the reduction it provides is
+moderate.}
+% TODO(C4-F): add consensus-mask test F1 (10 seeds) and k=10/20 results (block F); revisit the compactness sentence.
+
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.4}\textcolor{red}{Deployed consensus mask
+$\mathbf{m}^{*}_{\rm cons}$ at $Q^{*}=6$: the $k=40$ of $d=86$
+features selected most often across ten QPSO runs. $f$: selection
+frequency across the ten runs. Context features in italics (8 of
+17).}}
+\label{tab:selected_features}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular}{p{2.75cm}c p{2.75cm}c}
+\hline\toprule
+Feature & $f$ & Feature & $f$ \\
+\hline\toprule
+\textit{syn\_frac\_src\_60} & 1.0 & Fwd URG Flags & 0.6 \\
+Fwd Packets/\allowbreak s & 0.9 & Packet Length Std & 0.6 \\
+\textit{bytes\_rate\_src\_60} & 0.9 & SYN Flag Count & 0.6 \\
+Fwd Packet Length Min & 0.8 & RST Flag Count & 0.6 \\
+Fwd Header Length & 0.8 & PSH Flag Count & 0.6 \\
+Average Packet Size & 0.8 & ACK Flag Count & 0.6 \\
+Protocol & 0.7 & URG Flag Count & 0.6 \\
+Fwd Packet Length Std & 0.7 & Fwd Segment Size Avg & 0.6 \\
+Bwd Packet Length Min & 0.7 & Bwd Packet/\allowbreak Bulk Avg & 0.6 \\
+Flow IAT Max & 0.7 & Bwd Bulk Rate Avg & 0.6 \\
+Bwd IAT Max & 0.7 & Subflow Bwd Bytes & 0.6 \\
+Bwd IAT Min & 0.7 & \textit{n\_flows\_src\_10} & 0.6 \\
+Bwd Segment Size Avg & 0.7 & \textit{pkt\_rate\_src\_10} & 0.6 \\
+\textit{n\_flows\_src\_60} & 0.7 & \textit{bytes\_rate\_src\_10} & 0.6 \\
+\textit{n\_distinct\_dport\_10} & 0.7 & \textit{n\_proto\_switch\_60} & 0.6 \\
+Total Length of Fwd Packet & 0.6 & Total Length of Bwd Packet & 0.5 \\
+Bwd Packet Length Max & 0.6 & Fwd IAT Mean & 0.5 \\
+Flow Packets/\allowbreak s & 0.6 & CWR Flag Count & 0.5 \\
+Flow IAT Std & 0.6 & ECE Flag Count & 0.5 \\
+Fwd IAT Std & 0.6 & Active Max & 0.5 \\
+\hline\toprule
+\end{tabular}
+\end{table}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\linewidth]{images/feature_selection_heatmap.png}
+\caption{\rev{R1.4}\textcolor{red}{Selection frequency of each of the
+$d=86$ features across seeds for every register size $Q$ (ten seeds
+for $Q\le8$, five for $Q=9,10$; $k=40$). Features are sorted by
+frequency pooled over $Q$; context features are labelled in red,
+and $\bullet$ marks the features of the consensus mask
+$\mathbf{m}^{*}_{\rm cons}$ at $Q^{*}=6$
+(Table~\ref{tab:selected_features}). A small core is selected at every $Q$, while the
+remaining slots vary between seeds.}}
+\label{fig:feature_heatmap}
 \end{figure*}
 
 Fig.~\ref{fig:baseline_cm} confirms these findings at the
