@@ -73,7 +73,7 @@ AI-aided cyberworms capable of adaptive propagation and traffic mimicry pose sev
 detection. A controlled ablation over $Q\in\{1,\dots,8\}$ \rev{R1.2}\textcolor{red}{with ten seeds shows that detection is statistically insensitive to the QPSO register size (Friedman $p{=}0.53$). With $Q{=}6$ selected on validation data, CONQUEST achieves, under leakage-free centralized evaluation on ACI-IoT, 97.13\% accuracy, 97.13\% F1-score, 0.9924 AUC, and 0.0246 MSE.}
 % TODO(C10): add measured per-window latency and peak memory to the abstract. Under horizontal federated learning 
 across IID, label-skew, quantity-skew, and Dirichlet regimes, CONQUEST achieves F1\,${=}$\,0.9162 and AUC\,${=}$\,0.9708 in the strongest heterogeneous setting, stabilizing at $R_{90}{=}25$ rounds with worst-client F1\,${=}$\,0.893 and $\sigma(\mathrm{F1}){=}$\,0.017, demonstrating reproducible,
-\textcolor{red}{raw-data-local}, and deployment-feasible cyberworm detection for mission-critical distributed environments.
+\rev{R2.1}\textcolor{red}{raw-data-local}, and deployment-feasible cyberworm detection for mission-critical distributed environments.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -94,7 +94,7 @@ anomaly detectors suffer from high false-positive rates under noisy or heterogen
 with the privacy, sovereignty, and regulatory constraints prevalent in distributed mission environments.
 
 Quantum-inspired optimization addresses the first
-challenge~\cite{ajakwe2025eqai,vivekquantum}. QPSO introduces probabilistic search dynamics \textcolor{red}{that have been reported to improve exploration relative to classical metaheuristics; whether this holds for a given task must be verified against classical search under an equal evaluation budget}, yet its application to IDS remains ad- hoc, optimizer capacity is rarely analyzed systematically, stability is seldom quantified, and training-time gains are discussed without regard to deployment cost. Federated learning (FL) addresses the third challenge by keeping raw traffic local and exchanging only model updates~\cite{hamadsystematic}\textcolor{red}{; on its own, however, FL provides data locality rather than formal privacy, since model updates can still leak information through inference attacks unless secure aggregation or differential privacy is added}, yet FL-based IDS studies consistently under-report worst-client behavior, convergence stability, and robustness under realistic non-IID regimes, leaving the privacy detection reliability trade-off insufficiently characterized.
+challenge~\cite{ajakwe2025eqai,vivekquantum}. QPSO introduces probabilistic search dynamics \textcolor{red}{that have been reported to improve exploration relative to classical metaheuristics; whether this holds for a given task must be verified against classical search under an equal evaluation budget}, yet its application to IDS remains ad- hoc, optimizer capacity is rarely analyzed systematically, stability is seldom quantified, and training-time gains are discussed without regard to deployment cost. Federated learning (FL) addresses the third challenge by keeping raw traffic local and exchanging only model updates~\cite{hamadsystematic}\rev{R2.1}\textcolor{red}{; on its own, however, FL provides data locality rather than formal privacy, since model updates can still leak information through inference attacks unless secure aggregation or differential privacy is added}, yet FL-based IDS studies consistently under-report worst-client behavior, convergence stability, and robustness under realistic non-IID regimes, leaving the privacy detection reliability trade-off insufficiently characterized.
 
 In this study, we proffer a context-aware quantum-inspired intrusion detection framework for AI-aided cyberworm detection in mission-critical networks. Here, we integrate three complementary
 components: (\textit{i})~seed-controlled context-aware feature representation capturing temporal and behavioral cues relevant to
@@ -1415,17 +1415,60 @@ $\mathcal{D}_{\rm te}$ under $B{=}64$, $T{=}10$.}
 
 
 Only model parameters are transmitted; no raw traffic, labels,
-or feature vectors are exchanged. \textcolor{red}{This guarantees
-data locality, not formal privacy: plain FedAvg updates remain
-exposed to membership- and property-inference and gradient
-inversion by an honest-but-curious server. CONQUEST does not
-currently implement differential privacy or secure aggregation.
-Both are compatible with the protocol: per-client update clipping
-with Gaussian noise (DP-FedAvg) and additive-masking secure
-aggregation operate on the same weighted sum~\eqref{eq:fedavg}
-without changing the model or the mask. Their utility cost is left
-to future work, and claims in this paper are limited to raw-data
-locality.}
+or feature vectors are exchanged. \rev{R2.1}\textcolor{red}{\textit{Threat
+model and privacy scope.} We assume an honest-but-curious server
+and honest clients. Keeping raw traffic local guarantees data
+locality, not formal privacy: plain FedAvg updates can still leak
+information about a client's traffic through membership and
+property inference or gradient inversion.
+Table~\ref{tab:privacy_scope} lists what each party can observe
+and which mechanism protects it. Two standard mechanisms close the
+gaps without changing the model or the mask. (i)~\textit{Secure
+aggregation} (additive pairwise masking) lets the server learn
+only the sum of the client updates, so it cannot inspect any
+single update. Because the masks cancel exactly in the sum, the
+aggregated model, and hence detection performance, is identical
+to plain FedAvg; the cost is extra communication and
+key-agreement computation per round, not accuracy. Weighted
+averaging is preserved by having each client send
+$N_k\,\Delta\theta_k$ and $N_k$ through the same protocol. (ii)~
+\textit{Client-level differential privacy} (DP-FedAvg) bounds what
+the released model reveals about any one client: each update is
+clipped to $\ell_2$ norm $C$, the clipped updates are averaged with
+the fixed denominator $K$, and Gaussian noise
+$\mathcal{N}(0,(zC/K)^2\mathbf{I})$ is added. With full
+participation over $R$ rounds, the R\'enyi-DP accountant gives
+$\varepsilon(\delta)=\min_{\alpha>1}\bigl[R\alpha/(2z^2)+
+\log(1/\delta)/(\alpha-1)\bigr]$. We evaluate DP-FedAvg on the
+quantity-skew stress regime ($K=5$, $R=30$, $\delta=10^{-5}$) with
+noise multipliers $z\in\{1,3,8\}$, i.e.\ $\varepsilon\approx41$,
+$10$, and $3.5$. The clip norm $C$ is fixed before any private run
+as the median client-update norm of the non-private FedAvg runs.}
+% TODO(R2.1-G): add DP-FedAvg results (F1, AUC, min-F1 vs epsilon; 3 seeds) from block G and a sentence on the trade-off at K=5.
+
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R2.1}\textcolor{red}{Privacy scope of federated CONQUEST
+under an honest-but-curious server. SecAgg: secure aggregation;
+DP: client-level DP-FedAvg.}}
+\label{tab:privacy_scope}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{p{1.7cm} p{1.6cm} p{1.75cm} p{1.75cm}}
+\hline\toprule
+\textbf{Information} & \textbf{Visible to} & \textbf{Protection in CONQUEST} & \textbf{Optional mechanism} \\
+\hline\toprule
+Raw flows, labels & Owning client only & Never transmitted & -- \\
+Individual model updates & Server, every round & None (plain FedAvg) & SecAgg (server sees only the sum) \\
+Aggregated global model & All clients & None & DP (bounded per-client influence) \\
+Client data size $N_k$ & Server (FedAvg weights) & None & SecAgg on $N_k$; uniform mean in DP \\
+Feature mask, proxy mode & Server (computed on its own proxy data) & No client data used & -- \\
+Feature mask, vote mode & Server sees each client's $k$ indices & Indices only, no data & SecAgg on vote counts \\
+\hline\toprule
+\end{tabular}
+\end{table}
 
 \textcolor{red}{All federated experiments use one configuration:
 $R=30$ rounds, $E=2$ local epochs, full participation, and batch
@@ -2028,7 +2071,7 @@ for federated CONQUEST.
     (b)~F1 vs.\ heterogeneity regime under FedAvg;
     (c)~FedAvg convergence curve under quantity-skew
     ($R_{90}{=}25$ marked);
-    (d)~\textcolor{red}{data-locality}--utility--efficiency trade-off;
+    (d)~\rev{R2.1}\textcolor{red}{data-locality}--utility--efficiency trade-off;
     (e)~training-time scalability across regimes;
     (f)~centralized vs.\ federated summary (F1 gap: 2.9\%).}}
     \label{fig:hfl-multianalysis}
@@ -2045,7 +2088,7 @@ achieves F1\,$=$\,0.9162, AUC\,$=$\,0.9708,
 $\min_k\,\mathrm{F1}_k{=}0.893$,
 $\sigma(\mathrm{F1}){=}0.017$ a centralized federated gap
 of only 2.9\% in F1 and 1.8\% in AUC, while preserving
-complete data sovereignty. Inference latency remains at
+\rev{R2.1}\textcolor{red}{raw-data locality}. Inference latency remains at
 3.58-3.60\,s across all federated configurations,
 confirming that distributed training does not alter the
 deployed runtime path.
@@ -2054,7 +2097,7 @@ incurs ${\approx}3.4{\times}$ wall-clock overhead over
 centralized training due to communication rounds and
 client-side optimization. Critically, this overhead is strictly localized to the offline collaborative training phase and does not degrade the real-time execution path; as demonstrated in Table~\ref{tab:fl_performance_extended}, inference latency remains invariant at 3.58–3.60s across all federated configurations, ensuring that the mission-critical response time is preserved regardless of the training regime. This trade-off is operationally
 acceptable as federated CONQUEST exchanges training efficiency
-for \textcolor{red}{raw-data locality} and deployment flexibility, both of
+for \rev{R2.1}\textcolor{red}{raw-data locality} and deployment flexibility, both of
 which are non-negotiable in a multi-organizational mission
 environments.
 
@@ -2302,7 +2345,7 @@ reproducibility, bounded overhead, or mission-edge feasibility
 requirements central to this work.
 
 FL-based systems~\cite{FRIHA202217,herlambangfederated}
-demonstrate that \textcolor{red}{collaborative} detection is feasible
+demonstrate that \rev{R2.1}\textcolor{red}{collaborative} detection is feasible
 without raw data sharing, reporting global accuracy up to
 99.71\% under IID conditions. However, these studies evaluate
 at most two clients, report only global average metrics, and
@@ -2331,7 +2374,7 @@ F1/AUC\,$=$\,0.9162/0.9708 with $R_{90}{=}25$,
 $\min_k\,\mathrm{F1}_k{=}0.893$, and
 $\sigma(\mathrm{F1}){=}0.017$ demonstrate that the
 centralized-federated performance gap is bounded at 2.9\%
-F1 while preserving full data sovereignty, a trade-off that
+F1 while preserving \rev{R2.1}\textcolor{red}{raw-data locality}, a trade-off that
 prior FL-IDS work neither quantifies nor justifies
 experimentally.
 
@@ -2401,9 +2444,8 @@ dynamics in IDS feature selection}, integrated with heterogeneity-aware
 federated robustness reporting under mission-relevant
 metrics that the existing FL-IDS literature does not provide.
 Future work will address post-hoc explainability of the
-QPSO feature mask, \textcolor{red}{the utility cost of
-differential privacy and secure aggregation on top of the
-federated protocol,} communication-efficient aggregation to
+QPSO feature mask, \rev{R2.1}\textcolor{red}{differential privacy at
+larger client populations, where the DP noise per client shrinks,} communication-efficient aggregation to
 reduce the observed federated
 training overhead, and lightweight edge adaptation below
 the current 922\,MB memory envelope.
