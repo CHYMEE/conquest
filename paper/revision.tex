@@ -822,7 +822,7 @@ probability is at most $0.2\%$ and the global-best pull
 ($\sin\phi_t<0.2$) is weak, so the search is effectively frozen
 around its initialization; this motivates the tested range
 $Q\in\{1,\dots,8\}$. The range is extended to $Q=10$ in the
-budget-sensitivity analysis to confirm this.}
+budget-sensitivity analysis \rev{R1.3}\textcolor{red}{(Section~\ref{subsec:obj1_cyberworm_perf})} to confirm this.}
 
 \rev{R1.1}\textcolor{red}{We stress that CONQUEST is quantum-\emph{inspired}
 and runs on classical hardware: no $2^{Q}$-dimensional state vector
@@ -873,7 +873,6 @@ concentrates it, and large $Q$ leaves it near its initialization,
 matching the constants in Table~\ref{tab:q_constants}.}}
 \label{fig:qpso_dynamics}
 \end{figure*}
-% TODO(after runs): confirm whether Q=9,10 are included in grid B; adjust last sentence.
 
 \textcolor{red}{\textit{Fitness.} A sampled mask is scored by the
 Fisher class-separability ratio of the selected features,}
@@ -891,7 +890,10 @@ $\epsilon=10^{-10}$. Personal and global bests are updated when
 $\mathcal{J}$ improves. $\mathcal{J}$ is a filter criterion and
 requires no classifier training, so one QPSO run with $P=20$
 particles and $I=30$ iterations costs $P(I+1)=620$ fitness
-evaluations and completes in seconds.}
+evaluations.} \rev{R1.3}\textcolor{red}{On the CPU host of
+Table~\ref{tab:impl_setup}, with three experiments sharing the
+machine, it takes a median of $1.7$\,min ($5.0$\,min at the
+largest trained budget, $P=40$, $I=60$).}
 
 \textcolor{red}{\textit{Data usage.} To rule out test-set leakage,
 each selection step uses the following splits: QPSO and PSO
@@ -920,6 +922,17 @@ $Q^{*}=6$. Test-set results and statistical comparisons
 $Q$ in the tested range is significantly better than any other,
 so $Q^{*}$ should be read as a reproducible default rather than
 an optimum.}
+
+\rev{R1.3}\textcolor{red}{\textit{Search-budget sensitivity.} To test
+whether the default budget ($P=20$, $I=30$; 620 evaluations) is
+sufficient, and whether the conclusions about $Q$ depend on it, we
+(i)~repeat the search alone for $Q\in\{1,\dots,10\}$ at
+$40\times60$ (2{,}440 evaluations) and $80\times60$ (4{,}880
+evaluations), and (ii)~train full detectors for
+$Q\in\{6,\dots,10\}$ under all four combinations
+$P\in\{20,40\}$, $I\in\{30,60\}$, with five seeds each. Budget
+effects are tested with Friedman and Wilcoxon signed-rank tests
+blocked by ($Q$, seed), $n=25$.}
 
 \begin{figure*}[!htbp]
     \centering
@@ -1103,7 +1116,7 @@ Model          & LSTM backbone       &
   LSTM(+VAE) variants only \\
 \hline
 QPSO           & Particles / iters   &
-  $P=20$;\ $I=30$ \textcolor{red}{(sensitivity: $P\in\{20,40\}$, $I\in\{30,60\}$)} &
+  $P=20$;\ $I=30$ \rev{R1.3}\textcolor{red}{(sensitivity: $P\in\{20,40\}$, $I\in\{30,60\}$)} &
   Per QPSO run \\
                & \textcolor{red}{Selected features} &
   \textcolor{red}{$k=40$; fitness on $\mathcal{D}_{\rm tr}$ only} &
@@ -1575,6 +1588,90 @@ effect of $Q$ ($p=0.53$). Hatched boxes: $Q=9,10$ (five seeds each),
 beyond the tested range.}}
 \label{fig:q_boxplot}
 \end{figure}
+
+\rev{R1.3}\textcolor{red}{\textit{Search-budget sensitivity.}
+Fig.~\ref{fig:budget}(a) shows that the default budget does not
+fully converge the search: a larger budget raises the best fitness
+found for every $Q$, by $6$--$21\%$ at eight times the
+evaluations. For the trained runs the increase is significant
+(Friedman over the four budgets $p<10^{-4}$; $+387$ from
+$20\times30$ to $40\times60$, Wilcoxon $p<10^{-6}$). The shape of
+the curve is stable across budgets: intermediate $Q$ ($3$--$6$)
+reaches the highest fitness at every budget, consistent with
+Fig.~\ref{fig:qpso_dynamics}. The additional search, however, does
+not translate into better detection
+(Table~\ref{tab:budget_sensitivity}, Fig.~\ref{fig:budget}(b)).
+Test F1 stays within $96.9$--$97.3\%$ in every $Q\times$budget cell,
+with no budget effect (Friedman $p=0.50$; $20\times30$ vs.\
+$40\times60$ Wilcoxon $p=0.15$, mean difference $-0.10$\,pp), and
+validation F1 even decreases slightly at $40\times60$ ($-0.6$\,pp,
+$p=0.02$). Pushing the training-split fitness further therefore
+mildly overfits the selection rather than improving it. No
+degradation at $Q=7$--$8$ appears at any budget, and the $Q$ with
+the highest validation F1 within $Q\in\{6,\dots,10\}$ changes with
+the budget ($Q=10,7,9,9$), as expected when no setting is
+genuinely better. The degradation reported for $Q=7$--$8$ in the
+original submission is thus not reproduced under the corrected
+protocol, and larger budgets do not change the conclusion that
+detection is insensitive to $Q$. We retain $20\times30$ as the
+default because it is sufficient for detection at the lowest cost.}
+% TODO(C3-B2): when block B2 (Q=1..5 at 40x60) finishes, add the full-range Q* and Friedman p at 40x60.
+
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.3}\textcolor{red}{QPSO search-budget sensitivity ($P$ particles $\times$ $I$ iterations;
+five seeds per cell; mean$\pm$std). Fitness: best trace-ratio fitness found on $\mathcal{D}_{\rm tr}$.
+Friedman test across the four budgets, blocked by ($Q$, seed), $n{=}25$: fitness $p{<}10^{-4}$;
+test F1 $p{=}0.50$; validation F1 $p{=}0.13$. Wilcoxon $20{\times}30$ vs.\ $40{\times}60$: fitness
+$p{<}10^{-6}$, test F1 $p{=}0.15$. Validation-selected $Q^*$ within $Q\in\{6,\dots,10\}$ per budget: $20{\times}30$: $Q^*{=}10$, $40{\times}30$: $Q^*{=}7$, $20{\times}60$: $Q^*{=}9$, $40{\times}60$: $Q^*{=}9$.}}
+\label{tab:budget_sensitivity}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccccc}
+\hline\toprule
+$Q$ & $P{\times}I$ & Evals & Fitness & Test F1 (\%) & Val.\ F1 (\%) \\
+\hline\toprule
+\multirow{4}{*}{6} & 20$\times$30 & 620 & 4412$\pm$334 & 97.25$\pm$0.22 & 96.10$\pm$1.08 \\
+ & 40$\times$30 & 1240 & 4872$\pm$291 & 97.20$\pm$0.30 & 95.34$\pm$0.70 \\
+ & 20$\times$60 & 1220 & 4856$\pm$317 & 97.12$\pm$0.29 & 94.73$\pm$0.89 \\
+ & 40$\times$60 & 2440 & 4953$\pm$141 & 97.01$\pm$0.41 & 94.56$\pm$1.57 \\
+\midrule
+\multirow{4}{*}{7} & 20$\times$30 & 620 & 4415$\pm$134 & 97.06$\pm$0.29 & 95.74$\pm$1.13 \\
+ & 40$\times$30 & 1240 & 4668$\pm$346 & 97.21$\pm$0.38 & 96.23$\pm$1.05 \\
+ & 20$\times$60 & 1220 & 4886$\pm$248 & 96.98$\pm$0.36 & 95.72$\pm$1.26 \\
+ & 40$\times$60 & 2440 & 4906$\pm$181 & 96.93$\pm$0.38 & 95.58$\pm$0.59 \\
+\midrule
+\multirow{4}{*}{8} & 20$\times$30 & 620 & 4340$\pm$212 & 97.12$\pm$0.28 & 96.13$\pm$0.48 \\
+ & 40$\times$30 & 1240 & 4530$\pm$130 & 96.91$\pm$0.16 & 94.98$\pm$0.36 \\
+ & 20$\times$60 & 1220 & 4749$\pm$360 & 97.13$\pm$0.33 & 95.64$\pm$0.52 \\
+ & 40$\times$60 & 2440 & 4766$\pm$237 & 97.15$\pm$0.27 & 95.40$\pm$0.73 \\
+\midrule
+\multirow{4}{*}{9} & 20$\times$30 & 620 & 4435$\pm$222 & 97.30$\pm$0.24 & 95.89$\pm$0.89 \\
+ & 40$\times$30 & 1240 & 4423$\pm$208 & 97.13$\pm$0.23 & 95.88$\pm$0.87 \\
+ & 20$\times$60 & 1220 & 4473$\pm$399 & 96.97$\pm$0.40 & 95.98$\pm$0.49 \\
+ & 40$\times$60 & 2440 & 4625$\pm$165 & 97.14$\pm$0.21 & 95.93$\pm$0.99 \\
+\midrule
+\multirow{4}{*}{10} & 20$\times$30 & 620 & 4550$\pm$341 & 97.25$\pm$0.22 & 96.18$\pm$0.90 \\
+ & 40$\times$30 & 1240 & 4441$\pm$224 & 96.92$\pm$0.25 & 95.46$\pm$0.84 \\
+ & 20$\times$60 & 1220 & 4664$\pm$285 & 97.23$\pm$0.11 & 95.80$\pm$1.36 \\
+ & 40$\times$60 & 2440 & 4838$\pm$130 & 97.26$\pm$0.13 & 95.56$\pm$1.69 \\
+\hline\toprule
+\end{tabular}
+\end{table}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.9\linewidth]{images/budget_sensitivity.png}
+\caption{\rev{R1.3}\textcolor{red}{QPSO search-budget sensitivity
+(five seeds; mean$\pm$std). (a)~Search only, without classifier
+training: best fitness found for $Q\in\{1,\dots,10\}$ at
+$20\times30$, $40\times60$ and $80\times60$ particles$\times$iterations.
+(b)~Test F1 of trained detectors for $Q\in\{6,\dots,10\}$ under four
+budgets. A larger budget finds fitter subsets, but detection is
+unchanged (Friedman over budgets $p=0.50$).}}
+\label{fig:budget}
+\end{figure*}
 
 Fig.~\ref{fig:baseline_cm} confirms these findings at the
 prediction level. The QCIDS-Qo model achieves 5,487 true

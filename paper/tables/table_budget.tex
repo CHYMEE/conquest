@@ -1,0 +1,42 @@
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.3}\textcolor{red}{QPSO search-budget sensitivity ($P$ particles $\times$ $I$ iterations;
+five seeds per cell; mean$\pm$std). Fitness: best trace-ratio fitness found on $\mathcal{D}_{\rm tr}$.
+Friedman test across the four budgets, blocked by ($Q$, seed), $n{=}25$: fitness $p{<}10^{-4}$;
+test F1 $p{=}0.50$; validation F1 $p{=}0.13$. Wilcoxon $20{\times}30$ vs.\ $40{\times}60$: fitness
+$p{<}10^{-6}$, test F1 $p{=}0.15$. Validation-selected $Q^*$ within $Q\in\{6,\dots,10\}$ per budget: $20{\times}30$: $Q^*{=}10$, $40{\times}30$: $Q^*{=}7$, $20{\times}60$: $Q^*{=}9$, $40{\times}60$: $Q^*{=}9$.}}
+\label{tab:budget_sensitivity}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{cccccc}
+\hline\toprule
+$Q$ & $P{\times}I$ & Evals & Fitness & Test F1 (\%) & Val.\ F1 (\%) \\
+\hline\toprule
+\multirow{4}{*}{6} & 20$\times$30 & 620 & 4412$\pm$334 & 97.25$\pm$0.22 & 96.10$\pm$1.08 \\
+ & 40$\times$30 & 1240 & 4872$\pm$291 & 97.20$\pm$0.30 & 95.34$\pm$0.70 \\
+ & 20$\times$60 & 1220 & 4856$\pm$317 & 97.12$\pm$0.29 & 94.73$\pm$0.89 \\
+ & 40$\times$60 & 2440 & 4953$\pm$141 & 97.01$\pm$0.41 & 94.56$\pm$1.57 \\
+\midrule
+\multirow{4}{*}{7} & 20$\times$30 & 620 & 4415$\pm$134 & 97.06$\pm$0.29 & 95.74$\pm$1.13 \\
+ & 40$\times$30 & 1240 & 4668$\pm$346 & 97.21$\pm$0.38 & 96.23$\pm$1.05 \\
+ & 20$\times$60 & 1220 & 4886$\pm$248 & 96.98$\pm$0.36 & 95.72$\pm$1.26 \\
+ & 40$\times$60 & 2440 & 4906$\pm$181 & 96.93$\pm$0.38 & 95.58$\pm$0.59 \\
+\midrule
+\multirow{4}{*}{8} & 20$\times$30 & 620 & 4340$\pm$212 & 97.12$\pm$0.28 & 96.13$\pm$0.48 \\
+ & 40$\times$30 & 1240 & 4530$\pm$130 & 96.91$\pm$0.16 & 94.98$\pm$0.36 \\
+ & 20$\times$60 & 1220 & 4749$\pm$360 & 97.13$\pm$0.33 & 95.64$\pm$0.52 \\
+ & 40$\times$60 & 2440 & 4766$\pm$237 & 97.15$\pm$0.27 & 95.40$\pm$0.73 \\
+\midrule
+\multirow{4}{*}{9} & 20$\times$30 & 620 & 4435$\pm$222 & 97.30$\pm$0.24 & 95.89$\pm$0.89 \\
+ & 40$\times$30 & 1240 & 4423$\pm$208 & 97.13$\pm$0.23 & 95.88$\pm$0.87 \\
+ & 20$\times$60 & 1220 & 4473$\pm$399 & 96.97$\pm$0.40 & 95.98$\pm$0.49 \\
+ & 40$\times$60 & 2440 & 4625$\pm$165 & 97.14$\pm$0.21 & 95.93$\pm$0.99 \\
+\midrule
+\multirow{4}{*}{10} & 20$\times$30 & 620 & 4550$\pm$341 & 97.25$\pm$0.22 & 96.18$\pm$0.90 \\
+ & 40$\times$30 & 1240 & 4441$\pm$224 & 96.92$\pm$0.25 & 95.46$\pm$0.84 \\
+ & 20$\times$60 & 1220 & 4664$\pm$285 & 97.23$\pm$0.11 & 95.80$\pm$1.36 \\
+ & 40$\times$60 & 2440 & 4838$\pm$130 & 97.26$\pm$0.13 & 95.56$\pm$1.69 \\
+\hline\toprule
+\end{tabular}
+\end{table}
