@@ -590,51 +590,75 @@ activity, dormant intervals, and protocol state transitions that
 are not separable under static feature selection alone; no live
 behavioral monitoring is performed at runtime.
 
-\textcolor{red}{Table~\ref{tab:context_features} defines the
-$|\mathbf{F}_c|=17$ context features. Flows are sorted by
-timestamp and grouped by source IP, which serves only as a
-grouping key. Every feature is causal: it is computed from the
-source's earlier flows (excluding the current flow),
-using window lengths $W\in\{10,60\}$\,s. Ties at the 1\,s
-timestamp resolution are broken by capture order. Context
-features are computed on the full chronological stream before
-subsampling, so that window statistics reflect real traffic
-density.}
+\rev{R1.7}\textcolor{red}{Table~\ref{tab:context_features} defines
+the $|\mathbf{F}_c|=17$ context features exactly. All flows of the
+capture are sorted by timestamp; ties at the 1\,s resolution keep
+capture order, so ``earlier'' means an earlier position $j<i$ in
+the sorted stream. Let $s_i$, $t_i$, $\pi_i$, $p_i$, and $a_i$ be
+the source IP, timestamp, protocol, destination port, and
+destination IP of flow $i$. The source IP is used only as a
+grouping key, never as a feature. For a look-back window $W$,
+the history of flow $i$ is}
+\begin{equation}
+\textcolor{red}{\mathcal{H}_W(i)=\{\,j<i:\ s_j=s_i,\ t_j\ge t_i-W\,\},}
+\label{eq:context_history}
+\end{equation}
+\textcolor{red}{which excludes flow $i$ itself, and $\mathrm{prev}(i)$
+denotes the most recent earlier flow of the same source. Every
+feature therefore depends only on past traffic of the same source
+and uses no labels. Windows are $W\in\{10,60\}$\,s: 10\,s captures
+short scanning and flooding bursts, and 60\,s captures slower
+propagation and dormancy patterns; both lengths were fixed before
+the experiments and were not tuned. Context features are computed on the full
+chronological stream before subsampling, so window statistics
+reflect real traffic density. ACI-IoT timestamps are stored as
+year--day--month (for example, \texttt{2023-01-11} denotes
+1~November~2023) or, for part of the benign traffic, in a
+day/month 12-hour format; both are parsed accordingly, which we
+verified against the epoch-microsecond values of the
+\texttt{Idle} fields. A streaming implementation that keeps, per
+source, the flows of the last 60\,s produces values identical to
+the batch implementation on real traffic; its per-flow cost is
+reported in Section~\ref{subsec:obj2_latency}.}
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \centering
 \scriptsize
-\caption{\textcolor{red}{Context-aware features $\mathbf{F}_c$. All
-features are causal and grouped by source IP; $W$ is the
-look-back window.}}
+\caption{\rev{R1.7}\textcolor{red}{Context-aware features
+$\mathbf{F}_c$ ($|\mathbf{F}_c|=17$). $\mathcal{H}_W(i)$: earlier
+flows of the same source within $W$\,s, Eq.~\eqref{eq:context_history};
+$\mathrm{prev}(i)$: the source's previous flow; $n^{\rm pk}_j$,
+$n^{\rm by}_j$: total forward plus backward packets and bytes of flow
+$j$; $\mathbb{1}[\cdot]$: indicator. Each row has dimension 1; rows
+with $W\in\{10,60\}$ are computed for both windows.}}
 \label{tab:context_features}
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.08}
 \color{red}
-\begin{tabular}{p{1.3cm} p{2.6cm} p{2.5cm} c}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{l l l c c}
 \hline\toprule
-\textbf{Group} & \textbf{Feature} & \textbf{Window} & \textbf{Dim.} \\
+\textbf{Group} & \textbf{Feature} & \textbf{Definition} & \textbf{$W$ (s)} & \textbf{Dim.} \\
 \hline\toprule
-Burst & Flow count from source & $W\in\{10,60\}$\,s & 2 \\
-      & Packet rate (fwd+bwd pkts$/W$) & $W\in\{10,60\}$\,s & 2 \\
-      & Byte rate (fwd+bwd bytes$/W$) & $W\in\{10,60\}$\,s & 2 \\
+Burst & \texttt{n\_flows\_src\_W} & $|\mathcal{H}_W(i)|$ & 10, 60 & 2 \\
+      & \texttt{pkt\_rate\_src\_W} & $\frac{1}{W}\sum_{j\in\mathcal{H}_W(i)} n^{\rm pk}_j$ & 10, 60 & 2 \\
+      & \texttt{bytes\_rate\_src\_W} & $\frac{1}{W}\sum_{j\in\mathcal{H}_W(i)} n^{\rm by}_j$ & 10, 60 & 2 \\
 \midrule
-Dormant interval & Time since source's previous flow & -- & 1 \\
-      & Log of the above & -- & 1 \\
-      & Largest inter-flow gap & 60\,s & 1 \\
+Dormant interval & \texttt{dt\_prev\_src} & $t_i-t_{\mathrm{prev}(i)}$; $10^{6}$\,s if the source has no earlier flow & -- & 1 \\
+      & \texttt{dt\_prev\_src\_log} & $\log(1+\texttt{dt\_prev\_src})$ & -- & 1 \\
+      & \texttt{max\_gap\_src\_60} & largest gap between consecutive flows of the source within $\mathcal{H}_{60}(i)\cup\{i\}$; 60 if $\mathcal{H}_{60}(i)=\emptyset$ & 60 & 1 \\
 \midrule
-Sliding-window diversity & Distinct destination IPs & $W\in\{10,60\}$\,s & 2 \\
-      & Distinct destination ports & $W\in\{10,60\}$\,s & 2 \\
+Sliding-window diversity & \texttt{n\_distinct\_dst\_W} & $|\{a_j: j\in\mathcal{H}_W(i)\}|$ & 10, 60 & 2 \\
+      & \texttt{n\_distinct\_dport\_W} & $|\{p_j: j\in\mathcal{H}_W(i)\}|$ & 10, 60 & 2 \\
 \midrule
-Transition & Protocol switch vs.\ previous flow (0/1) & -- & 1 \\
-      & Number of protocol switches & 60\,s & 1 \\
-      & Fraction of flows with SYN set & 60\,s & 1 \\
-      & Destination-port switch vs.\ previous flow (0/1) & -- & 1 \\
+Transition & \texttt{proto\_switch} & $\mathbb{1}[\pi_i\neq\pi_{\mathrm{prev}(i)}]$; 0 if no earlier flow & -- & 1 \\
+      & \texttt{n\_proto\_switch\_60} & $\sum_{j\in\mathcal{H}_{60}(i)} \texttt{proto\_switch}_j$ & 60 & 1 \\
+      & \texttt{syn\_frac\_src\_60} & $\frac{1}{|\mathcal{H}_{60}(i)|}\sum_{j\in\mathcal{H}_{60}(i)} \mathbb{1}[\mathrm{SYN}_j>0]$; 0 if empty & 60 & 1 \\
+      & \texttt{dport\_switch} & $\mathbb{1}[p_i\neq p_{\mathrm{prev}(i)}]$; 0 if no earlier flow & -- & 1 \\
 \midrule
-\multicolumn{3}{l}{\textbf{Total}} & \textbf{17} \\
+\multicolumn{4}{l}{\textbf{Total} (burst 6, dormant interval 3, diversity 4, transition 4)} & \textbf{17} \\
 \hline\toprule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \textcolor{red}{Six CICFlowMeter fields (\texttt{Bwd PSH Flags},
 \texttt{Bwd URG Flags}, \texttt{Fwd Bytes/Bulk Avg},
@@ -984,14 +1008,19 @@ blocked by ($Q$, seed), $n=25$.}
 
 \begin{figure*}[!htbp]
     \centering
-    \includegraphics[width=1.00\linewidth]{images/Data flowchart.png}
+    \includegraphics[width=1.00\linewidth]{images/Data_flowchart_rev.png}
     \caption{Seed-controlled deterministic
     preprocessing pipeline. IoT/IoV/IoD traffic is decomposed into
     static descriptors $\mathbf{F}_s$ and offline context-aware
     features $\mathbf{F}_c$ via fixed sliding-window operators.
     Feature fusion and min-max normalization produce the unified
     representation $\mathbf{Z}_n\in[0,1]^d$ that serves as the
-    fixed input to Stage~$\mathcal{Q}_{Q}$.}
+    fixed input to Stage~$\mathcal{Q}_{Q}$. \rev{R1.7}\textcolor{red}{$\mathbf{F}_s$:
+    69 CICFlowMeter features after removing identifiers, IP
+    addresses, time fields, and constant columns; $\mathbf{F}_c$: 17
+    causal per-source features with $W\in\{10,60\}$\,s
+    (Table~\ref{tab:context_features}); $d=86$; normalization is
+    fitted on $\mathcal{D}_{\rm tr}$ only.}}
     \label{fig:pipeline}
 \end{figure*}
 
