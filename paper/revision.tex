@@ -70,7 +70,7 @@ CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberw
 
 \begin{abstract}
 AI-aided cyberworms capable of adaptive propagation and traffic mimicry pose severe threats to mission-critical IoT/IoV/IoD networks, rendering static intrusion detection defences ineffective. This paper proposes CONQUEST, a context-aware quantum-inspired intrusion detection framework combining seed-controlled context feature representation, variable-qubit Quantum-Inspired Particle Swarm Optimization (QPSO), and supervised LSTM(+VAE) temporal classification for cyberworm 
-detection. A controlled ablation over $Q\in\{1,\dots,8\}$ \rev{R1.2}\textcolor{red}{with ten seeds shows that detection is statistically insensitive to the QPSO register size (Friedman $p{=}0.53$). With $Q{=}6$ selected on validation data, CONQUEST achieves, under leakage-free centralized evaluation on ACI-IoT, 97.13\% accuracy, 97.13\% F1-score, 0.9924 AUC, and 0.0246 MSE.}
+detection. A controlled ablation over $Q\in\{1,\dots,8\}$ \rev{R1.2}\textcolor{red}{with ten seeds shows that detection is statistically insensitive to the QPSO register size (Friedman $p{=}0.53$). With $Q{=}6$ selected on validation data, CONQUEST achieves, under leakage-free centralized evaluation on ACI-IoT, 97.13\% accuracy, 97.13\% F1-score, 0.9924 AUC, and 0.0246 MSE.} \rev{R1.6}\textcolor{red}{A factorial ablation shows that context features improve detection only when combined with label-aware selection; QPSO matches, but does not exceed, classical PSO at an equal budget, and relative to variance-based selection it trades more false alarms for fewer missed attacks.}
 % TODO(C10): add measured per-window latency and peak memory to the abstract. Under horizontal federated learning 
 across IID, label-skew, quantity-skew, and Dirichlet regimes, CONQUEST achieves F1\,${=}$\,0.9162 and AUC\,${=}$\,0.9708 in the strongest heterogeneous setting, stabilizing at $R_{90}{=}25$ rounds with worst-client F1\,${=}$\,0.893 and $\sigma(\mathrm{F1}){=}$\,0.017, demonstrating reproducible,
 \rev{R2.1}\textcolor{red}{raw-data-local}, and deployment-feasible cyberworm detection for mission-critical distributed environments.
@@ -305,7 +305,7 @@ The core contributions of this manuscript, which significantly advance the preli
 
     \item \textbf{Stress-Testing Federated Robustness under Heterogeneity:} We provide the first systematic evaluation of quantum-inspired IDS under four distinct federated heterogeneity regimes: IID, label-skew, quantity-skew, and Dirichlet partitions. By introducing mission-centric metrics—specifically thresholded stabilization ($R_{90}=25$), worst-client reliability ($\min_{k} F1_{k}=0.893$), and inter-client dispersion ($\sigma(F1)=0.017$), we demonstrate that \textit{CONQUEST} bounds the centralized-to-federated performance gap to a marginal 2.9\%. \textcolor{red}{We further vary the number of clients ($K\in\{5,10,20\}$) and compare three privacy-compatible mask-construction modes for non-IID clients.}
 
-    \item \textbf{Ablative Attribution via Optimized Baseline:} We introduce a rigorous non-quantum baseline (\textit{OS-CIDS}) \textcolor{red}{and a factorial ablation (context features on/off $\times$ variance vs.\ QPSO selection), together with a classical PSO baseline at an equal fitness-evaluation budget, to separate the contributions of context-aware representation and quantum-inspired search.}
+    \item \textbf{Ablative Attribution via Optimized Baseline:} We introduce a rigorous non-quantum baseline (\textit{OS-CIDS}) \textcolor{red}{and a factorial ablation (context features on/off $\times$ variance vs.\ QPSO selection), together with a classical PSO baseline at an equal fitness-evaluation budget, to separate the contributions of context-aware representation and quantum-inspired search.} \rev{R1.6}\textcolor{red}{The ablation shows that the two components are complementary rather than separately beneficial, that QPSO and classical PSO are statistically equivalent, and that the choice between label-aware and variance-based selection is a trade-off between missed attacks and false alarms, for which we give scenario-based guidance.}
 \end{itemize}
 
 The remainder of this paper is organized as follows.
@@ -1364,58 +1364,31 @@ aggregates via FedAvg:
 \label{eq:fedavg}
 \end{equation}
 
-% TODO(C6): rebuild Table IV from block C (OS-CIDS = variance/ctx off) with QCIDS-Q*=2; drop Qm/Qo/Qh.
 \begin{table*}[!t]
 \centering
-\caption{\scriptsize{Centralized cyberworm detection performance on ACI-IoT.
-S-CIDS is the conference baseline; OS-CIDS introduces
-variance-based feature selection; QCIDS adds context-aware
-representation and QPSO. Qm/Qo/Qh denote medium ($Q{=}5$),
-optimal ($Q{=}6$), and high ($Q{=}7$) qubit configurations.
-}}
+\caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{Centralized detection on ACI-IoT under the leakage-free protocol ($k{=}40$;
+mean$\pm$std over ten seeds; QPSO at $Q^{*}{=}6$, PSO at the same budget of 620 fitness evaluations). FAR: benign
+flows flagged as attack; MD: attacks missed (both \%). $p_{\rm F1}$, $p_{\rm MD}$: two-sided Wilcoxon signed-rank
+$p$-values against CONQUEST, paired by seed. Sel.: median feature-selection time (s, three experiments sharing
+the CPU). $^{\dagger}$Conference result~\cite{ajakweconquest}, obtained with a random split of pooled data and a single
+run; quoted for reference only and not comparable.}}
 \label{tab:cyberworm_high_impact}
-\renewcommand{\arraystretch}{1.10}
-\setlength{\tabcolsep}{4pt}
+\color{red}
+\setlength{\tabcolsep}{3pt}
 \resizebox{\textwidth}{!}{
-\begin{tabular}{l|cccccc|cc|cc|cc}
+\begin{tabular}{lccccccccc}
 \hline\toprule
-\multirow{2}{*}{\textbf{Model}} &
-\multicolumn{6}{c|}{\textbf{Detection performance}} &
-\multicolumn{2}{c|}{\textbf{False alarm rate}} &
-\multicolumn{2}{c|}{\textbf{Missed detection}} &
-\multicolumn{2}{c}{\textbf{Efficiency}} \\
-\cline{2-13}
-& Acc & Pr & Rc & F1 & AUC & MSE
-& FAR$_{\rm Ben}$ & FAR$_{\rm Atk}$
-& MD$_{\rm Ben}$ & MD$_{\rm Atk}$
-& Train (min) & $T_{\rm infer}$ (s) \\
+\textbf{Pipeline} & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & $p_{\rm F1}$ & $p_{\rm MD}$ & Sel. (s) \\
 \hline\toprule
-S-CIDS~\cite{ajakweconquest}
-& 0.8514 & 0.8174 & 0.8514 & 0.8062 & -- & --
-& -- & -- & -- & -- & 40.65 & -- \\
-OS-CIDS
-& 0.9464 & 0.9482 & 0.9464 & 0.9464 & 0.9879 & 0.0315
-& 0.0064 & 0.0395 & 0.0395 & 0.0064 & 31.08 & 3.60 \\
-\hline
-QCIDS-Qm
-& 0.9594 & 0.9596 & 0.9594 & 0.9594 & 0.9922 & 0.0300
-& 0.0320 & 0.0492 & 0.0492 & 0.0320 & 30.10 & 3.60 \\
-\textbf{QCIDS-Qo}
-& \textbf{0.9685} & \textbf{0.9686} & \textbf{0.9685}
-& \textbf{0.9685} & \textbf{0.9947} & \textbf{0.0240}
-& \textbf{0.0250} & \textbf{0.0380}
-& \textbf{0.0380} & \textbf{0.0250}
-& \textbf{29.99} & \textbf{3.60} \\
-QCIDS-Qh
-& 0.9600 & 0.9601 & 0.9600 & 0.9600 & 0.9888 & 0.0308
-& 0.0342 & 0.0458 & 0.0458 & 0.0342 & 30.40 & 3.60 \\
+S-CIDS~\cite{ajakweconquest}$^{\dagger}$ & 85.14 & 80.62 & -- & -- & -- & -- & -- & -- & -- \\
+\midrule
+OS-CIDS & 96.95$\pm$0.39 & 96.96$\pm$0.39 & 0.9944$\pm$0.0011 & 0.0245$\pm$0.0025 & 1.43$\pm$0.26 & 4.21$\pm$0.76 & 0.322 & 0.004 & 0.0 \\
+Var.+context & 96.44$\pm$0.11 & 96.45$\pm$0.11 & 0.9925$\pm$0.0007 & 0.0291$\pm$0.0015 & 1.06$\pm$0.20 & 5.36$\pm$0.30 & 0.002 & 0.002 & 0.1 \\
+QPSO, no context & 95.90$\pm$0.83 & 95.90$\pm$0.83 & 0.9879$\pm$0.0030 & 0.0329$\pm$0.0060 & 4.95$\pm$1.80 & 3.49$\pm$1.00 & 0.004 & 0.824 & 68.0 \\
+PSO+context & 96.98$\pm$0.40 & 96.99$\pm$0.39 & 0.9918$\pm$0.0018 & 0.0254$\pm$0.0031 & 2.23$\pm$0.37 & 3.58$\pm$0.73 & 0.232 & 0.492 & 75.6 \\
+\textbf{CONQUEST (QCIDS)} & \textbf{97.13$\pm$0.31} & \textbf{97.13$\pm$0.31} & \textbf{0.9924$\pm$0.0016} & \textbf{0.0246$\pm$0.0028} & \textbf{2.24$\pm$0.58} & \textbf{3.33$\pm$0.44} & -- & -- & 105.9 \\
 \hline\toprule
 \end{tabular}}
-\footnotesize{\textit{Note:} FAR and MD are computed per class
-from the confusion matrix. Acc\,$\approx$\,F1 arises from
-balanced test-set class priors, not metric conflation.
-$T_{\rm infer}$: total wall-clock inference time on
-$\mathcal{D}_{\rm te}$ under $B{=}64$, $T{=}10$.}
 \end{table*}
 
 
@@ -1558,35 +1531,42 @@ against representative state-of-the-art approaches.
 \label{subsec:obj1_cyberworm_perf}
 
 Table~\ref{tab:cyberworm_high_impact} reports centralized
-detection performance across three progressively refined
-configurations evaluated on the ACI-IoT dataset under identical
-hyperparameter and splitting conditions. All metrics are computed
-on the held-out test split $\mathcal{D}_{\rm te}$; the test set
-is balanced to equalize benign and attack class priors, which
-accounts for the near-equality of Accuracy, Precision, Recall,
-and F1 observed across QCIDS variants.
-% TODO(C6): regenerate confusion matrix for QCIDS-Q*=2 (v2 run).
-\begin{figure}[!htbp]
+detection performance \rev{R1.6}\textcolor{red}{of five pipelines that
+share the classifier, the data protocol, and $k=40$, and differ
+only in the feature representation (static only, or static plus
+context) and the selector (variance ranking, classical PSO, or
+QPSO). All metrics are computed on the held-out test split
+$\mathcal{D}_{\rm te}$ (41.8\% benign, 58.2\% attack windows) and
+averaged over ten seeds; accuracy and weighted F1 nearly coincide
+because both classes are well represented.}
+
+\begin{figure}[!t]
     \centering
-    \includegraphics[width=0.8\linewidth]{images/picutre1cm.png} 
-    \caption{\scriptsize{Confusion matrix of QCIDS-Qo ($Q{=}6$) on the
-    ACI-IoT test split. TP\,$=$\,5,487; TN\,$=$\,5,869;
-    minimal FP and FN confirm balanced discrimination not
-    driven by class-prior skew.}}
+    \includegraphics[width=\linewidth]{images/cm_conquest_vs_os.png}
+    \caption{\rev{R1.6}\textcolor{red}{Row-normalized confusion matrices on
+    $\mathcal{D}_{\rm te}$, averaged over ten seeds, for OS-CIDS
+    (variance ranking, static features) and CONQUEST (QPSO,
+    static plus context features). CONQUEST misses fewer attacks;
+    OS-CIDS raises fewer false alarms.}}
     \label{fig:baseline_cm}
 \end{figure}
 \textbf{S-CIDS} (conference baseline~\cite{ajakweconquest})
 achieves 85.14\% accuracy and 80.62\% F1, with a 4.5-point
 disparity between recall and F1 indicating unstable class
-separation. 
-% TODO(C6): regenerate radar OS-CIDS vs QCIDS-Q*=2 from blocks A/C.
-\begin{figure}[!htbp]
+separation. \rev{R1.6}\textcolor{red}{This single-run result was obtained
+with a random split of pooled data and is quoted for reference
+only; it is not comparable with the leakage-free results below.}
+
+\begin{figure}[!t]
     \centering
-    \includegraphics[width=0.8\linewidth]{images/Picture5-spider.png}
-    \caption{\scriptsize{Radar comparison of OS-CIDS (non-quantum baseline)
-    and QCIDS-Qo ($Q{=}6$) across six metrics: Accuracy, F1,
-    AUC, $1{-}$MSE, $1{-}$FAR, and $1{-}$MD. QCIDS-Qo
-    expands uniformly on all axes without introducing fidelity--stability trade-offs.}}
+    \includegraphics[width=\linewidth]{images/tradeoff_far_md.png}
+    \caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{False-alarm rate versus
+    missed-attack rate for the five pipelines of
+    Table~\ref{tab:cyberworm_high_impact} (dots: individual seeds;
+    diamonds: means). Variance ranking lies at few false alarms and
+    many missed attacks; label-aware selection with context features
+    (CONQUEST, PSO) lies at fewer missed attacks and more false
+    alarms; QPSO without context features is dominated.}}
     \label{fig:radar_centralized}
 \end{figure}
 
@@ -1621,17 +1601,62 @@ propagation manifests as low-intensity temporal deviations, this instability cre
 overwhelming operators with false positives or allowing
 early-stage worm activity to evade detection.
 
-\textbf{OS-CIDS} demonstrates that substantial gains are
-achievable through methodological refinement alone, before
-introducing quantum-inspired optimization. Variance-based
-feature selection and improved training dynamics raise F1 to
-94.64\% ($+$14.0 pp over S-CIDS) and AUC to 0.9879, while
-reducing training time from 40.65 to 31.08 minutes.
-This reduction reflects the smaller feature dimensionality
-processed by the LSTM after variance-based selection, which
-shortens per-epoch computation and enables earlier stopping
-convergence. OS-CIDS serves as the strong non-quantum reference
-against which QPSO-based gains are evaluated.
+\rev{R1.6}\rev{R2.3}\textcolor{red}{\textbf{Overall comparison.}
+CONQUEST reaches the highest mean F1 ($97.13\pm0.31\%$) and the
+lowest missed-attack rate ($3.33\%$), but its F1 is not
+significantly higher than that of OS-CIDS ($96.96\%$, Wilcoxon
+$p=0.32$) or of classical PSO with context features ($96.99\%$,
+$p=0.23$). The original claim of a $+2.21$\,pp F1 gain over
+OS-CIDS, obtained under the leaky protocol of the original
+submission, is therefore withdrawn. The pipelines differ instead
+in the kind of error they make: CONQUEST misses significantly
+fewer attacks than OS-CIDS ($3.33\%$ vs.\ $4.21\%$, $p=0.004$) but
+raises significantly more false alarms ($2.24\%$ vs.\ $1.43\%$,
+$p=0.002$), and all pipelines with context features or QPSO have
+nearly identical AUC ($0.992$--$0.994$), i.e.\ a similar ability
+to rank attacks above benign traffic
+(Fig.~\ref{fig:radar_centralized}).}
+
+\rev{R1.6}\textcolor{red}{\textbf{Attribution: context features versus
+QPSO.} Table~\ref{tab:centralized_compare} separates the two
+components. Neither helps on its own. Adding context features to
+variance ranking lowers F1 by $0.51$\,pp ($p=0.014$): variance
+ranking is label-agnostic and fills 14 of its 40 slots with
+high-variance context counts, displacing informative
+packet-length features. Replacing variance ranking by QPSO on
+static features alone lowers F1 by $1.07$\,pp ($p=0.002$),
+mainly through more false alarms ($4.95\%$). Combined, however,
+context features and QPSO raise F1 by $1.23$\,pp over QPSO alone
+and by $0.68$\,pp over variance ranking with context (both
+$p\le0.004$); the interaction ($+1.74$\,pp, $p=0.002$) is the
+dominant effect. The gain of CONQUEST is therefore attributable to
+the combination of context-aware representation with label-aware
+selection, which keeps about eight context features alongside
+complementary static features (Table~\ref{tab:selected_features}).}
+
+\rev{R2.3}\textcolor{red}{\textbf{Quantum-inspired versus classical
+search.} At an equal budget of 620 fitness evaluations, classical
+binary PSO reaches a higher trace-ratio fitness than QPSO
+($4919$ vs.\ $4401$) in less time ($76$\,s vs.\ $106$\,s), while
+the resulting detectors are statistically indistinguishable
+(F1 $96.99\%$ vs.\ $97.13\%$, $p=0.23$; MD $p=0.49$). We therefore
+make no claim of a quantum advantage. In CONQUEST, QPSO is one
+interchangeable instance of label-aware swarm selection; its
+practical merits are a single interpretable control parameter
+$Q$ (Sec.~\ref{subsec:qpsomethod}) and robustness to that
+parameter (Table~\ref{tab:qubit_ablation_improved_robust}), not
+superior accuracy.}
+
+\rev{R1.6}\rev{R2.3}\textcolor{red}{\textbf{Which selector when.} The
+results suggest the following guidance. When missed attacks are
+the costlier error, as for self-propagating worms, label-aware
+selection (QPSO or PSO) with context features is preferable. When
+false alarms dominate the operational cost, or labelled data are
+scarce, variance ranking on static features gives a comparable F1
+with the fewest false alarms among the competitive pipelines, at
+negligible selection cost and without labels. Context features
+should not be added to a label-agnostic selector.}
+% TODO(C4-F/H): add the tight-budget scenario (k=10,20) for QPSO, PSO and variance when blocks F and H finish.
 
 % TODO(C10): old per-Q latency/memory figure; replace with measured deployment costs (Q-invariant).
 \begin{figure*}[!htbp]
@@ -1650,32 +1675,7 @@ against which QPSO-based gains are evaluated.
     \label{fig:vs-qubits}
 \end{figure*}
 
-% TODO(C6): rewrite QCIDS vs OS-CIDS paragraph with block-C results (Q*=2).
-\textbf{QCIDS} configurations add context-aware representation
-and QPSO feature selection. QCIDS-Qm ($Q{=}5$) already surpasses
-OS-CIDS on all metrics: F1\,$=$\,95.94\% ($+$1.30 pp),
-AUC\,$=$\,0.9922, MSE\,$=$\,0.0300 ($-$4.8\%).
-QCIDS-Qo ($Q{=}6$) achieves the strongest overall result:
-F1\,$=$\,96.85\%, AUC\,$=$\,0.9947, MSE\,$=$\,0.0240,
-FAR$_{\rm Ben}$\,$=$\,0.0250, FAR$_{\rm Atk}$\,$=$\,0.0380,
-representing a $+$2.21 pp F1 gain and $-$23.8\% MSE reduction
-over OS-CIDS. The balanced reduction in both FAR and MD is
-critical for cyberworm detection, where attacks cycle through
-dormant, low-visibility, and active propagation phases that
-demand sensitivity without destabilizing the decision boundary.
-QCIDS-Qh ($Q{=}7$) regresses to 96.00\% F1 with higher MSE
-(0.0308) and elevated error rates\rev{R1.1}\textcolor{red}{, consistent
-with the exploitative regime of Table~\ref{tab:q_constants}, in
-which small rotation angles and rare collapses let the swarm
-converge prematurely under a finite budget.}
-% TODO(C2): rewrite with v2 ablation statistics.
-Training efficiency is preserved across all QCIDS variants.
-QCIDS-Qo converges in 29.99 minutes, marginally faster than
-OS-CIDS despite incorporating both context modeling and
-QPSO, because QPSO selects a compact feature subset that
-reduces downstream LSTM computation. Inference latency is
-fixed at 3.60\,s across all configurations, confirming that
-QPSO overhead does not affect real-time decision execution.
+% (Old Qm/Qo/Qh comparison removed; superseded by Table~\ref{tab:cyberworm_high_impact} and the factorial ablation.)
 
 
 
@@ -1895,16 +1895,7 @@ remaining slots vary between seeds.}}
 \label{fig:feature_heatmap}
 \end{figure*}
 
-Fig.~\ref{fig:baseline_cm} confirms these findings at the
-prediction level. The QCIDS-Qo model achieves 5,487 true
-positives and 5,869 true negatives with minimal
-misclassification, verifying that high aggregate metrics
-reflect genuine discrimination rather than class-imbalance
-artefacts. Fig.~\ref{fig:radar_centralized} summarizes the
-multi-metric profile: the near-overlapping accuracy and F1
-contours confirm no fidelity--stability trade-off, while the
-improved AUC contour reflects enhanced attack-ranking capability
-over the non-quantum baseline.
+% (Old single-run confusion-matrix and radar paragraph removed; see the overall comparison above.)
 
 
 
@@ -1990,28 +1981,25 @@ redundant evaluations when \rev{R1.1}\textcolor{red}{the search concentrates}.
 
 % (Old Fig. 'Picture Latency' with 3-seed metrics vs Q removed; superseded by Fig.~\ref{fig:q_boxplot}.)
 
-Table~\ref{tab:centralized_compare}
-summarizes the direct OS-CIDS vs.\ QCIDS-Qo comparison.
-QCIDS-Qo improves Acc/F1 by 2.21 pp, AUC by 0.0068, and
-reduces MSE by 23.8\%, while cutting training time by
-1.09 minutes confirming that context-aware QPSO delivers
-measurable utility beyond strong feature engineering alone.
-\begin{table}[!htbp]
+\begin{table}[!t]
 \centering
-\caption{Direct comparison: OS-CIDS vs.\ QCIDS-Qo
-(centralized, ACI-IoT test split).}
+\scriptsize
+\caption{\rev{R1.6}\textcolor{red}{Factorial ablation separating context-aware representation from QPSO
+($k{=}40$, ten seeds). Each cell: test F1 / FAR / MD (\%). Effects are mean paired differences in F1 with
+Wilcoxon $p$-values.}}
 \label{tab:centralized_compare}
-\renewcommand{\arraystretch}{1.12}
-\setlength{\tabcolsep}{6pt}
+\color{red}
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{lcc}
 \hline\toprule
-\textbf{Metric} & \textbf{OS-CIDS}
-& \textbf{QCIDS-Qo} \\
-\hline
-Accuracy (\%)       & 94.64 & \textbf{96.85} \\
-F1-score (\%)       & 94.64 & \textbf{96.85} \\
-AUC                 & 0.9879 & \textbf{0.9947} \\
-Training time (min) & 31.08 & \textbf{29.99} \\
+ & \textbf{Variance ranking} & \textbf{QPSO ($Q^{*}{=}6$)} \\
+\hline\toprule
+Static features only & 96.96 / 1.43 / 4.21 & 95.90 / 4.95 / 3.49 \\
+Static + context & 96.45 / 1.06 / 5.36 & \textbf{97.13} / 2.24 / \textbf{3.33} \\
+\midrule
+Effect of context & -0.51\,pp ($p{=}0.014$) & +1.23\,pp ($p{=}0.004$) \\
+Effect of QPSO & \multicolumn{2}{l}{static: -1.07\,pp ($p{=}0.002$);\ \ with context: +0.68\,pp ($p{=}0.002$)} \\
+Interaction & \multicolumn{2}{l}{+1.74\,pp ($p{=}0.002$)} \\
 \hline\toprule
 \end{tabular}
 \end{table}
@@ -2298,17 +2286,19 @@ LSTM(+VAE)+SGD;
 centralized \& HFL,
 ACI-IoT} &
 \textbf{Centralized: Acc/F1/AUC\,$=$\,
-96.85/96.85/0.9947,
-MSE\,$=$\,0.0240,
+\rev{R1.6}\textcolor{red}{97.13/97.13/0.9924},
+MSE\,$=$\,\textcolor{red}{0.0246},
 61.2\,ms, 922\,MB.
 Federated (qty-skew):
 F1/AUC\,$=$\,0.9162/0.9708,
 $R_{90}{=}25$,
 $\min\text{-F1}{=}0.893$,
 $\sigma(\mathrm{F1}){=}0.017$} &
-Training-time QPSO
-overhead (${\approx}$12.7\%
-over OS-CIDS) &
+\rev{R1.6}\textcolor{red}{No F1 gain over
+variance ranking or
+classical PSO; more
+false alarms than
+variance ranking} &
 \textbf{\rev{R1.1}\textcolor{red}{First explicit characterization of
 how the QPSO register size $Q$ controls the
 exploration--exploitation balance} for IDS;
@@ -2366,15 +2356,15 @@ mission-facing criteria such as $R_{90}$,
 $\min_k\,\mathrm{F1}_k$, or $\sigma(\mathrm{F1})$.
 CONQUEST addresses the limitations of both lines of work
 within a unified reproducible pipeline. Under centralized
-evaluation on ACI-IoT, QCIDS-Qo achieves
-Acc/F1/AUC\,$=$\,96.85\%/96.85\%/0.9947 with 61.2\,ms
-end-to-end latency and 922\,MB memory satisfying
-mission-edge constraints that centralized IDS studies do not
-evaluate. The $+$2.21\,pp F1 and $-$23.8\% MSE gains over
-the strong OS-CIDS non-quantum baseline isolate the
-contribution of context-aware QPSO from the underlying
-temporal classifier, ruling out baseline weakness as a
-confound. Under federated deployment,
+evaluation on ACI-IoT, \rev{R1.6}\textcolor{red}{CONQUEST achieves
+Acc/F1/AUC\,$=$\,97.13\%/97.13\%/0.9924 with the lowest
+missed-attack rate of the compared pipelines. A factorial
+ablation and an equal-budget classical baseline attribute this to
+the combination of context features with label-aware selection,
+not to the quantum-inspired search itself, and expose a
+missed-attack versus false-alarm trade-off against variance
+ranking that centralized IDS studies rarely report.}
+% TODO(C10): add measured latency/memory here. Under federated deployment,
 F1/AUC\,$=$\,0.9162/0.9708 with $R_{90}{=}25$,
 $\min_k\,\mathrm{F1}_k{=}0.893$, and
 $\sigma(\mathrm{F1}){=}0.017$ demonstrate that the
@@ -2399,9 +2389,11 @@ that \rev{R1.1}\textcolor{red}{makes the role of $Q$ explicit and
 characterizes its effect on search dynamics and detection}
 \rev{R1.2}\textcolor{red}{and shows that detection is statistically
 insensitive to $Q$, so the operating point is set by a pre-declared
-validation rule}; (ii)~a
-strong OS-CIDS non-quantum baseline that enables rigorous
-attribution of quantum-inspired gains; and (iii)~federated
+validation rule}; (ii)~\rev{R1.6}\textcolor{red}{a factorial ablation
+and an equal-budget classical PSO baseline that attribute the
+detection gain to the combination of context features and
+label-aware selection rather than to quantum-inspired search};
+and (iii)~federated
 evaluation under four heterogeneity regimes with
 mission-facing deployability metrics that prior
 QPSO-based IDS work does not provide. Together, these
@@ -2431,13 +2423,15 @@ $Q$ (Friedman $p=0.53$ over ten seeds): every tested setting
 yields about $97\%$ F1, and the validation-selected $Q^{*}=6$
 delivers $97.13\%$ accuracy, $97.13\%$ F1, $0.9924$ AUC, and
 $0.0246$ MSE under leakage-free centralized evaluation.}
-% TODO(C6/C10): add the OS-CIDS comparison (block C) and measured latency/memory.
+% TODO(C10): add measured latency/memory.
 
-Second, context-aware feature representation and bounded
-QPSO together produce measurable utility beyond standard
-feature engineering, as verified by controlled isolation
-of the OS-CIDS and QCIDS configurations under identical
-training conditions.
+Second, \rev{R1.6}\rev{R2.3}\textcolor{red}{context features and label-aware
+selection are complementary: each alone lowers F1, while together
+they give the lowest missed-attack rate ($3.33\%$). QPSO is
+statistically equivalent to classical PSO at an equal budget, so
+no quantum advantage is claimed, and relative to variance ranking
+CONQUEST trades more false alarms for fewer missed attacks, which
+favours it where undetected propagation is the costlier error.}
 Third, federated evaluation across IID, label-skew,
 quantity-skew, and Dirichlet regimes shows that CONQUEST
 remains operationally viable without raw data sharing.
