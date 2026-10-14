@@ -582,7 +582,7 @@ flow.}}
 and are removed by a zero-variance filter fitted on
 $\mathcal{D}_{\rm tr}$ only. Without this filter, such columns could
 be selected at no cost: they leave both sums of the trace-ratio
-fitness~\eqref{eq:qpsobj} unchanged and only occupy mask slots.}
+fitness in Eq.~\eqref{eq:qpsobj} unchanged and only occupy mask slots.}
 \rev{R1.5}\textcolor{red}{The fused representation therefore has
 $d=86$ features (69 static and 17 context).}
 
@@ -835,7 +835,7 @@ trained budget of 40 particles and 60 iterations.}
 
 \rev{R1.5}\textcolor{red}{Table~\ref{tab:data_usage} lists the data
 used by every step that fits, selects, or stops. The
-QPSO fitness~\eqref{eq:qpsobj} is a label-based filter criterion
+QPSO fitness in Eq.~\eqref{eq:qpsobj} is a label-based filter criterion
 evaluated on $\mathcal{D}_{\rm tr}$ only; it contains no F1, AUC,
 MSE, or error-balance terms and therefore has no weights to tune.
 $Q^{*}$ is chosen on $\mathcal{D}_{\rm va}$, and early stopping and
@@ -958,7 +958,7 @@ is halved after 3 epochs without improvement, down to $10^{-6}$.}
 At deployment, no QPSO computation occurs, and inference reduces to
 $\hat{\mathbf{y}}=f_\theta(\mathbf{m}^{*}\odot\mathbf{Z}_n)$.
 \rev{R1.10}\textcolor{red}{This is why the inference latency does
-not depend on $Q$, as stated in~\eqref{eq:infer_invariance}.}
+not depend on $Q$, as stated in Eq.~\eqref{eq:infer_invariance}.}
 
 
 
@@ -986,7 +986,7 @@ for every classified window. The per-window latency is}
 incremental context-feature update for a newly arrived flow,
 including normalization and masking, and $\mathcal{L}_{\rm clf}$ is
 one forward pass of the classifier. QPSO does not appear
-in~\eqref{eq:latency_decomp}, and because $k$ is fixed,
+in Eq.~\eqref{eq:latency_decomp}, and because $k$ is fixed,
 $\mathcal{L}_{\rm infer}$ does not depend on $Q$.}
 
 \rev{R2.4}\textcolor{red}{All timings use \texttt{time.perf\_counter}
@@ -1103,7 +1103,7 @@ effect of each factor and their interaction can be estimated. A
 classical binary PSO selector provides a controlled comparison of
 quantum-inspired and classical updates. It uses inertia 0.7,
 acceleration coefficients $c_1=c_2=1.5$, a sigmoid position mapping,
-top-$k$ decoding, the same Fisher fitness~\eqref{eq:qpsobj}, and the
+top-$k$ decoding, the same Fisher fitness of Eq.~\eqref{eq:qpsobj}, and the
 same budget of 620 fitness evaluations.} All configurations share
 the same data split, preprocessing, and normalization. Model
 selection and early stopping use only $\mathcal{D}_{\rm va}$, and all
