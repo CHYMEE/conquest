@@ -69,7 +69,7 @@ CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberw
 \maketitle
 
 \begin{abstract}
-AI-aided cyberworms that adapt their propagation and mimic legitimate traffic threaten mission-critical IoT/IoV/IoD networks, where detectors must remain accurate, lightweight, and robust across distributed sites. This paper proposes CONQUEST, a context-aware, quantum-inspired intrusion detection framework that integrates causal context features, variable-qubit quantum-inspired particle swarm optimization (QPSO) for feature selection, and an LSTM(+VAE) temporal classifier, trained centrally or by horizontal federated learning. \rev{R1.5}\rev{R1.6}\textcolor{red}{Under a leakage-free temporal evaluation on ACI-IoT, CONQUEST achieves 97.13\% accuracy and F1-score, 0.9924 AUC, and the lowest missed-attack rate (3.33\%) among the evaluated pipelines.} \rev{R1.2}\rev{R1.6}\textcolor{red}{Multi-seed ablations show that detection is robust to the QPSO register size $Q\in\{1,\dots,10\}$ (Friedman $p\geq0.46$) and that context features and label-aware selection are complementary.} \rev{R1.10}\rev{R2.4}\textcolor{red}{The deployed detector classifies a traffic window in about 3\,ms with 541\,MB peak memory.} \rev{R1.8}\rev{R2.2}\textcolor{red}{Under IID, quantity-skew, and Dirichlet partitions, federated CONQUEST stays within 0.8\,pp of centralized F1, with a worst-client F1 of 96.37\% under quantity skew.} These results establish CONQUEST as a reproducible, deployable cyberworm detector for mission-critical networks.
+AI-aided cyberworms that adapt their propagation and mimic legitimate traffic threaten mission-critical IoT/IoV/IoD networks, where detectors must remain accurate, lightweight, and robust across distributed sites. This paper proposes CONQUEST, a context-aware, quantum-inspired intrusion detection framework that integrates causal context features, variable-qubit quantum-inspired particle swarm optimization (QPSO) for feature selection, and an LSTM(+VAE) temporal classifier, trained centrally or by horizontal federated learning. \rev{R1.5}\rev{R1.6}\textcolor{red}{Under a leakage-free temporal evaluation on ACI-IoT, CONQUEST achieves 97.13\% accuracy and F1-score, 0.9924 AUC, and the lowest missed-attack rate (3.33\%) among the evaluated pipelines.} \rev{R1.2}\rev{R1.6}\textcolor{red}{Multi-seed ablations show that detection is robust to the QPSO register size $Q\in\{1,\dots,10\}$ (Friedman $p\geq0.46$) and that context features and label-aware selection are complementary.} \rev{R1.10}\rev{R2.4}\textcolor{red}{The deployed detector classifies a traffic window in 2.98\,ms with 541\,MB peak memory.} \rev{R1.8}\rev{R2.2}\textcolor{red}{Under IID, quantity-skew, and Dirichlet partitions, federated CONQUEST stays within 0.8\,pp of centralized F1, with a worst-client F1 of 96.37\% under quantity skew.} These results establish CONQUEST as a reproducible, deployable cyberworm detector for mission-critical networks.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -172,23 +172,31 @@ Privacy & Not analyzed & Threat model and privacy scope (Table~\ref{tab:privacy_
 \scriptsize
 \caption{Positioning of CONQUEST against representative related work.}
 \label{tab:rw_qualitative}
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabular}{p{1.1cm} p{5.0cm} p{4.4cm} p{5.6cm}}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.4cm}}
 \hline\toprule
-\textbf{Ref.} & \textbf{Approach} & \textbf{Limitation} & \textbf{Added by CONQUEST} \\
+\textbf{Ref.} & \textbf{Problem focus} & \textbf{Method and key contribution} & \textbf{Limitation} & \textbf{Gap addressed by CONQUEST} \\
 \hline\toprule
-\cite{phalaagaehybrid} & CNN--LSTM + attention + PSO selection; IoT (WIoTSN) & Centralized; no stability or FL analysis & Multi-seed stability; FL with worst-client metrics \\
-\cite{yuadaptive} & Multi-scale windows + transformer + focal loss; IIoT & High complexity; no FL or cost analysis & \rev{R1.10}\textcolor{red}{Measured cost (about 3\,ms/window, 541\,MB)}; FL evaluation \\
-\cite{donkoloptimization} & LPPSO + ELSTM-RNN; NSL-KDD, UNSW-NB15 & Centralized; no stability analysis & Capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
-\cite{shrivashybrid} & Voting ensemble + GA-PSO selection & No temporal modeling or FL & Temporal context modeling; FL evaluation \\
-\cite{FRIHA202217} & Federated DNN/CNN/RNN; agricultural IoT & Global metrics only; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
-\cite{herlambangfederated} & FedAvg vs.\ FedProx, IID and non-IID; IoT & Two clients; no worst-client metric & \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$}; $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
-\cite{abdelmoniemcomprehensive} & Empirical FL heterogeneity study (${\sim}$1.5K configurations) & Not IDS-specific & Heterogeneity analysis for cyberworm IDS with deployment cost \\
-\cite{gefedamkd} & FedAMKD for quantity skew; MNIST, CIFAR & Not IDS-specific & Quantity-skew study for IDS with tail-aware metrics \\
-\cite{ajakweconquest} & QPSO + LSTM-VAE on ACI-IoT (conference version) & Centralized; single run; random split & Leakage-free protocol; $Q$ ablation \rev{R1.2}\textcolor{red}{with statistical tests}; FL \\
-\midrule
-\textbf{This work} & Context features + variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation}) + LSTM(+VAE); centralized and FL & One-off QPSO training cost; label skew remains challenging & -- \\
+\cite{phalaagaehybrid} & IoT IDS under resource constraints & CNN--LSTM + attention + PSO feature selection; high centralized accuracy on WIoTSN & Centralized only; no stability or FL analysis & Multi-seed stability analysis; FL with worst-client metrics \\
+\midrule
+\cite{yuadaptive} & IIoT IDS with class imbalance and temporal variation & Multi-scale windows + attention transformer + adaptive focal loss & High complexity; centralized only; no cost analysis & \rev{R1.10}\textcolor{red}{Measured deployment cost (2.98\,ms/window, 541\,MB)}; FL evaluation \\
+\midrule
+\cite{donkoloptimization} & Communication-network IDS with optimized features & LPPSO + ELSTM-RNN on NSL-KDD and UNSW-NB15 & Centralized only; no stability reporting & QPSO capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
+\midrule
+\cite{shrivashybrid} & Network attack classification with selected features & Voting ensemble + GA-PSO feature selection & No temporal modeling; no FL & Temporal context modeling; non-IID FL evaluation \\
+\midrule
+\cite{FRIHA202217} & Privacy-preserving IDS for agricultural IoT & Federated DNN/CNN/RNN with server aggregation & Global metrics only; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
+\midrule
+\cite{herlambangfederated} & Aggregation robustness for federated IoT IDS & FedAvg vs.\ FedProx under IID and non-IID data & Two clients; no worst-client metric & \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$}; $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
+\midrule
+\cite{abdelmoniemcomprehensive} & Heterogeneity impact on FL quality and fairness & Large-scale empirical study (${\sim}$1.5K configurations) & Not IDS-specific; no deployment analysis & Heterogeneity analysis for cyberworm IDS with deployment cost \\
+\midrule
+\cite{gefedamkd} & Quantity-skew heterogeneity in FL & FedAMKD adaptive mutual knowledge distillation (MNIST, CIFAR) & Not IDS-specific & Quantity-skew study for IDS with tail-aware metrics \\
+\midrule
+\cite{ajakweconquest} & Context-aware cyberworm IDS (conference version) & QPSO + LSTM-VAE on ACI-IoT; 97.5\% detection rate, 0.8\% FPR & Centralized only; single run; random split & Leakage-free protocol; $Q$ ablation \rev{R1.2}\textcolor{red}{with statistical tests}; FL evaluation \\
+\midrule
+\textbf{This work} & Mission-critical cyberworm IDS, centralized and federated & Context features + variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation}) + LSTM(+VAE) & One-off QPSO training cost; label skew remains challenging & -- \\
 \hline\toprule
 \end{tabular}
 \end{table*}
@@ -2147,7 +2155,7 @@ Acc: 98.73--99.87\% on WIoTSN; centralized &
 No FL, stability, or deployability analysis &
 Adds \rev{R1.9}\textcolor{red}{$R_{99}{\approx}7$, $\min\text{-F1}{=}96.4\%$,
 $\sigma(\mathrm{F1}){=}0.7$\,pp};
-\rev{R1.10}\rev{R2.4}\textcolor{red}{latency about 3\,ms per window, memory 541\,MB} \\
+\rev{R1.10}\rev{R2.4}\textcolor{red}{latency 2.98\,ms per window, memory 541\,MB} \\
 \midrule
 
 \cite{yuadaptive} &
@@ -2245,7 +2253,7 @@ ACI-IoT} &
 \textbf{Centralized: Acc/F1/AUC\,$=$\,
 \rev{R1.6}\textcolor{red}{97.13/97.13/0.9924},
 MSE\,$=$\,\textcolor{red}{0.0246},
-\textcolor{red}{about 3\,ms per window, 541\,MB}.
+\textcolor{red}{2.98\,ms per window, 541\,MB}.
 Federated (qty-skew):
 F1/AUC\,$=$\,\rev{R1.9}\textcolor{red}{0.9666/0.9914,
 $R_{99}{\approx}7$,
@@ -2321,8 +2329,8 @@ the combination of context features with label-aware selection,
 not to the quantum-inspired search itself, and expose a
 missed-attack versus false-alarm trade-off against variance
 ranking that centralized IDS studies rarely report.}
-\rev{R1.10}\rev{R2.4}\textcolor{red}{Its deployed detector classifies a window in about
-3\,ms with 541\,MB peak memory on a CPU-only host, independently of
+\rev{R1.10}\rev{R2.4}\textcolor{red}{Its deployed detector classifies a window in
+2.98\,ms with 541\,MB peak memory on a CPU-only host, independently of
 $Q$, which centralized IDS studies seldom measure.}
 Under federated deployment,
 \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{F1/AUC\,$=$\,0.9666/0.9914 under quantity skew, with
@@ -2383,7 +2391,7 @@ $Q$ (Friedman $p=0.53$ over ten seeds): every tested setting
 yields about $97\%$ F1, and the validation-selected $Q^{*}=6$
 delivers $97.13\%$ accuracy, $97.13\%$ F1, $0.9924$ AUC, and
 $0.0246$ MSE under leakage-free centralized evaluation.} \rev{R1.10}\rev{R2.4}\textcolor{red}{Deployed
-on a CPU-only host, it needs about 3\,ms per window and 541\,MB of
+on a CPU-only host, it needs 2.98\,ms per window and 541\,MB of
 memory, independently of $Q$, because QPSO runs only once during
 training.}
 
