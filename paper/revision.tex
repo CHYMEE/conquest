@@ -473,58 +473,60 @@ data, in both training regimes.
 \label{subsec:feature_pipeline}
 %% ----------------------------------------------------------
 
-Raw traffic $\mathbf{X}(t)\in\mathbb{R}^{N\times d}$ is
-transformed into a unified feature representation via a
-seed-controlled deterministic preprocessing pipeline:
+Raw flow records $\mathbf{X}(t)$ are mapped by a seed-controlled,
+deterministic preprocessing pipeline $\mathcal{P}$ to a unified
+representation
 \begin{equation}
 \mathbf{X}(t) \xrightarrow{\mathcal{P}}
 \mathbf{F}_s \oplus \mathbf{F}_c = \mathbf{Z},
 \label{eq:feature_fusion}
 \end{equation}
-where $\mathbf{F}_s$ denotes static flow descriptors
-(\rev{R1.7}\textcolor{red}{ports, protocol, flow duration, packet and byte
-counts, packet-length statistics, inter-arrival times, flag
-counts, and bulk and activity statistics produced by
-CICFlowMeter, $|\mathbf{F}_s|=69$; flow identifiers, IP
-addresses, and timestamps are excluded from the feature vector to
-prevent identity shortcuts, and so are the four \texttt{Idle}
-fields, which in ACI-IoT store absolute epoch timestamps and would
-leak capture time}) and $\mathbf{F}_c$ encodes
-context-aware features computed offline via fixed sliding-window operators and transition statistics. To ensure end-to-end reproducibility, this global fixed seed governs both the probabilistic \rev{R1.1}\textcolor{red}{measurement} sampling in QPSO and the weight initialization of the classifier. Context features capture burst
-activity, dormant intervals, and protocol state transitions that
-are not separable under static feature selection alone; no live
-behavioral monitoring is performed at runtime.
+where $\mathbf{F}_s$ denotes static flow descriptors and
+$\mathbf{F}_c$ context-aware features.
+\rev{R1.7}\textcolor{red}{$\mathbf{F}_s$ contains the 75 CICFlowMeter
+descriptors: ports, protocol, flow duration, packet and byte counts,
+packet-length statistics, inter-arrival times, flag counts, and bulk
+and activity statistics. Flow identifiers, IP addresses, and
+timestamps are excluded to prevent identity shortcuts. The four
+\texttt{Idle} fields are also excluded, because in ACI-IoT they store
+absolute epoch timestamps and would leak capture time.}
+$\mathbf{F}_c$ captures burst activity, dormant intervals, and
+protocol state transitions that static descriptors alone do not
+reveal. A single global seed controls the
+\rev{R1.1}\textcolor{red}{measurement} sampling in QPSO and the
+weight initialization of the classifier.
 
 \rev{R1.7}\textcolor{red}{Table~\ref{tab:context_features} defines
-the $|\mathbf{F}_c|=17$ context features exactly. All flows of the
-capture are sorted by timestamp; ties at the 1\,s resolution keep
-capture order, so ``earlier'' means an earlier position $j<i$ in
-the sorted stream. Let $s_i$, $t_i$, $\pi_i$, $p_i$, and $a_i$ be
-the source IP, timestamp, protocol, destination port, and
-destination IP of flow $i$. The source IP is used only as a
-grouping key, never as a feature. For a look-back window $W$,
-the history of flow $i$ is}
+the 17 context features. Flows are sorted by timestamp, and ties at
+the 1\,s resolution keep capture order, so ``earlier'' means a
+position $j<i$ in the sorted stream. Let $s_i$, $t_i$, $\pi_i$,
+$p_i$, and $a_i$ denote the source IP, timestamp, protocol,
+destination port, and destination IP of flow $i$; the source IP
+serves only as a grouping key, never as a feature. For a look-back
+window $W$, the history of flow $i$ is}
 \begin{equation}
 \textcolor{red}{\mathcal{H}_W(i)=\{\,j<i:\ s_j=s_i,\ t_j\ge t_i-W\,\},}
 \label{eq:context_history}
 \end{equation}
-\rev{R1.7}\textcolor{red}{which excludes flow $i$ itself, and $\mathrm{prev}(i)$
-denotes the most recent earlier flow of the same source. Every
-feature therefore depends only on past traffic of the same source
-and uses no labels. Windows are $W\in\{10,60\}$\,s: 10\,s captures
-short scanning and flooding bursts, and 60\,s captures slower
-propagation and dormancy patterns; both lengths were fixed before
-the experiments and were not tuned. Context features are computed on the full
-chronological stream before subsampling, so window statistics
-reflect real traffic density. ACI-IoT timestamps are stored as
-year--day--month (for example, \texttt{2023-01-11} denotes
-1~November~2023) or, for part of the benign traffic, in a
-day/month 12-hour format; both are parsed accordingly, which we
-verified against the epoch-microsecond values of the
-\texttt{Idle} fields. A streaming implementation that keeps, per
-source, the flows of the last 60\,s produces values identical to
-the batch implementation on real traffic; its per-flow cost is
-reported in Section~\ref{subsec:obj2_latency}.}
+\rev{R1.7}\textcolor{red}{and $\mathrm{prev}(i)$ is the most recent
+earlier flow of the same source. Flow $i$ itself is excluded, so
+every feature depends only on past traffic of the same source and
+uses no labels. Two windows are used: $W=10$\,s for short scanning
+and flooding bursts, and $W=60$\,s for slower propagation and
+dormancy. Both were fixed before the experiments and not tuned.
+Context features are computed on the full chronological stream
+before subsampling, so window statistics reflect real traffic
+density.}
+
+\rev{R1.7}\textcolor{red}{ACI-IoT stores most timestamps in
+year--day--month order (e.g., \texttt{2023-01-11} denotes
+1~November~2023) and part of the benign traffic in a day/month
+12-hour format. Both formats are parsed accordingly, and the result
+was verified against the epoch-microsecond values of the
+\texttt{Idle} fields. A streaming implementation that keeps each
+source's flows from the last 60\,s yields values identical to the
+batch computation; its per-flow cost is reported in
+Section~\ref{subsec:obj2_latency}.}
 
 \begin{table*}[!t]
 \centering
@@ -573,42 +575,40 @@ Default: value when the source has no earlier flow.}}
 \texttt{Fwd Packet/Bulk Avg}, \texttt{Fwd Bulk Rate Avg},
 \texttt{Subflow Bwd Packets}) are constant on $\mathcal{D}_{\rm tr}$
 and are removed by a zero-variance filter fitted on
-$\mathcal{D}_{\rm tr}$ only.} \rev{R1.4}\textcolor{red}{Constant columns
-carry no information, yet they leave both sums of the trace-ratio
-fitness~\eqref{eq:qpsobj} unchanged, so without this filter they
-could be selected at no cost and occupy mask slots.}
-\rev{R1.5}\textcolor{red}{The fused representation has $d=86$ features
-($69$ static and $17$ context).
-A class-balanced subsample of 80{,}000 flows (40{,}000 benign,
-40{,}000 attack; attack-type proportions preserved) is drawn with
-a fixed seed and re-sorted chronologically. ACI-IoT attacks are
-clustered in time, so a purely chronological 70/15/15 split would
-leave $\mathcal{D}_{\rm te}$ entirely benign. We therefore use a
-blocked temporal split: the chronological stream is cut into
-contiguous 500-flow blocks, the blocks are assigned to
-$\mathcal{D}_{\rm tr}$, $\mathcal{D}_{\rm va}$, and
-$\mathcal{D}_{\rm te}$ (70/15/15) by a seeded shuffle, and the
-first $T=10$ flows of every block are purged. Sliding windows of
-length $T=10$ are built only within a block, so no window spans
-two splits and no flow appears in two windows of different
-splits. The resulting splits contain 54{,}890 / 11{,}760 /
-11{,}760 flows with attack fractions of 47.5\% / 53.6\% /
-58.2\%; $\mathcal{D}_{\rm tr}$ covers all ten attack types,
-$\mathcal{D}_{\rm va}$ seven, and $\mathcal{D}_{\rm te}$ six.}
-The fused
-representation is normalized as
+$\mathcal{D}_{\rm tr}$ only. Without this filter, such columns could
+be selected at no cost: they leave both sums of the trace-ratio
+fitness~\eqref{eq:qpsobj} unchanged and only occupy mask slots.}
+\rev{R1.5}\textcolor{red}{The fused representation therefore has
+$d=86$ features (69 static and 17 context).}
+
+\rev{R1.5}\textcolor{red}{A class-balanced subsample of 80{,}000
+flows (40{,}000 benign and 40{,}000 attack, with attack-type
+proportions preserved) is drawn with a fixed seed and re-sorted
+chronologically. ACI-IoT attacks are clustered in time, so a purely
+chronological 70/15/15 split would leave $\mathcal{D}_{\rm te}$
+entirely benign. We therefore use a blocked temporal split. The
+stream is cut into contiguous 500-flow blocks, which a seeded shuffle
+assigns to $\mathcal{D}_{\rm tr}$, $\mathcal{D}_{\rm va}$, and
+$\mathcal{D}_{\rm te}$ (70/15/15), and the first $T=10$ flows of
+every block are purged. Sliding windows of length $T=10$ are built
+only within a block, so no window spans two splits. The splits
+contain 54{,}890 / 11{,}760 / 11{,}760 flows with attack fractions
+of 47.5\% / 53.6\% / 58.2\%; $\mathcal{D}_{\rm tr}$ covers all ten
+attack types, $\mathcal{D}_{\rm va}$ seven, and $\mathcal{D}_{\rm te}$
+six.}
+
+The fused representation is normalized as
 \begin{equation}
 \mathbf{Z}_n = \mathcal{N}(\mathbf{Z}),\quad
 \mathbf{Z}_n \in [0,1]^d,
 \label{eq:normalization}
 \end{equation}
-using parameters computed on $\mathcal{D}_{\rm tr}$ and applied
-without update to $\mathcal{D}_{\rm va}$ and $\mathcal{D}_{\rm te}$
-\rev{R1.5}\textcolor{red}{(values outside $[0,1]$ are clipped)},
-eliminating feature-induced confounding across centralized and
-federated regimes. The resulting $\mathbf{Z}_n$ is the fixed input
-to QPSO feature selection. Fig.~\ref{fig:pipeline} illustrates
-the preprocessing and context-feature construction pipeline.
+using min--max parameters computed on $\mathcal{D}_{\rm tr}$ and
+applied unchanged to $\mathcal{D}_{\rm va}$ and $\mathcal{D}_{\rm te}$
+\rev{R1.5}\textcolor{red}{(values outside $[0,1]$ are clipped)}, so
+centralized and federated training see identical inputs.
+$\mathbf{Z}_n$ is the fixed input to QPSO feature selection, and
+Fig.~\ref{fig:pipeline} illustrates the full preprocessing pipeline.
 
 %% ----------------------------------------------------------
 \subsection{Variable-Qubit QPSO Feature Selection}
