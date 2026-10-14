@@ -69,7 +69,7 @@ CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberw
 \maketitle
 
 \begin{abstract}
-\textcolor{red}{AI-aided cyberworms that adapt their propagation and mimic legitimate traffic threaten mission-critical IoT/IoV/IoD networks, where detectors must remain accurate, lightweight, and robust across distributed sites. This paper proposes CONQUEST, a context-aware, quantum-inspired intrusion detection framework that integrates causal context features, variable-qubit quantum-inspired particle swarm optimization (QPSO) for feature selection, and an LSTM(+VAE) temporal classifier, trained centrally or by horizontal federated learning. Under a leakage-free temporal evaluation on ACI-IoT, CONQUEST achieves 97.13\% accuracy and F1-score, 0.9924 AUC, and the lowest missed-attack rate (3.33\%) among the evaluated pipelines. \rev{R1.2}\rev{R1.6}Multi-seed ablations show that detection is robust to the QPSO register size $Q\in\{1,\dots,10\}$ (Friedman $p\geq0.46$) and that context features and label-aware selection are complementary. \rev{R1.10}\rev{R2.4}The deployed detector classifies a traffic window in about 3\,ms with 541\,MB peak memory. \rev{R1.8}\rev{R2.2}Under IID, quantity-skew, and Dirichlet partitions, federated CONQUEST stays within 0.8\,pp of centralized F1, with a worst-client F1 of 96.37\% under quantity skew. These results establish CONQUEST as a reproducible, deployable cyberworm detector for mission-critical networks.}
+AI-aided cyberworms that adapt their propagation and mimic legitimate traffic threaten mission-critical IoT/IoV/IoD networks, where detectors must remain accurate, lightweight, and robust across distributed sites. This paper proposes CONQUEST, a context-aware, quantum-inspired intrusion detection framework that integrates causal context features, variable-qubit quantum-inspired particle swarm optimization (QPSO) for feature selection, and an LSTM(+VAE) temporal classifier, trained centrally or by horizontal federated learning. \rev{R1.5}\rev{R1.6}\textcolor{red}{Under a leakage-free temporal evaluation on ACI-IoT, CONQUEST achieves 97.13\% accuracy and F1-score, 0.9924 AUC, and the lowest missed-attack rate (3.33\%) among the evaluated pipelines.} \rev{R1.2}\rev{R1.6}\textcolor{red}{Multi-seed ablations show that detection is robust to the QPSO register size $Q\in\{1,\dots,10\}$ (Friedman $p\geq0.46$) and that context features and label-aware selection are complementary.} \rev{R1.10}\rev{R2.4}\textcolor{red}{The deployed detector classifies a traffic window in about 3\,ms with 541\,MB peak memory.} \rev{R1.8}\rev{R2.2}\textcolor{red}{Under IID, quantity-skew, and Dirichlet partitions, federated CONQUEST stays within 0.8\,pp of centralized F1, with a worst-client F1 of 96.37\% under quantity skew.} These results establish CONQUEST as a reproducible, deployable cyberworm detector for mission-critical networks.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -81,24 +81,57 @@ Cyberworm Detection, Federated Learning, Intrusion Detection System (IDS), Inter
 \label{sec:introduction}
 The rapid digitalization of mission-critical infrastructures spanning
 the Internet of Things (IoT), Internet of Vehicles (IoV), and Internet
-of Drones (IoD) has significantly expanded the attack surface of modern networked systems~\cite{dritsas, ajakwe2024facets}. These environments face
-escalating threats from AI-aided cyberworms capable of autonomous adaptation, stealthy propagation, and mimicry of legitimate traffic, rendering static signature-based and rule-based defences progressively
-ineffective~\cite{khezri}. In mission-critical settings where delayed or incorrect decisions can disrupt safety, mobility, or command operations~\cite{amadi2026blockchain}, robust cyberworm detection is both a security requirement
-and an operational necessity.
-Existing IDS approaches remain limited in this context. Signature-driven methods generalize poorly to novel or polymorphic threats. Statistical
-anomaly detectors suffer from high false-positive rates under noisy or heterogeneous traffic. Deep learning-based IDS improves spatio-temporal pattern recognition~\cite{al202}, yet three persistent challenges remain: (\textit{i})~optimization degrades in high-dimensional feature spaces; (\textit{ii})~performance is brittle under non-stationary data distributions; and (\textit{iii})~centralized training conflicts
-with the privacy, sovereignty, and regulatory constraints prevalent in distributed mission environments.
+of Drones (IoD) has expanded the attack surface of networked
+systems~\cite{dritsas, ajakwe2024facets}. AI-aided cyberworms that
+adapt autonomously, propagate stealthily, and mimic legitimate
+traffic render signature- and rule-based defences increasingly
+ineffective~\cite{khezri}. Where delayed or incorrect decisions can
+disrupt safety, mobility, or command operations~\cite{amadi2026blockchain},
+robust cyberworm detection is both a security requirement and an
+operational necessity.
 
-Quantum-inspired optimization addresses the first
-challenge~\cite{ajakwe2025eqai,vivekquantum}. QPSO introduces probabilistic search dynamics \textcolor{red}{that have been reported to improve exploration relative to classical metaheuristics; whether this holds for a given task must be verified against classical search under an equal evaluation budget}, yet its application to IDS remains ad- hoc, optimizer capacity is rarely analyzed systematically, stability is seldom quantified, and training-time gains are discussed without regard to deployment cost. Federated learning (FL) addresses the third challenge by keeping raw traffic local and exchanging only model updates~\cite{hamadsystematic}\rev{R2.1}\textcolor{red}{; on its own, however, FL provides data locality rather than formal privacy, since model updates can still leak information through inference attacks unless secure aggregation or differential privacy is added}, yet FL-based IDS studies consistently under-report worst-client behavior, convergence stability, and robustness under realistic non-IID regimes, leaving the privacy detection reliability trade-off insufficiently characterized.
+Existing IDS approaches remain limited in this setting.
+Signature-driven methods generalize poorly to novel threats, and
+statistical anomaly detectors raise many false alarms under noisy,
+heterogeneous traffic. Deep learning improves spatio-temporal pattern
+recognition~\cite{al202}, but three challenges persist:
+(\textit{i})~optimization degrades in high-dimensional feature spaces;
+(\textit{ii})~performance is brittle under non-stationary data; and
+(\textit{iii})~centralized training conflicts with the privacy,
+sovereignty, and regulatory constraints of distributed missions.
 
-In this study, we proffer a context-aware quantum-inspired intrusion detection framework for AI-aided cyberworm detection in mission-critical networks. Here, we integrate three complementary
-components: (\textit{i})~seed-controlled context-aware feature representation capturing temporal and behavioral cues relevant to
-cyberworm propagation; (\textit{ii})~variable-qubit QPSO for \rev{R1.4}\textcolor{red}{discriminative, budget-bounded selection of a fixed-size feature subset}; and
-(\textit{iii})~an LSTM(+VAE) temporal classifier that captures subtle attack-state transitions. Unlike conventional IDS pipelines, this study explicitly decouples training-time feature optimization from
-deployment-time inference, ensuring that runtime latency is independent of \rev{R1.1}\textcolor{red}{the QPSO register size $Q$}. This journal extension substantially advances
-the conference prototype~\cite{ajakweconquest} by introducing a strong
-optimized non-quantum baseline, a controlled variable-qubit ablation study over $Q\in\{1,\dots,8\}$, and a federated robustness evaluation under IID, label-skew, quantity-skew, and Dirichlet heterogeneity regimes. \rev{R2.5}\textcolor{red}{Table~\ref{tab:conf_vs_journal} itemizes the methodological, experimental, and analytical differences between the two works.}
+Quantum-inspired optimization targets the first
+challenge~\cite{ajakwe2025eqai,vivekquantum}: QPSO introduces
+probabilistic search dynamics \rev{R2.3}\textcolor{red}{that have been reported
+to improve exploration over classical metaheuristics}. In IDS,
+however, its use remains ad hoc: the effect of optimizer capacity is
+rarely analyzed, stability is seldom quantified, and
+\rev{R2.3}\textcolor{red}{comparisons with classical search at an equal
+evaluation budget are missing}. Federated learning (FL) targets the
+third challenge by keeping raw traffic local and exchanging only
+model updates~\cite{hamadsystematic}; \rev{R2.1}\textcolor{red}{on its
+own, FL provides data locality rather than formal privacy, because
+updates can leak information unless secure aggregation or
+differential privacy is added}. FL-based IDS studies also rarely
+report worst-client behavior, convergence stability, or robustness
+under realistic non-IID regimes.
+
+This paper presents CONQUEST, a context-aware, quantum-inspired
+intrusion detection framework for AI-aided cyberworm detection in
+mission-critical networks. It integrates (\textit{i})~causal context
+features that capture burst, dormancy, diversity, and transition cues
+of cyberworm propagation; (\textit{ii})~variable-qubit QPSO for
+\rev{R1.4}\textcolor{red}{budget-bounded selection of a fixed-size
+feature subset}; and (\textit{iii})~an LSTM(+VAE) temporal
+classifier. Feature optimization runs only during training, so
+deployment latency is independent of \rev{R1.1}\textcolor{red}{the
+QPSO register size $Q$}. This journal version extends the conference
+prototype~\cite{ajakweconquest} with an optimized non-quantum
+baseline, a controlled variable-qubit ablation over
+\rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}, and a federated evaluation
+under IID, label-skew, quantity-skew, and Dirichlet heterogeneity;
+\rev{R2.5}\textcolor{red}{Table~\ref{tab:conf_vs_journal} itemizes the
+methodological, experimental, and analytical differences.}
 
 \begin{table}[!t]
 \centering
@@ -121,12 +154,12 @@ Training regime & Centralized & Centralized and horizontal FL with three mask-co
 \midrule
 \multicolumn{3}{l}{\textit{Experimental}} \\
 Baselines & Optimizer variants & OS-CIDS; context on/off $\times$ selector ablation; classical PSO at equal budget \\
-Qubit study & None & $Q\in\{1,\dots,10\}$, ten seeds with per-seed QPSO; budget sensitivity up to $8\times$ evaluations \\
+Qubit study & None & $Q\in\{1,\dots,10\}$, multi-seed with per-seed QPSO; budget sensitivity up to $8\times$ evaluations \\
 Feature subset & Not reported & Selected features, selection frequency, stability, consensus mask, $k\in\{10,20,40\}$ \\
 FL evaluation & None & IID, label-, quantity-skew, Dirichlet; FedAvg, SCAFFOLD, FLAME; $K\in\{5,10,20\}$; privacy--utility trade-off \\
 \midrule
 \multicolumn{3}{l}{\textit{Analytical}} \\
-Metrics & Detection rate, FPR & F1, AUC, MSE, FAR/MD, per-window latency, peak memory, $\textcolor{red}{R_{99}}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$, $\varepsilon$ \\
+Metrics & Detection rate, FPR & F1, AUC, MSE, FAR/MD, per-window latency, peak memory, $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$, $\varepsilon$ \\
 Statistics & Single run & Mean$\pm$std over seeds; Friedman and Holm-corrected Wilcoxon tests \\
 Search analysis & None & QPSO search dynamics versus $Q$ (Fig.~\ref{fig:qpso_dynamics}) \\
 Privacy & Not analyzed & Threat model and privacy scope (Table~\ref{tab:privacy_scope}) \\
@@ -161,7 +194,7 @@ Centralized only; no stability analysis,
 reproducibility control, or FL evaluation &
 Adds seed-controlled reproducibility, bounded
 variable-qubit QPSO, and non-IID FL robustness
-metrics ($\textcolor{red}{R_{99}}$, $\min_k\,\mathrm{F1}_k$,
+metrics ($R_{99}$, $\min_k\,\mathrm{F1}_k$,
 $\sigma(\mathrm{F1})$) \\
 \midrule
 
@@ -218,7 +251,7 @@ Two-client setup only; no worst-client
 fairness metric or convergence stabilization
 analysis &
 Extends to $K{=}5$ clients across four
-heterogeneity regimes; reports $\textcolor{red}{R_{99}}$,
+heterogeneity regimes; reports $R_{99}$,
 $\min_k\,\mathrm{F1}_k$, and
 $\sigma(\mathrm{F1})$ \\
 \midrule
@@ -244,7 +277,7 @@ MNIST and CIFAR benchmarks &
 General FL optimization study; not
 IDS-specific; no deployment metrics &
 Transfers quantity-skew analysis to
-cyberworm IDS; adds $\textcolor{red}{R_{99}}$,
+cyberworm IDS; adds $R_{99}$,
 $\min_k\,\mathrm{F1}_k$, and
 $\sigma(\mathrm{F1})$ \\
 \midrule
@@ -288,26 +321,47 @@ in a single unified framework \\
     %\item We propose CONQUEST, a reproducible context-aware quantum-inspired IDS framework for robust detection of AI-aided cyberworms in mission-critical IoT/IoV/IoD environments.
     %\item We establish, through a controlled variable-qubit ablation, that QPSO-based feature selection exhibits an expressiveness stability trade-off with a stability-optimal operating point at $Q{=}6$, yielding 96.85\% accuracy and F1-score, 0.9947 AUC, and 0.0240 MSE under centralized evaluation on the ACI-IoT dataset, with end-to-end latency of 61.2\,ms and memory of 922\,MB.
 
-    %\item We evaluate CONQUEST under horizontal federated learning across four heterogeneity regimes, quantifying deployability via worst-client reliability ($\min_k\,\mathrm{F1}_k{=}0.893$), inter-client dispersion ($\sigma(\mathrm{F1}){=}0.017$), and convergence stability ($\textcolor{red}{R_{99}}{=}25$), demonstrating a centralised to federated performance gap of only 2.9\% in F1-score.
+    %\item We evaluate CONQUEST under horizontal federated learning across four heterogeneity regimes, quantifying deployability via worst-client reliability ($\min_k\,\mathrm{F1}_k{=}0.893$), inter-client dispersion ($\sigma(\mathrm{F1}){=}0.017$), and convergence stability ($R_{99}{=}25$), demonstrating a centralised to federated performance gap of only 2.9\% in F1-score.
 %\end{itemize}
 
 \subsection{Key Contributions}
-The core contributions of this manuscript, which significantly advance the preliminary conference prototype \cite{ajakweconquest}, are as follows:
-
+The main contributions of this work are as follows.
 \begin{itemize}
-    \item \textbf{Framework Reproducibility and Contextual Synergy:} We propose \textit{CONQUEST}, a high-fidelity, seed-controlled IDS framework that uniquely harmonizes context-aware feature engineering with quantum-inspired optimization. By enforcing a global deterministic protocol, governing both Stage $\mathcal{Q}_{Q}$ mask sampling and Stage D neural weight initialization, \textcolor{red}{and by re-executing QPSO for every seed so that reported variance includes the optimizer's own stochasticity, we make the run-to-run variability of quantum-inspired selection explicit and measurable.}
+    \item \textbf{Reproducible context-aware QPSO pipeline:} CONQUEST
+    combines causal context features with quantum-inspired feature
+    selection under a seed-controlled, leakage-free protocol;
+    \rev{R1.2}\textcolor{red}{QPSO is re-executed for every seed, so the reported
+    variance includes the optimizer's own stochasticity.}
 
-    \item \textbf{\rev{R1.1, R1.2}\textcolor{red}{Characterization of the Qubit-Register Size}:} Through an extensive variable-qubit ablation study ($Q \in \{1, \dots, 8\}$), we characterize the expressiveness-stability trade-off in QPSO-based feature selection. \textcolor{red}{We make explicit how $Q$ enters the search, show that it interpolates between near-random exploration (small $Q$) and frozen exploitation (large $Q$), and show, with Friedman and Holm-corrected Wilcoxon tests over ten seeds and a search-budget sensitivity analysis, that detection is statistically insensitive to $Q$ within the tested range, so the operating point $Q^{*}{=}6$ is fixed by a pre-declared validation rule rather than claimed as an optimum.}
+    \item \textbf{\rev{R1.1, R1.2}\textcolor{red}{Characterization of the
+    register size $Q$:}} \textcolor{red}{We make explicit how $Q$ governs
+    the search, from near-random exploration to frozen exploitation,
+    and show with multi-seed statistical tests and a search-budget
+    analysis that detection is robust to $Q\in\{1,\dots,10\}$; the
+    operating point $Q^{*}=6$ is set by a pre-declared validation rule.}
 
-    \item \textbf{Stress-Testing Federated Robustness under Heterogeneity:} We provide the first systematic evaluation of quantum-inspired IDS under four distinct federated heterogeneity regimes: IID, label-skew, quantity-skew, and Dirichlet partitions. By introducing mission-centric metrics, namely thresholded stabilization, worst-client reliability, and inter-client dispersion, \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{evaluated on client-specific test sets, we show that \textit{CONQUEST} stays within 0.8\,pp of centralized F1 under IID, quantity, and Dirichlet heterogeneity and within 0.9\,pp with up to 20 clients, and we identify label skew as the regime in which a single global model fails its worst client.} \textcolor{red}{We further vary the number of clients ($K\in\{5,10,20\}$) and compare three privacy-compatible mask-construction modes for non-IID clients.}
+    \item \textbf{\rev{R1.6}\textcolor{red}{Attribution and selector guidance:}}
+    \textcolor{red}{A factorial ablation, an optimized variance-based
+    baseline (OS-CIDS), and classical PSO at an equal budget show that
+    context features and label-aware selection are complementary, that
+    QPSO and PSO perform on par, and how the choice of selector balances
+    missed attacks against false alarms for a given feature budget.}
 
-    \item \textbf{Ablative Attribution via Optimized Baseline:} We introduce a rigorous non-quantum baseline (\textit{OS-CIDS}) \textcolor{red}{and a factorial ablation (context features on/off $\times$ variance vs.\ QPSO selection), together with a classical PSO baseline at an equal fitness-evaluation budget, to separate the contributions of context-aware representation and quantum-inspired search.} \rev{R1.6}\textcolor{red}{The ablation shows that the two components are complementary rather than separately beneficial, that QPSO and classical PSO are statistically equivalent, and that the choice between label-aware and variance-based selection is a trade-off between missed attacks and false alarms, for which we give scenario-based guidance.}
+    \item \textbf{Federated robustness under heterogeneity:}
+    \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Using worst-client F1,
+    inter-client dispersion, and $R_{99}$ on client-specific test sets,
+    we show that federated CONQUEST stays within 0.8\,pp of centralized
+    F1 under IID, quantity, and Dirichlet heterogeneity and within
+    0.9\,pp with up to 20 clients, compare three privacy-compatible
+    mask-construction modes, and identify label skew as the most
+    challenging regime.}
 \end{itemize}
 
-The remainder of this paper is organized as follows.
-Section~\ref{sec:related_works} reviews related work.
-Section~\ref{sec:conquest_overview} presents the CONQUEST architecture and methodology. Section~\ref{sec:results_discussion} reports
-experimental results. Section~\ref{sec:conclusion} concludes with future directions.
+The rest of the paper is organized as follows.
+Section~\ref{sec:related_works} reviews related work,
+Section~\ref{sec:conquest_overview} presents the CONQUEST methodology,
+Section~\ref{sec:results_discussion} reports the experimental results,
+and Section~\ref{sec:conclusion} concludes.
 
 
 
@@ -422,7 +476,7 @@ utility~\cite{almansouradaptive} while stability-aware client
 selection reduces convergence
 instability~\cite{vinothinienhancing}. Despite these advances, no
 existing work connects non-IID robustness to mission-facing IDS
-criteria: none report thresholded stabilization ($\textcolor{red}{R_{99}}$),
+criteria: none report thresholded stabilization ($R_{99}$),
 worst-client detection utility ($\min_k\,\mathrm{F1}_k$), or
 deployment readiness under operational traffic-volume imbalance.
 More broadly, the literature has yet to combine temporal deep
@@ -451,7 +505,7 @@ Table~\ref{tab:conf_vs_journal})} by adding a controlled variable-qubit ablation
 $Q\in\{1,\dots,8\}$, a strong optimized non-quantum baseline for
 rigorous comparison, and a comprehensive federated evaluation across
 IID, label-skew, quantity-skew, and Dirichlet regimes quantified
-through $\textcolor{red}{R_{99}}$, $\min_k\,\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
+through $R_{99}$, $\min_k\,\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
 
 
 
@@ -506,8 +560,8 @@ $\mathbf{m}^{*}$        & Optimal fixed feature mask
                           at deployment \\
 $\mathcal{L}_{\rm e2e}$ & End-to-end pipeline latency \\
 $\mathcal{M}(Q)$        & Memory usage at qubit setting $Q$ \\
-$\textcolor{red}{R_{99}}$                & Round at which global F1 reaches
-                          \textcolor{red}{99\%} of terminal F1 \\
+$R_{99}$                & Round at which global F1 reaches
+                          99\% of terminal F1 \\
 $\min_k\,{\rm F1}_k$    & Worst-client F1 score \\
 $\sigma({\rm F1})$      & Inter-client F1 dispersion \\
 \hline\toprule
@@ -578,7 +632,7 @@ seed-controlled deterministic preprocessing pipeline:
 \label{eq:feature_fusion}
 \end{equation}
 where $\mathbf{F}_s$ denotes static flow descriptors
-(\textcolor{red}{ports, protocol, flow duration, packet and byte
+(\rev{R1.7}\textcolor{red}{ports, protocol, flow duration, packet and byte
 counts, packet-length statistics, inter-arrival times, flag
 counts, and bulk and activity statistics produced by
 CICFlowMeter, $|\mathbf{F}_s|=69$; flow identifiers, IP
@@ -586,7 +640,7 @@ addresses, and timestamps are excluded from the feature vector to
 prevent identity shortcuts, and so are the four \texttt{Idle}
 fields, which in ACI-IoT store absolute epoch timestamps and would
 leak capture time}) and $\mathbf{F}_c$ encodes
-context-aware features computed offline via fixed sliding-window operators and transition statistics. To ensure end-to-end reproducibility, this global fixed seed governs both the probabilistic \textcolor{red}{measurement} sampling in Stage $\mathcal{Q}_{Q}$ and the stochastic weight initialization of the Stage D temporal classifier. Context features capture burst
+context-aware features computed offline via fixed sliding-window operators and transition statistics. To ensure end-to-end reproducibility, this global fixed seed governs both the probabilistic \rev{R1.1}\textcolor{red}{measurement} sampling in Stage $\mathcal{Q}_{Q}$ and the stochastic weight initialization of the Stage D temporal classifier. Context features capture burst
 activity, dormant intervals, and protocol state transitions that
 are not separable under static feature selection alone; no live
 behavioral monitoring is performed at runtime.
@@ -604,7 +658,7 @@ the history of flow $i$ is}
 \textcolor{red}{\mathcal{H}_W(i)=\{\,j<i:\ s_j=s_i,\ t_j\ge t_i-W\,\},}
 \label{eq:context_history}
 \end{equation}
-\textcolor{red}{which excludes flow $i$ itself, and $\mathrm{prev}(i)$
+\rev{R1.7}\textcolor{red}{which excludes flow $i$ itself, and $\mathrm{prev}(i)$
 denotes the most recent earlier flow of the same source. Every
 feature therefore depends only on past traffic of the same source
 and uses no labels. Windows are $W\in\{10,60\}$\,s: 10\,s captures
@@ -661,7 +715,7 @@ Transition & \texttt{proto\_switch} & $\mathbb{1}[\pi_i\neq\pi_{\mathrm{prev}(i)
 \end{tabular}
 \end{table*}
 
-\textcolor{red}{Six CICFlowMeter fields (\texttt{Bwd PSH Flags},
+\rev{R1.4}\textcolor{red}{Six CICFlowMeter fields (\texttt{Bwd PSH Flags},
 \texttt{Bwd URG Flags}, \texttt{Fwd Bytes/Bulk Avg},
 \texttt{Fwd Packet/Bulk Avg}, \texttt{Fwd Bulk Rate Avg},
 \texttt{Subflow Bwd Packets}) are constant on $\mathcal{D}_{\rm tr}$
@@ -670,7 +724,7 @@ $\mathcal{D}_{\rm tr}$ only.} \rev{R1.4}\textcolor{red}{Constant columns
 carry no information, yet they leave both sums of the trace-ratio
 fitness~\eqref{eq:qpsobj} unchanged, so without this filter they
 could be selected at no cost and occupy mask slots.}
-\textcolor{red}{The fused representation has $d=86$ features
+\rev{R1.5}\textcolor{red}{The fused representation has $d=86$ features
 ($69$ static and $17$ context).
 A class-balanced subsample of 80{,}000 flows (40{,}000 benign,
 40{,}000 attack; attack-type proportions preserved) is drawn with
@@ -697,7 +751,7 @@ representation is normalized as
 \end{equation}
 using parameters computed on $\mathcal{D}_{\rm tr}$ and applied
 without update to $\mathcal{D}_{\rm va}$ and $\mathcal{D}_{\rm te}$
-\textcolor{red}{(values outside $[0,1]$ are clipped)},
+\rev{R1.5}\textcolor{red}{(values outside $[0,1]$ are clipped)},
 eliminating feature-induced confounding across centralized and
 federated regimes. The resulting $\mathbf{Z}_n$ is the fixed input
 to Stage~$\mathcal{Q}_{Q}$. Fig.~\ref{fig:pipeline} illustrates
@@ -906,7 +960,7 @@ matching the constants in Table~\ref{tab:q_constants}.}}
 \label{fig:qpso_dynamics}
 \end{figure*}
 
-\textcolor{red}{\textit{Fitness.} A sampled mask is scored by the
+\rev{R1.1, R1.5}\textcolor{red}{\textit{Fitness.} A sampled mask is scored by the
 Fisher class-separability ratio of the selected features,}
 \begin{equation}
 \textcolor{red}{\mathcal{J}(\mathbf{m}) =
@@ -986,7 +1040,7 @@ deviation and lower validation MSE and $\Delta_{\rm bal}$, where}
 +\bigl|\mathrm{FAR}_{\rm Atk}-\mathrm{MD}_{\rm Atk}\bigr|
 \label{eq:balance}
 \end{equation}
-\textcolor{red}{penalizes asymmetric error modes. Because QPSO is
+\rev{R1.2}\textcolor{red}{penalizes asymmetric error modes. Because QPSO is
 excluded from the inference path and $k$ is fixed, deployment
 latency and memory do not depend on $Q$
 (Section~\ref{subsec:latency_design}). The rule selects
@@ -1052,7 +1106,7 @@ to a binary temporal classifier:
 \end{cases}}
 \label{eq:classifier}
 \end{equation}
-\textcolor{red}{where $(\boldsymbol{\mu},\log\boldsymbol{\sigma}^2)
+\rev{R1.11}\textcolor{red}{where $(\boldsymbol{\mu},\log\boldsymbol{\sigma}^2)
 \in\mathbb{R}^{64}\times\mathbb{R}^{64}$ are linear projections of
 the final recurrent state $h_T$ and
 $\boldsymbol{\epsilon}\sim\mathcal{N}(\mathbf{0},\mathbf{I})$.
@@ -1082,14 +1136,14 @@ the $Q$ ablation, the budget and selector comparisons, and the local
 updates of all federated clients (batch size 64). Adam is not used
 in any reported experiment; the comparison of SGD, Adam, and
 Newton--Hessian updates belongs to the conference
-version~\cite{ajakweconquest}, which retained SGD.} \textcolor{red}{Training
+version~\cite{ajakweconquest}, which retained SGD.} \rev{R1.5}\textcolor{red}{Training
 runs for at most 35 epochs; early stopping monitors validation
 loss with patience 6 and restores the best weights, and the
 learning rate is halved after 3 epochs without validation-loss
 improvement (minimum $10^{-6}$).} At
 deployment, no QPSO computation occurs; inference executes
 solely as $\hat{\mathbf{y}}=f_\theta(\mathbf{m}^{*}\odot\mathbf{Z}_n)$,
-\textcolor{red}{which is the basis of~\eqref{eq:infer_invariance};
+\rev{R1.10}\textcolor{red}{which is the basis of~\eqref{eq:infer_invariance};
 the corresponding measurements are defined in
 Section~\ref{subsec:latency_design}.}
 
@@ -1100,16 +1154,16 @@ Section~\ref{subsec:latency_design}.}
 \subsection{Latency-Aware Design and Resource Constraints}
 \label{subsec:latency_design}
 %% ----------------------------------------------------
-\textcolor{red}{CONQUEST separates two cost categories that are
+\rev{R1.10, R2.4}\textcolor{red}{CONQUEST separates two cost categories that are
 measured and reported separately.}
 
-\textcolor{red}{\textit{(i) Offline training cost}, incurred once
+\rev{R1.10}\textcolor{red}{\textit{(i) Offline training cost}, incurred once
 per model and never on the detection path: the QPSO search time
 $T_{\rm QPSO}(Q)$ and the classifier training time
 $T_{\rm train}$, both measured as wall-clock time on the training
 host.}
 
-\textcolor{red}{\textit{(ii) Online deployment cost}, incurred for
+\rev{R1.10}\textcolor{red}{\textit{(ii) Online deployment cost}, incurred for
 every classified window. The per-window latency is decomposed as}
 \begin{equation}
 \textcolor{red}{\mathcal{L}_{\rm infer} =
@@ -1124,7 +1178,7 @@ the classifier. QPSO does not appear in~\eqref{eq:latency_decomp},
 and because $k$ is fixed, $\mathcal{L}_{\rm infer}$ does not depend
 on $Q$~\eqref{eq:infer_invariance}.}
 
-\textcolor{red}{\textit{Measurement procedure.} All timings use
+\rev{R2.4}\textcolor{red}{\textit{Measurement procedure.} All timings use
 \texttt{time.perf\_counter} on the CPU-only host of
 Table~\ref{tab:impl_setup}, with the TensorFlow thread count fixed
 per process. We report: (a) per-window latency at batch size 1,
@@ -1178,9 +1232,9 @@ Reproducibility& Deterministic ops   &
   Seed-controlled \\
 \hline
 Data           & Batch / sequence    &
-  \textcolor{red}{$B=32$ (centralized), $B=64$ (local FL)},\ $T=10$ &
+  \rev{R1.11}\textcolor{red}{$B=32$ (centralized), $B=64$ (local FL)},\ $T=10$ &
   Fixed across all regimes \\
-               & \textcolor{red}{Subsample / split} &
+               & \rev{R1.5}\textcolor{red}{Subsample / split} &
   \textcolor{red}{80k balanced; blocked temporal 70/15/15 (500-flow blocks)} &
   \textcolor{red}{Fixed split seed 42} \\
 \hline
@@ -1188,17 +1242,17 @@ Training       & Optimizer / LR      &
   \rev{R1.11}\textcolor{red}{SGD (Nesterov, momentum 0.9)},\ $10^{-3}$ &
   Centralized + local FL \\
                & Epoch cap / stopping&
-  \textcolor{red}{35 epochs;\ patience 6, best weights restored} &
+  \rev{R1.5}\textcolor{red}{35 epochs;\ patience 6, best weights restored} &
   Validation-loss criterion \\
-               & \textcolor{red}{KL weight} &
+               & \rev{R1.11}\textcolor{red}{KL weight} &
   \textcolor{red}{$\gamma=10^{-3}$} &
   \textcolor{red}{Eq.~\eqref{eq:total_loss}} \\
 \hline
 Model          & LSTM backbone       &
-  \textcolor{red}{LSTM 256 + 2-head attention + LSTM 128};\ dropout 0.2 &
+  \rev{R1.11}\textcolor{red}{LSTM 256 + 2-head attention + LSTM 128};\ dropout 0.2 &
   Non-bidirectional \\
                & VAE latent dim.     &
-  \textcolor{red}{64}                       &
+  \rev{R1.11}\textcolor{red}{64}                       &
   LSTM(+VAE) variants only \\
 \hline
 QPSO           & Particles / iters   &
@@ -1213,12 +1267,12 @@ QPSO           & Particles / iters   &
   Mean$\pm$std over $\mathcal{S}$ \\
 \hline
 Federated      & Clients / fraction  &
-  $K=5$ \textcolor{red}{(sensitivity: $K\in\{10,20\}$)};\ full participation &
+  $K=5$ \rev{R2.2}\textcolor{red}{(sensitivity: $K\in\{10,20\}$)};\ full participation &
   Main setting \\
                & Local epochs / rounds&
-  \textcolor{red}{$E=2$;\ $R=30$ for every FL experiment} &
+  \rev{R1.9}\textcolor{red}{$E=2$;\ $R=30$ for every FL experiment} &
   \textcolor{red}{Identical across blocks} \\
-               & \textcolor{red}{Mask construction} &
+               & \rev{R1.8}\textcolor{red}{Mask construction} &
   \textcolor{red}{Proxy (default); vote; central} &
   \textcolor{red}{Section~\ref{subsec:federated_protocol_convergence}} \\
                & Aggregators         &
@@ -1235,7 +1289,7 @@ IDS with variance-based feature selection), and QCIDS
 (context-aware IDS with QPSO-selected features). OS-CIDS and
 QCIDS differ only in the addition of (a) context-aware
 representation and (b) QPSO feature selection.
-\textcolor{red}{Because these two factors change together, a
+\rev{R1.6}\textcolor{red}{Because these two factors change together, a
 $2\times2$ factorial ablation is also run: context features
 \{off, on\} $\times$ selector \{variance, QPSO\}, all with $k=40$
 and the same classifier, so that each factor's effect and their
@@ -1312,7 +1366,7 @@ $\boldsymbol{\pi}^{(c)}\sim\textsc{Dirichlet}(\alpha\mathbf{1})$,
 with smaller $\alpha$ yielding sharper per-client concentration.
 Because mission readiness is governed by tail behavior, all
 regimes are evaluated using global F1/AUC alongside
-$\textcolor{red}{R_{99}}$, $\min_k\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
+$R_{99}$, $\min_k\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
 
 %% ----------------------------------------------------------
 \subsection{Federated Learning Protocol and Convergence
@@ -1326,7 +1380,7 @@ learning (HFL) setting with $K$ clients. Feature selection
 via QPSO is performed in a pre-federation phase on a
 server-held proxy dataset; the resulting mask $\mathbf{m}^{*}$
 is broadcast to all clients before federated training begins.
-\textcolor{red}{The proxy set is a labelled 5\% subset of
+\rev{R1.8}\textcolor{red}{The proxy set is a labelled 5\% subset of
 $\mathcal{D}_{\rm tr}$, made of evenly spaced contiguous chunks so
 that it spans the capture period, and it is withheld from all
 clients. It models the small curated reference capture that a
@@ -1465,7 +1519,7 @@ Feature mask, vote mode & Server sees each client's $k$ indices & Indices only, 
 \end{tabular}
 \end{table}
 
-\textcolor{red}{All federated experiments use one configuration:
+\rev{R1.9}\textcolor{red}{All federated experiments use one configuration:
 $R=30$ rounds, $E=2$ local epochs, full participation, and batch
 size 64, with $K=5$ unless stated otherwise. Clients are built from contiguous 250-flow chunks of
 $\mathcal{D}_{\rm tr}$, so no flow or window is shared between
@@ -1485,7 +1539,7 @@ because the temporal clustering of ACI-IoT attacks makes them
 small and often single-class. Client-count sensitivity repeats the
 quantity-skew experiment with $K\in\{5,10,20\}$.}
 
-\textcolor{red}{\textit{Aggregators.} SCAFFOLD follows option~II of
+\rev{R1.9}\textcolor{red}{\textit{Aggregators.} SCAFFOLD follows option~II of
 its original formulation: server and client control variates
 $\mathbf{c}$ and $\mathbf{c}_k$ (initialized to zero) correct every
 local gradient by $\mathbf{c}-\mathbf{c}_k$, and after local
@@ -1502,8 +1556,8 @@ Gaussian noise with standard deviation $\lambda$ times the median
 norm ($\lambda=10^{-3}$).} Convergence is monitored
 using the thresholded stabilization metric:
 \begin{equation}
-\textcolor{red}{R_{99}}=\min\bigl\{r:\mathrm{F1}^{(r)}\ge
-\textcolor{red}{0.99}\,\mathrm{F1}^{(R)}\bigr\},
+R_{99}=\min\bigl\{r:\mathrm{F1}^{(r)}\ge
+0.99\,\mathrm{F1}^{(R)}\bigr\},
 \label{eq:r90}
 \end{equation}
 which remains comparable across heterogeneity regimes and
@@ -1517,7 +1571,7 @@ reported federated model is always the one after the fixed final
 round, never a round selected on $\mathcal{D}_{\rm te}$.} Per-client
 consistency is tracked via worst-case performance
 $\min_k\mathrm{F1}_k$ and inter-client dispersion
-\textcolor{red}{of the final global model}:
+\rev{R1.9}\textcolor{red}{of the final global model}:
 \begin{equation}
 \sigma\!\left(\mathrm{F1}\right)=
 \sqrt{\frac{1}{K}\sum_{k=1}^{K}
@@ -1549,7 +1603,7 @@ This section evaluates CONQUEST across centralized and federated
 deployment settings. Section~\ref{subsec:obj1_cyberworm_perf}
 establishes the centralized performance hierarchy across S-CIDS,
 OS-CIDS, and QCIDS. Section~\ref{subsec:obj2_latency} presents
-the variable-qubit latency-accuracy trade-off \textcolor{red}{and the
+the variable-qubit latency-accuracy trade-off \rev{R1.10}\textcolor{red}{and the
 deployment cost of the selected operating point}. Section~\ref{subsec:obj3_heterogeneity}
 evaluates federated robustness under four heterogeneity regimes
 and compares aggregation strategies.
@@ -2253,7 +2307,7 @@ evaluation on ACI-IoT unless stated.}
 CNN--LSTM + attn + PSO &
 Acc: 98.73--99.87\% on WIoTSN; centralized &
 No FL, stability, or deployability analysis &
-Adds \textcolor{red}{$R_{99}{\approx}7$, $\min\text{-F1}{=}96.4\%$,
+Adds \rev{R1.9}\textcolor{red}{$R_{99}{\approx}7$, $\min\text{-F1}{=}96.4\%$,
 $\sigma(\mathrm{F1}){=}0.7$\,pp};
 \rev{R1.10}\rev{R2.4}\textcolor{red}{latency about 3\,ms per window, memory 541\,MB} \\
 \midrule
@@ -2291,7 +2345,7 @@ Up to 99.71\% (InSDN); global metrics only &
 Trusted aggregator; no heterogeneity
 stress-test &
 Adds IID, label-skew, qty-skew, Dirichlet
-regimes; $\textcolor{red}{R_{99}}$, $\min\text{-F1}$,
+regimes; $R_{99}$, $\min\text{-F1}$,
 $\sigma(\mathrm{F1})$ \\
 \midrule
 
@@ -2301,7 +2355,7 @@ IID: 98.75\%; non-IID: 98.44\%;
 two-client setup &
 No worst-client metric or stabilization
 analysis &
-Extends to \textcolor{red}{$K\in\{5,10,20\}$; $R_{99}{\approx}7$,
+Extends to \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$; $R_{99}{\approx}7$,
 $\min\text{-F1}{=}96.4\%$,
 $\sigma(\mathrm{F1}){=}0.7$\,pp} \\
 \midrule
@@ -2321,7 +2375,7 @@ FedAMKD &
 general FL &
 Not IDS-specific; no deployment metrics &
 Applies qty-skew analysis to cyberworm IDS;
-adds $\textcolor{red}{R_{99}}$, $\sigma(\mathrm{F1})$ \\
+adds $R_{99}$, $\sigma(\mathrm{F1})$ \\
 \midrule
 
 \cite{ajakweconquest} &
@@ -2355,7 +2409,7 @@ ACI-IoT} &
 MSE\,$=$\,\textcolor{red}{0.0246},
 \textcolor{red}{about 3\,ms per window, 541\,MB}.
 Federated (qty-skew):
-F1/AUC\,$=$\,\textcolor{red}{0.9666/0.9914,
+F1/AUC\,$=$\,\rev{R1.9}\textcolor{red}{0.9666/0.9914,
 $R_{99}{\approx}7$,
 $\min\text{-F1}{=}0.964$,
 $\sigma(\mathrm{F1}){=}0.007$}} &
@@ -2417,7 +2471,7 @@ degradation, while FL optimization
 studies~\cite{gefedamkd} address quantity-skew on general
 vision benchmarks without IDS-specific deployment metrics.
 None of these works link non-IID robustness to
-mission-facing criteria such as $\textcolor{red}{R_{99}}$,
+mission-facing criteria such as $R_{99}$,
 $\min_k\,\mathrm{F1}_k$, or $\sigma(\mathrm{F1})$.
 CONQUEST addresses the limitations of both lines of work
 within a unified reproducible pipeline. Under centralized
@@ -2524,7 +2578,7 @@ QPSO feature mask, \rev{R2.1}\textcolor{red}{differential privacy at
 larger client populations, where the DP noise per client shrinks,} communication-efficient aggregation to
 reduce the observed federated
 training overhead, and lightweight edge adaptation below
-the current \textcolor{red}{541}\,MB memory envelope.
+the current \rev{R1.10}\textcolor{red}{541}\,MB memory envelope.
 
 
 
