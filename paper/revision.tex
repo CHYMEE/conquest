@@ -462,7 +462,7 @@ data, in both training regimes.
 \begin{figure*}[!htbp]
     \centering
 \includegraphics[width=0.8\linewidth]{images/CON-PICTURE2_rev.png}
-    \caption{CONQUEST architecture. Static flow descriptors $\mathbf{F}_s$ and context features $\mathbf{F}_c$ are fused into the normalized representation $\mathbf{Z}_n$; variable-qubit QPSO \rev{R1.1}\textcolor{red}{(Algorithm~\ref{alg:qpso}) selects a $k$-feature mask $\mathbf{m}^{*}$ on $\mathcal{D}_{\rm tr}$, with $Q$ chosen on $\mathcal{D}_{\rm va}$}; an LSTM(+VAE) classifier performs binary detection, trained centrally or by horizontal federated learning.}
+    \caption{CONQUEST architecture. Static flow descriptors $\mathbf{F}_s$ and context features $\mathbf{F}_c$ are fused into the normalized representation $\mathbf{Z}_n$; variable-qubit QPSO \rev{R1.1}\textcolor{red}{selects a $k$-feature mask $\mathbf{m}^{*}$ on $\mathcal{D}_{\rm tr}$, with $Q$ chosen on $\mathcal{D}_{\rm va}$}; an LSTM(+VAE) classifier performs binary detection, trained centrally or by horizontal federated learning.}
 \label{fig:conquest_architecture}
 \end{figure*}
 
@@ -531,36 +531,39 @@ reported in Section~\ref{subsec:obj2_latency}.}
 \scriptsize
 \caption{\rev{R1.7}\textcolor{red}{Context-aware features
 $\mathbf{F}_c$ ($|\mathbf{F}_c|=17$). $\mathcal{H}_W(i)$: earlier
-flows of the same source within $W$\,s, Eq.~\eqref{eq:context_history};
-$\mathrm{prev}(i)$: the source's previous flow; $n^{\rm pk}_j$,
-$n^{\rm by}_j$: total forward plus backward packets and bytes of flow
-$j$; $\mathbb{1}[\cdot]$: indicator. Each row has dimension 1; rows
-with $W\in\{10,60\}$ are computed for both windows.}}
+flows of the same source within $W$\,s; $\mathrm{prev}(i)$: the
+source's previous flow; $n^{\rm pk}_j$, $n^{\rm by}_j$: packets and
+bytes of flow $j$ (both directions); $\mathbf{1}[\cdot]$: indicator.
+Default: value when the source has no earlier flow.}}
 \label{tab:context_features}
 \color{red}
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.12}
-\begin{tabular}{l l l c c}
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{l l l c c c}
 \hline\toprule
-\textbf{Group} & \textbf{Feature} & \textbf{Definition} & \textbf{$W$ (s)} & \textbf{Dim.} \\
+\textbf{Group} & \textbf{Feature} & \textbf{Definition} & \textbf{$W$ (s)} & \textbf{Default} & \textbf{Dim.} \\
 \hline\toprule
-Burst & \texttt{n\_flows\_src\_W} & $|\mathcal{H}_W(i)|$ & 10, 60 & 2 \\
-      & \texttt{pkt\_rate\_src\_W} & $\frac{1}{W}\sum_{j\in\mathcal{H}_W(i)} n^{\rm pk}_j$ & 10, 60 & 2 \\
-      & \texttt{bytes\_rate\_src\_W} & $\frac{1}{W}\sum_{j\in\mathcal{H}_W(i)} n^{\rm by}_j$ & 10, 60 & 2 \\
+\multirow{3}{*}{Burst}
+ & \texttt{n\_flows\_src\_W}    & $|\mathcal{H}_W(i)|$ & 10, 60 & 0 & 2 \\
+ & \texttt{pkt\_rate\_src\_W}   & $\sum_{j\in\mathcal{H}_W(i)} n^{\rm pk}_j \,/\, W$ & 10, 60 & 0 & 2 \\
+ & \texttt{bytes\_rate\_src\_W} & $\sum_{j\in\mathcal{H}_W(i)} n^{\rm by}_j \,/\, W$ & 10, 60 & 0 & 2 \\
 \midrule
-Dormant interval & \texttt{dt\_prev\_src} & $t_i-t_{\mathrm{prev}(i)}$; $10^{6}$\,s if the source has no earlier flow & -- & 1 \\
-      & \texttt{dt\_prev\_src\_log} & $\log(1+\texttt{dt\_prev\_src})$ & -- & 1 \\
-      & \texttt{max\_gap\_src\_60} & largest gap between consecutive flows of the source within $\mathcal{H}_{60}(i)\cup\{i\}$; 60 if $\mathcal{H}_{60}(i)=\emptyset$ & 60 & 1 \\
+\multirow{3}{*}{Dormant interval}
+ & \texttt{dt\_prev\_src}     & $t_i-t_{\mathrm{prev}(i)}$ & -- & $10^{6}$ & 1 \\
+ & \texttt{dt\_prev\_src\_log} & $\log(1+\texttt{dt\_prev\_src})$ & -- & $\log(1+10^{6})$ & 1 \\
+ & \texttt{max\_gap\_src\_60}  & Largest gap between consecutive flows in $\mathcal{H}_{60}(i)\cup\{i\}$ & 60 & 60 & 1 \\
 \midrule
-Sliding-window diversity & \texttt{n\_distinct\_dst\_W} & $|\{a_j: j\in\mathcal{H}_W(i)\}|$ & 10, 60 & 2 \\
-      & \texttt{n\_distinct\_dport\_W} & $|\{p_j: j\in\mathcal{H}_W(i)\}|$ & 10, 60 & 2 \\
+\multirow{2}{*}{Diversity}
+ & \texttt{n\_distinct\_dst\_W}   & $|\{a_j: j\in\mathcal{H}_W(i)\}|$ & 10, 60 & 0 & 2 \\
+ & \texttt{n\_distinct\_dport\_W} & $|\{p_j: j\in\mathcal{H}_W(i)\}|$ & 10, 60 & 0 & 2 \\
 \midrule
-Transition & \texttt{proto\_switch} & $\mathbb{1}[\pi_i\neq\pi_{\mathrm{prev}(i)}]$; 0 if no earlier flow & -- & 1 \\
-      & \texttt{n\_proto\_switch\_60} & $\sum_{j\in\mathcal{H}_{60}(i)} \texttt{proto\_switch}_j$ & 60 & 1 \\
-      & \texttt{syn\_frac\_src\_60} & $\frac{1}{|\mathcal{H}_{60}(i)|}\sum_{j\in\mathcal{H}_{60}(i)} \mathbb{1}[\mathrm{SYN}_j>0]$; 0 if empty & 60 & 1 \\
-      & \texttt{dport\_switch} & $\mathbb{1}[p_i\neq p_{\mathrm{prev}(i)}]$; 0 if no earlier flow & -- & 1 \\
+\multirow{4}{*}{Transition}
+ & \texttt{proto\_switch}       & $\mathbf{1}[\pi_i\neq\pi_{\mathrm{prev}(i)}]$ & -- & 0 & 1 \\
+ & \texttt{dport\_switch}       & $\mathbf{1}[p_i\neq p_{\mathrm{prev}(i)}]$ & -- & 0 & 1 \\
+ & \texttt{n\_proto\_switch\_60} & $\sum_{j\in\mathcal{H}_{60}(i)} \texttt{proto\_switch}_j$ & 60 & 0 & 1 \\
+ & \texttt{syn\_frac\_src\_60}  & Fraction of flows in $\mathcal{H}_{60}(i)$ with $\mathrm{SYN}_j>0$ & 60 & 0 & 1 \\
 \midrule
-\multicolumn{4}{l}{\textbf{Total} (burst 6, dormant interval 3, diversity 4, transition 4)} & \textbf{17} \\
+\multicolumn{5}{l}{\textbf{Total} (burst 6, dormant interval 3, diversity 4, transition 4)} & \textbf{17} \\
 \hline\toprule
 \end{tabular}
 \end{table*}
