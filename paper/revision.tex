@@ -1023,70 +1023,39 @@ performance under full data visibility.
 \centering
 \caption{Experimental environment and implementation settings.}
 \label{tab:impl_setup}
-\setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.10}
-\begin{tabular}{llll}
+\def\rc#1{\textcolor{red}{#1}}
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l l l l}
 \hline\toprule
-\textbf{Block} & \textbf{Item} &
-\textbf{Setting} & \textbf{Scope} \\
+\textbf{Block} & \textbf{Item} & \textbf{Setting} & \textbf{Scope} \\
 \hline\toprule
-Environment    & Platform            &
-  Windows 10 (10.0.19045), CPU-only         &
-  All runs \\
-               & Framework           &
-  TensorFlow 2.20.0 (Python 3.13.5)         &
-  Training + inference \\
-Reproducibility& Deterministic ops   &
-  \texttt{TF\_DETERMINISTIC\_OPS=1}         &
-  Seed-controlled \\
-\hline
-Data           & Batch / sequence    &
-  \rev{R1.11}\textcolor{red}{$B=32$ (centralized), $B=64$ (local FL)},\ $T=10$ &
-  Fixed across all regimes \\
-               & \rev{R1.5}\textcolor{red}{Subsample / split} &
-  \textcolor{red}{80k balanced; blocked temporal 70/15/15 (500-flow blocks)} &
-  \textcolor{red}{Fixed split seed 42} \\
-\hline
-Training       & Optimizer / LR      &
-  \rev{R1.11}\textcolor{red}{SGD (Nesterov, momentum 0.9)},\ $10^{-3}$ &
-  Centralized + local FL \\
-               & Epoch cap / stopping&
-  \rev{R1.5}\textcolor{red}{35 epochs;\ patience 6, best weights restored} &
-  Validation-loss criterion \\
-               & \rev{R1.11}\textcolor{red}{KL weight} &
-  \textcolor{red}{$\gamma=10^{-3}$} &
-  \textcolor{red}{Eq.~\eqref{eq:total_loss}} \\
-\hline
-Model          & LSTM backbone       &
-  \rev{R1.11}\textcolor{red}{LSTM 256 + 2-head attention + LSTM 128};\ dropout 0.2 &
-  Non-bidirectional \\
-               & VAE latent dim.     &
-  \rev{R1.11}\textcolor{red}{64}                       &
-  LSTM(+VAE) variants only \\
-\hline
-QPSO           & Particles / iters   &
-  $P=20$;\ $I=30$ \rev{R1.3}\textcolor{red}{(sensitivity: $P\in\{20,40\}$, $I\in\{30,60\}$)} &
-  Per QPSO run \\
-               & \textcolor{red}{Selected features} &
-  \rev{R1.5}\textcolor{red}{$k=40$; fitness on $\mathcal{D}_{\rm tr}$ only} &
-  \textcolor{red}{All selectors} \\
-               & Qubit sweep / seeds &
-  $Q\in\{1,\dots,8\}$;\
-  \rev{R1.2}\textcolor{red}{$\mathcal{S}=\{42,\dots,51\}$} &
-  Mean$\pm$std over $\mathcal{S}$ \\
-\hline
-Federated      & Clients / fraction  &
-  $K=5$ \rev{R2.2}\textcolor{red}{(sensitivity: $K\in\{10,20\}$)};\ full participation &
-  Main setting \\
-               & Local epochs / rounds&
-  \rev{R1.9}\textcolor{red}{$E=2$;\ $R=30$ for every FL experiment} &
-  \textcolor{red}{Identical across blocks} \\
-               & \rev{R1.8}\textcolor{red}{Mask construction} &
-  \textcolor{red}{Proxy (default); vote; central} &
-  \textcolor{red}{Shared by all clients} \\
-               & Aggregators         &
-  FedAvg;\ SCAFFOLD;\ FLAME                &
-  Identical partitions \\
+Environment & Platform & Windows 10, CPU only & All runs \\
+ & Framework & TensorFlow 2.20.0, Python 3.13.5 & Training and inference \\
+ & Determinism & \texttt{TF\_DETERMINISTIC\_OPS=1} & Seed-controlled \\
+\midrule
+Data & \rev{R1.5}\rc{Subsample} & \rc{80k flows, class-balanced} & \rc{Fixed seed 42} \\
+ & \rev{R1.5}\rc{Split} & \rc{Blocked temporal, 70/15/15} & \rc{500-flow blocks} \\
+ & Window length & $T=10$ flows & All regimes \\
+ & \rev{R1.11}\rc{Batch size} & \rc{32 centralized, 64 federated} & \rc{All regimes} \\
+\midrule
+Training & \rev{R1.11}\rc{Optimizer} & \rc{SGD, Nesterov momentum 0.9} & \rc{Centralized and federated} \\
+ & Learning rate & $10^{-3}$ & Centralized and federated \\
+ & \rev{R1.5}\rc{Stopping} & \rc{At most 35 epochs, patience 6} & \rc{Validation loss} \\
+ & \rev{R1.11}\rc{KL weight} & \rc{$\gamma=10^{-3}$} & \rc{Eq.~\eqref{eq:total_loss}} \\
+\midrule
+Model & \rev{R1.11}\rc{Encoder} & \rc{LSTM 256, 2-head attention, LSTM 128} & \rc{Dropout 0.2} \\
+ & \rev{R1.11}\rc{Latent size} & \rc{64} & \rc{LSTM(+VAE) variants} \\
+\midrule
+QPSO & Particles, iterations & $P=20$, $I=30$ & Default budget \\
+ & \rev{R1.3}\rc{Budget sensitivity} & \rc{$P=20$ or 40, $I=30$ or 60} & \rc{Five seeds} \\
+ & \rev{R1.5}\rc{Selected features} & \rc{$k=40$, fitness on $\mathcal{D}_{\rm tr}$} & \rc{All selectors} \\
+ & \rev{R1.2}\rc{Register size} & \rc{$Q=1$ to 8} & \rc{Ten seeds each} \\
+\midrule
+Federated & \rev{R2.2}\rc{Clients} & \rc{$K=5$; 10 and 20 for sensitivity} & \rc{Full participation} \\
+ & \rev{R1.9}\rc{Rounds, local epochs} & \rc{$R=30$, $E=2$} & \rc{All FL experiments} \\
+ & \rev{R1.8}\rc{Mask construction} & \rc{Proxy (default), vote, central} & \rc{Shared by all clients} \\
+ & Aggregators & FedAvg, SCAFFOLD, FLAME & Same partitions \\
 \hline\toprule
 \end{tabular}
 \end{table*}
