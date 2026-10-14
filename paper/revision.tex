@@ -616,6 +616,20 @@ therefore see identical inputs. $\mathbf{Z}_n$ is the fixed input to
 QPSO feature selection, and
 Fig.~\ref{fig:pipeline} illustrates the full preprocessing pipeline.
 
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=1.00\linewidth]{images/Data_flowchart_rev.png}
+    \caption{Preprocessing pipeline. Traffic is split into static flow
+    descriptors and context features, which are fused and min--max
+    normalized to form the input to QPSO feature selection.
+    \rev{R1.7}\textcolor{red}{The static part keeps 69 CICFlowMeter
+    features after identifiers, IP addresses, time fields, and constant
+    columns are removed; the 17 context features are listed in
+    Table~\ref{tab:context_features}; normalization is fitted on the
+    training data only.}}
+    \label{fig:pipeline}
+\end{figure*}
+
 %% ----------------------------------------------------------
 \subsection{Variable-Qubit QPSO Feature Selection}
 \label{subsec:qpsomethod}
@@ -629,23 +643,23 @@ $\mathbf{m}\in\{0,1\}^d$ that gates the normalized input:
 \label{eq:mask_gate}
 \end{equation}
 where $\odot$ denotes element-wise multiplication.
-\rev{R1.1}\textcolor{red}{Each of the $P$ particles $i$ holds a non-negative
-amplitude vector $\mathbf{a}_i\in\mathbb{R}_{\ge 0}^{d}$ with
-$\sum_j a_{i,j}=1$, one amplitude per feature; the particle
+\rev{R1.1}\textcolor{red}{Each of the $P$ particles $i$ holds a
+non-negative amplitude vector $\mathbf{a}_i\in\mathbb{R}_{\ge 0}^{d}$
+with $\sum_j a_{i,j}=1$, one amplitude per feature, so the particle
 dimension is $d$ for every $Q$. The register size $Q$ enters the
 search at three points. First, amplitudes are initialized at the
 uniform amplitude of a $Q$-qubit register plus Gaussian noise; after
-normalization only the relative perturbation
-$\rho(Q)=2^{Q/2}/(Q^{2}+1)$ matters (Table~\ref{tab:q_constants}):}
+normalization, only the relative perturbation
+$\rho(Q)=2^{Q/2}/(Q^{2}+1)$ matters:}
 \begin{equation}
 \textcolor{red}{a_{i,j}^{(0)} \propto \Bigl|\,2^{-Q/2} +
 \tfrac{\xi_{i,j}}{Q^{2}+1}\Bigr|,\quad
 \xi_{i,j}\sim\mathcal{N}(0,1).}
 \label{eq:qpso_init}
 \end{equation}
-\rev{R1.1}\textcolor{red}{Second, at iteration $t$ each particle is rotated
-toward its personal-best amplitude $\mathbf{a}_i^{\rm pb}$ and the
-global-best amplitude $\mathbf{a}^{\rm gb}$ by an angle whose
+\rev{R1.1}\textcolor{red}{Second, at iteration $t$, each particle is
+rotated toward its personal-best amplitude $\mathbf{a}_i^{\rm pb}$
+and the global-best amplitude $\mathbf{a}^{\rm gb}$ by an angle whose
 upper bound decreases with $Q$:}
 \begin{align}
 \textcolor{red}{\phi_t} &\textcolor{red}{= \frac{\pi}{2Q}\Bigl(1-\frac{t}{I}\Bigr),}
@@ -657,43 +671,41 @@ upper bound decreases with $Q$:}
 \end{align}
 \rev{R1.1}\textcolor{red}{with $r_1,r_2\sim\mathcal{U}(0,1)$ drawn per
 particle and iteration. Third, each amplitude independently
-``collapses'' to a fresh random value with a probability that
-decays exponentially in $Q$, after which the vector is
-renormalized:}
+``collapses'' to a fresh random value with a probability that decays
+exponentially in $Q$, and the vector is then renormalized:}
 \begin{equation}
 \textcolor{red}{a_{i,j} \leftarrow u_{i,j}\sim\mathcal{U}(0,1)
 \ \text{ with prob. } 2^{-Q},\qquad
 \mathbf{a}_i \leftarrow |\mathbf{a}_i| / \|\mathbf{a}_i\|_1 .}
 \label{eq:qpso_collapse}
 \end{equation}
-\rev{R1.1}\textcolor{red}{A mask is obtained by measurement: $k$ distinct
-feature indices are drawn without replacement with probabilities
-$\pi_{i,j}=a_{i,j}^{2}/\sum_{l}a_{i,l}^{2}$, and $m_{i,j}=1$ for
-the drawn indices,}
+\rev{R1.1}\textcolor{red}{A mask is obtained by measurement: $k$
+distinct feature indices are drawn without replacement with
+probabilities $\pi_{i,j}=a_{i,j}^{2}/\sum_{l}a_{i,l}^{2}$, and
+$m_{i,j}=1$ for the drawn indices,}
 \begin{equation}
 \textcolor{red}{\mathbf{m}_i = \textsc{Measure}_k(\boldsymbol{\pi}_i),
 \qquad \|\mathbf{m}_i\|_0 = k .}
 \label{eq:qpso_measure}
 \end{equation}
-\rev{R1.1}\textcolor{red}{The deployed mask $\mathbf{m}^{*}$ is the
-highest-fitness mask measured during the search, i.e.\ the
-measurement that produced the final global best, as in standard
-PSO. Hence $k$ is a fixed design parameter ($k=40$ in all
-experiments), and $Q$ shapes \emph{which} $k$ features are found,
-not how many. Algorithm~\ref{alg:qpso} summarizes the procedure and
+\rev{R1.1}\textcolor{red}{Each run returns $\mathbf{m}^{*}$, the
+highest-fitness mask measured during the search, as in standard PSO.
+Hence $k$ is a fixed design parameter, set to 40 in all experiments,
+and $Q$ shapes \emph{which} $k$ features are found, not how many.
+Algorithm~\ref{alg:qpso} summarizes the procedure, and
 Table~\ref{tab:q_constants} lists the constants set by each $Q$.}
 \rev{R1.4}\textcolor{red}{Because a single run's mask depends on its
 seed, the deployed detector uses a consensus mask
 $\mathbf{m}^{*}_{\rm cons}$: the $k$ features selected most often
-across the ten QPSO runs at the selected $Q^{*}$, with ties broken
-by the summed fitness of the runs that selected them. All ten masks
-are fitted on $\mathcal{D}_{\rm tr}$, so the consensus uses no
-validation or test information.}
+across the ten QPSO runs at the selected $Q^{*}$, with ties broken by
+the summed fitness of the runs that selected them. All ten runs use
+$\mathcal{D}_{\rm tr}$ only, so the consensus uses no validation or
+test data.}
 
 \begin{algorithm}[!t]
-\caption{\rev{R1.1}\textcolor{red}{Variable-qubit QPSO feature selection.
-Lines marked $\triangleright Q$ are the only
-places where $Q$ enters.}}
+\caption{\rev{R1.1}\textcolor{red}{Variable-qubit QPSO feature
+selection. Steps commented with Q are the only ones that depend on
+the register size.}}
 \label{alg:qpso}
 \color{red}
 \small
@@ -701,16 +713,16 @@ places where $Q$ enters.}}
 \Require $\mathbf{Z}_{\rm tr}\in[0,1]^{N\times d}$, labels $\mathbf{y}_{\rm tr}$, register size $Q$, particles $P$, iterations $I$, subset size $k$
 \Ensure Mask $\mathbf{m}^{*}\in\{0,1\}^{d}$ with $\|\mathbf{m}^{*}\|_0=k$
 \For{$i=1$ to $P$}
-  \State $\mathbf{a}_i\gets$ Eq.~\eqref{eq:qpso_init}, normalized \Comment{$\triangleright Q$}
+  \State $\mathbf{a}_i\gets$ Eq.~\eqref{eq:qpso_init}, normalized \Comment{$Q$}
   \State $\mathbf{m}_i\gets\textsc{Measure}_k(\mathbf{a}_i)$; $J_i\gets\mathcal{J}(\mathbf{m}_i)$ on $\mathcal{D}_{\rm tr}$
   \State $\mathbf{a}_i^{\rm pb}\gets\mathbf{a}_i$; $J_i^{\rm pb}\gets J_i$
 \EndFor
 \State $i^{\star}\gets\arg\max_i J_i$; $\mathbf{a}^{\rm gb}\gets\mathbf{a}_{i^{\star}}$; $\mathbf{m}^{*}\gets\mathbf{m}_{i^{\star}}$; $J^{*}\gets J_{i^{\star}}$
 \For{$t=0$ to $I-1$}
-  \State $\phi_t\gets\frac{\pi}{2Q}(1-t/I)$ \Comment{$\triangleright Q$}
+  \State $\phi_t\gets\frac{\pi}{2Q}(1-t/I)$ \Comment{$Q$}
   \For{$i=1$ to $P$}
     \State $\mathbf{a}_i\gets$ rotation toward $\mathbf{a}_i^{\rm pb},\mathbf{a}^{\rm gb}$, Eq.~\eqref{eq:qpso_rotation}
-    \State reset each $a_{i,j}$ w.p.\ $2^{-Q}$; normalize, Eq.~\eqref{eq:qpso_collapse} \Comment{$\triangleright Q$}
+    \State reset each $a_{i,j}$ w.p.\ $2^{-Q}$; normalize, Eq.~\eqref{eq:qpso_collapse} \Comment{$Q$}
     \State $\mathbf{m}_i\gets\textsc{Measure}_k(\mathbf{a}_i)$, Eq.~\eqref{eq:qpso_measure}; $J_i\gets\mathcal{J}(\mathbf{m}_i)$
     \If{$J_i>J_i^{\rm pb}$}
       \State $\mathbf{a}_i^{\rm pb}\gets\mathbf{a}_i$; $J_i^{\rm pb}\gets J_i$
@@ -727,17 +739,15 @@ places where $Q$ enters.}}
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.1}\textcolor{red}{Search constants set by the register size
-$Q$ ($d=86$). $\rho$: relative initial perturbation; $\phi_{\max}$:
-rotation-angle bound; $2^{-Q}$: per-amplitude collapse probability;
-$d\,2^{-Q}$: expected resets per particle and iteration.}}
+\caption{\rev{R1.1}\textcolor{red}{Search constants set by the
+register size for the 86 input features.}}
 \label{tab:q_constants}
-\setlength{\tabcolsep}{5pt}
+\setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.05}
 \color{red}
 \begin{tabular}{cccccc}
 \hline\toprule
-$Q$ & $\rho(Q)$ & $\phi_{\max}$ (deg) & $2^{-Q}$ & $d\,2^{-Q}$ & Regime \\
+$Q$ & \makecell{Initial\\perturbation} & \makecell{Max.\ rotation\\(deg)} & \makecell{Reset\\probability} & \makecell{Resets per particle\\and iteration} & Regime \\
 \hline\toprule
 1  & 0.71 & 90.0 & 0.500  & 43.0 & near-random \\
 2  & 0.40 & 45.0 & 0.250  & 21.5 & exploratory \\
@@ -753,73 +763,58 @@ $Q$ & $\rho(Q)$ & $\phi_{\max}$ (deg) & $2^{-Q}$ & $d\,2^{-Q}$ & Regime \\
 \end{tabular}
 \end{table}
 
-\rev{R1.1, R1.2}\textcolor{red}{\textit{Interpretation of $Q$.} For $Q=1$, the
-rotation bound is $\pi/2$ and half of all amplitudes are reset at
-every iteration, so the search is close to random sampling. As
-$Q$ increases, the bound shrinks to $\pi/16$ at $Q=8$, the update
-is dominated by the personal-best term ($\cos\phi_t\to 1$), and
-the expected number of resets per particle and iteration,
-$d\,2^{-Q}$, falls below one. $Q$ therefore interpolates between
-exploration and exploitation, with a risk of premature convergence
-at large $Q$ under a finite budget. Beyond $Q=8$ the collapse
-probability is at most $0.2\%$ and the global-best pull
-($\sin\phi_t<0.2$) is weak, so the search is effectively frozen
-around its initialization; this motivates the tested range
-$Q\in\{1,\dots,8\}$. The range is extended to $Q=10$ in the
-budget-sensitivity analysis \rev{R1.3}\textcolor{red}{(Section~\ref{subsec:obj1_cyberworm_perf})} to confirm this.}
+\rev{R1.1}\rev{R1.2}\textcolor{red}{Table~\ref{tab:q_constants} shows
+how $Q$ shapes the search. With a single qubit, the rotation bound is
+$\pi/2$ and half of all amplitudes are reset at every iteration, so
+the search is close to random sampling. As $Q$ grows, the bound
+shrinks, the personal-best term dominates the update, and from $Q=7$
+onward fewer than one amplitude per particle is reset at each
+iteration. $Q$ therefore
+moves the search from exploration to exploitation, with a risk of
+premature convergence at large $Q$ under a finite budget. Beyond
+$Q=8$, resets are rare and the pull toward the global best is weak,
+so the search stays close to its initialization. The trained-detector
+ablation therefore covers $Q=1$ to $8$, and the budget analysis
+extends the range to $Q=10$ to confirm this behavior.}
 
-\rev{R1.1}\textcolor{red}{We stress that CONQUEST is quantum-\emph{inspired}
-and runs on classical hardware: no $2^{Q}$-dimensional state vector
-is simulated, and the particle dimension is $d$ for every $Q$. The
-term ``qubit'' refers to the register whose uniform amplitude
-$2^{-Q/2}$ and measurement-collapse probability $2^{-Q}$ motivate
-the three $Q$-dependent constants above; $Q$ is therefore a single
-interpretable hyperparameter that sets the exploration schedule of
-the swarm, not a measure of model capacity.}
+\rev{R1.1}\textcolor{red}{CONQUEST is quantum-\emph{inspired} and runs
+on classical hardware: no $2^{Q}$-dimensional state vector is
+simulated, and the particle dimension is $d$ for every $Q$. The term
+``qubit'' refers to the register whose uniform amplitude $2^{-Q/2}$
+and collapse probability $2^{-Q}$ motivate the three constants
+above. $Q$ is thus a single interpretable hyperparameter that sets
+the exploration schedule of the swarm, not a measure of model
+capacity.}
 
-\rev{R1.1}\textcolor{red}{\textit{Empirical search dynamics.}
-Fig.~\ref{fig:qpso_dynamics} verifies this interpretation by
-running Algorithm~\ref{alg:qpso} on $\mathcal{D}_{\rm tr}$ for
-$Q\in\{1,\dots,10\}$ and ten seeds, without training any
-classifier. Three regimes appear. For $Q=1$, the amplitude entropy
-drops only to $0.75$ and stays there, because about half of all
-amplitudes are reset at every iteration; the swarm keeps sampling
-almost uniformly. For $Q\in\{4,\dots,7\}$, entropy falls to
-$0.25$--$0.35$ within a few iterations, and swarm diversity dips
-most strongly for $Q\in\{4,5,6\}$, i.e.\ the search concentrates
-on a feature subset.
-For $Q\ge 9$, entropy decreases slowly and remains near
-$0.54$--$0.66$, because the small rotation angle and rare collapses
-barely move the particles from their initialization. The best
-Fisher fitness found is highest at $Q=4$ ($4836\pm335$) and lower
-at both extremes ($4448\pm185$ at $Q=1$, $4426\pm336$ at $Q=10$),
-although these differences are within about one standard
-deviation. Returning the best evaluated mask matters most in the
-exploitative regime: a fresh measurement of the final global-best
-amplitude retains $91\%$ of the best fitness at $Q=1$ but only
-$44$--$52\%$ at $Q\ge9$, because the
-amplitudes at large $Q$ stay close to their spread-out
-initialization, so re-sampling them rarely reproduces the best
-subset.}
+\rev{R1.1}\textcolor{red}{Fig.~\ref{fig:qpso_dynamics} confirms this
+behavior empirically. Algorithm~\ref{alg:qpso} is run on
+$\mathcal{D}_{\rm tr}$ for $Q=1$ to $10$ with ten seeds, without
+classifier training, and three regimes appear. At $Q=1$, the
+amplitude entropy falls only to 0.75, because half of the amplitudes
+are reset at every iteration, and the swarm keeps sampling almost
+uniformly. For $Q=4$ to $7$, the entropy falls to 0.25--0.35 within a
+few iterations and swarm diversity drops: the search concentrates on
+a feature subset. For $Q\ge 9$, the entropy stays at 0.54--0.66,
+because small rotations and rare resets barely move the particles.
+The best fitness peaks at $Q=4$ and is lower at both extremes,
+although the differences are within the seed-to-seed spread.
+Returning the best evaluated mask matters most at large $Q$: a fresh
+measurement of the final global-best amplitude retains 91\% of the
+best fitness at $Q=1$ but only 44--52\% at $Q\ge9$, because those
+amplitudes remain spread out and rarely reproduce the best subset.}
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.95\linewidth]{images/qpso_dynamics_vs_Q.png}
-\caption{\rev{R1.1}\textcolor{red}{QPSO search dynamics versus register size
-$Q$ on $\mathcal{D}_{\rm tr}$ ($P=20$, $I=30$, $k=40$, $d=86$;
-mean$\pm$std over ten seeds; no classifier training). Left:
-normalized entropy of the measurement distribution
-$\pi_{i,j}\propto a_{i,j}^2$, averaged over particles (1 = uniform).
-Middle: mean pairwise Jaccard distance between the masks measured
-by the swarm at each iteration. Right: best Fisher fitness found.
-Small $Q$ keeps the search near-random, intermediate $Q$
-concentrates it, and large $Q$ leaves it near its initialization,
-matching the constants in Table~\ref{tab:q_constants}.}}
+\caption{\rev{R1.1}\textcolor{red}{QPSO search dynamics versus register
+size on the training data, averaged over ten seeds. Left: entropy of
+the measurement distribution. Middle: diversity of the masks in the
+swarm. Right: best fitness found.}}
 \label{fig:qpso_dynamics}
 \end{figure*}
 
-\rev{R1.1, R1.5}\textcolor{red}{\textit{Fitness.} A sampled mask is scored by the
-Fisher class-separability ratio of the selected features,}
+\rev{R1.1}\rev{R1.5}\textcolor{red}{Each measured mask is scored by the
+Fisher class-separability ratio of its selected features,}
 \begin{equation}
 \textcolor{red}{\mathcal{J}(\mathbf{m}) =
 \frac{\sum_{c}n_c\,\|\boldsymbol{\mu}_c^{\mathbf{m}}-
@@ -828,53 +823,48 @@ Fisher class-separability ratio of the selected features,}
 \label{eq:qpsobj}
 \end{equation}
 \textcolor{red}{where $c\in\{\text{benign},\text{attack}\}$, $n_c$
-and $\boldsymbol{\mu}_c^{\mathbf{m}}$ are the class count and
-class mean of the selected features, and
-$\epsilon=10^{-10}$. Personal and global bests are updated when
-$\mathcal{J}$ improves. $\mathcal{J}$ is a filter criterion and
-requires no classifier training, so one QPSO run with $P=20$
-particles and $I=30$ iterations costs $P(I+1)=620$ fitness
-evaluations.} \rev{R1.3}\textcolor{red}{On the CPU host of
-Table~\ref{tab:impl_setup}, with three experiments sharing the
-machine, it takes a median of $1.7$\,min ($5.0$\,min at the
-largest trained budget, $P=40$, $I=60$).}
+and $\boldsymbol{\mu}_c^{\mathbf{m}}$ are the class count and class
+mean of the selected features, $\boldsymbol{\mu}^{\mathbf{m}}$ is
+their overall mean, and $\epsilon=10^{-10}$. Personal and global
+bests are updated when $\mathcal{J}$ improves. $\mathcal{J}$ is a
+filter criterion that needs no classifier training, so one run with
+20 particles and 30 iterations costs 620 fitness evaluations.}
+\rev{R1.3}\textcolor{red}{One run takes a median of 1.7\,min on the
+host of Table~\ref{tab:impl_setup}, and 5.0\,min at the largest
+trained budget of 40 particles and 60 iterations.}
 
-\rev{R1.5}\textcolor{red}{\textit{Data usage.} Table~\ref{tab:data_usage}
-lists the data used by every step that fits, selects, or stops
-anything. The QPSO fitness~\eqref{eq:qpsobj} is a label-based
-filter criterion evaluated on $\mathcal{D}_{\rm tr}$ only; it
-contains no F1, AUC, MSE, or error-balance terms and therefore has
-no weights to tune. The register size $Q^{*}$ is chosen on
-$\mathcal{D}_{\rm va}$, early stopping and the learning-rate
-schedule monitor the $\mathcal{D}_{\rm va}$ loss, and the decision
-rule is a fixed $\arg\max$ over the two class probabilities. The
-search budget ($P=20$, $I=30$), the subset size $k=40$, and the
-classifier hyperparameters were fixed before the experiments and
-were not tuned on any split. $\mathcal{D}_{\rm te}$ is therefore
-never used for fitness evaluation, $Q$ selection, weight or
-hyperparameter tuning, or early stopping: it is evaluated once per
-trained model, after training, to report the final metrics.}
+\rev{R1.5}\textcolor{red}{Table~\ref{tab:data_usage} lists the data
+used by every step that fits, selects, or stops. The
+QPSO fitness~\eqref{eq:qpsobj} is a label-based filter criterion
+evaluated on $\mathcal{D}_{\rm tr}$ only; it contains no F1, AUC,
+MSE, or error-balance terms and therefore has no weights to tune.
+$Q^{*}$ is chosen on $\mathcal{D}_{\rm va}$, and early stopping and
+the learning-rate schedule monitor the $\mathcal{D}_{\rm va}$ loss.
+The search budget, $k=40$, and the classifier hyperparameters were
+fixed before the experiments. $\mathcal{D}_{\rm te}$ is evaluated
+once per trained model, after training, to report the final
+metrics.}
 
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.5}\textcolor{red}{Data used by every fitting,
-selection, and stopping step. Only the final evaluation touches
-$\mathcal{D}_{\rm te}$.}}
+\caption{\rev{R1.5}\textcolor{red}{Data used by each fitting,
+selection, and stopping step. Only the final evaluation uses the test
+set.}}
 \label{tab:data_usage}
 \color{red}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.05}
-\begin{tabular}{p{2.6cm} p{3.4cm} c}
+\begin{tabular}{p{2.6cm} p{3.6cm} c}
 \hline\toprule
-\textbf{Step} & \textbf{Data used} & $\mathcal{D}_{\rm te}$? \\
+\textbf{Step} & \textbf{Data used} & \textbf{Test set?} \\
 \hline\toprule
 Zero-variance filter & $\mathcal{D}_{\rm tr}$ (features only) & no \\
-Context features $\mathbf{F}_c$ & Earlier flows of the same source, unlabelled & no \\
+Context features & Earlier flows of the same source, unlabelled & no \\
 Min--max normalization & $\mathcal{D}_{\rm tr}$ (features only) & no \\
-QPSO / PSO fitness $\mathcal{J}$ & $\mathcal{D}_{\rm tr}$ & no \\
+QPSO / PSO fitness & $\mathcal{D}_{\rm tr}$ & no \\
 Variance selection (OS-CIDS) & $\mathcal{D}_{\rm tr}$ (features only) & no \\
-Consensus mask $\mathbf{m}^{*}_{\rm cons}$ & Ten masks fitted on $\mathcal{D}_{\rm tr}$ & no \\
+Consensus mask & Ten masks fitted on $\mathcal{D}_{\rm tr}$ & no \\
 Selection of $Q^{*}$ & $\mathcal{D}_{\rm va}$, mean F1 over seeds & no \\
 Early stopping, LR schedule & $\mathcal{D}_{\rm va}$ loss & no \\
 Budget, $k$, hyperparameters & Fixed a priori & no \\
@@ -888,58 +878,31 @@ Reported metrics & $\mathcal{D}_{\rm te}$, once per trained model & yes \\
 \end{tabular}
 \end{table}
 
-\rev{R1.2}\textcolor{red}{\textit{Selection of $Q$.} The ablation over
-$Q\in\{1,\dots,8\}$ selects the setting with the highest mean
-validation F1 over seeds, breaking ties by the lower standard
-deviation and lower validation MSE and $\Delta_{\rm bal}$, where}
-\begin{equation}
-\Delta_{\rm bal} =
-\bigl|\mathrm{FAR}_{\rm Ben}-\mathrm{MD}_{\rm Ben}\bigr|
-+\bigl|\mathrm{FAR}_{\rm Atk}-\mathrm{MD}_{\rm Atk}\bigr|
-\label{eq:balance}
-\end{equation}
-\rev{R1.2}\textcolor{red}{penalizes asymmetric error modes. Because QPSO is
-excluded from the inference path and $k$ is fixed, deployment
-latency and memory do not depend on $Q$
-(Section~\ref{subsec:latency_design}). The rule selects
-$Q^{*}=6$. Test-set results and statistical comparisons
-(Table~\ref{tab:qubit_ablation_improved_robust}) show that no
-$Q$ in the tested range is significantly better than any other,
-so $Q^{*}$ should be read as a reproducible default rather than
-an optimum.}
+\rev{R1.2}\textcolor{red}{The register size $Q^{*}$ is the value in
+$Q=1$ to $8$ with the highest mean validation F1 over ten seeds, with
+ties going to the smaller $Q$; this rule selects $Q^{*}=6$. Because
+QPSO is not on the inference path and $k$ is fixed, deployment
+latency and memory do not depend on $Q$. On the test set, $Q$ has no
+significant effect within this range
+(Table~\ref{tab:qubit_ablation_improved_robust}), so $Q^{*}$ is a
+reproducible default rather than an optimum.}
 
-\rev{R1.3}\textcolor{red}{\textit{Search-budget sensitivity.} To test
-whether the default budget ($P=20$, $I=30$; 620 evaluations) is
-sufficient, and whether the conclusions about $Q$ depend on it, we
-(i)~repeat the search alone for $Q\in\{1,\dots,10\}$ at
-$40\times60$ (2{,}440 evaluations) and $80\times60$ (4{,}880
-evaluations), and (ii)~train full detectors for
-$Q\in\{6,\dots,10\}$ under all four combinations
-$P\in\{20,40\}$, $I\in\{30,60\}$, with five seeds each. Budget
-effects are tested with Friedman and Wilcoxon signed-rank tests
-blocked by ($Q$, seed), $n=25$.}
+\rev{R1.3}\textcolor{red}{Two experiments test whether the default
+budget of 20 particles and 30 iterations is sufficient and whether
+the conclusions about $Q$ depend on it. First, the search alone is
+repeated for $Q=1$ to $10$ with 40 particles and 60 iterations, and
+with 80 particles and 60 iterations. Second, full detectors are
+trained for $Q=6$ to $10$ with 20 or 40 particles and 30 or 60
+iterations, using five seeds each. Budget effects are tested with
+Friedman and Wilcoxon signed-rank tests, blocked by register size
+and seed.}
 
-\begin{figure*}[!htbp]
-    \centering
-    \includegraphics[width=1.00\linewidth]{images/Data_flowchart_rev.png}
-    \caption{Preprocessing pipeline. Traffic is split into static flow
-    descriptors and context features, which are fused and min--max
-    normalized to form the input to QPSO feature selection.
-    \rev{R1.7}\textcolor{red}{The static part keeps 69 CICFlowMeter
-    features after identifiers, IP addresses, time fields, and constant
-    columns are removed; the 17 context features are listed in
-    Table~\ref{tab:context_features}; normalization is fitted on the
-    training data only.}}
-    \label{fig:pipeline}
-\end{figure*}
-
-\rev{R1.2}\textcolor{red}{All ablation results are reported as mean$\pm$std
-over ten seeds $\mathcal{S}=\{42,\dots,51\}$. The subsample and the
-$(\mathcal{D}_{\rm tr},\mathcal{D}_{\rm va},\mathcal{D}_{\rm te})$
-partition are fixed across all runs. The per-run seed controls
-QPSO (re-executed in every run, so the reported variance includes
-the optimizer's own stochasticity), weight initialization, and
-mini-batch order.}
+\rev{R1.2}\textcolor{red}{All ablation results are reported as
+mean$\pm$std over ten seeds. The subsample and the data partition are
+fixed across all runs. The seed of each run controls QPSO, the weight
+initialization, and the mini-batch order; QPSO is re-executed in
+every run, so the reported variance includes the variability of the
+optimizer itself.}
 
 %% ----------------------------------------------------------
 \subsection{LSTM(+VAE) Temporal Classifier}
