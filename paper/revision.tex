@@ -178,25 +178,44 @@ Privacy & Not analyzed & Threat model and privacy scope (Table~\ref{tab:privacy_
 \hline\toprule
 \textbf{Ref.} & \textbf{Problem focus} & \textbf{Method and key contribution} & \textbf{Limitation} & \textbf{Gap addressed by CONQUEST} \\
 \hline\toprule
-\cite{phalaagaehybrid} & IoT IDS under resource constraints & CNN--LSTM + attention + PSO feature selection; high centralized accuracy on WIoTSN & Centralized only; no stability or FL analysis & Multi-seed stability analysis; FL with worst-client metrics \\
-\midrule
-\cite{yuadaptive} & IIoT IDS with class imbalance and temporal variation & Multi-scale windows + attention transformer + adaptive focal loss & High complexity; centralized only; no cost analysis & \rev{R1.10}\textcolor{red}{Measured deployment cost (2.98\,ms/window, 541\,MB)}; FL evaluation \\
-\midrule
-\cite{donkoloptimization} & Communication-network IDS with optimized features & LPPSO + ELSTM-RNN on NSL-KDD and UNSW-NB15 & Centralized only; no stability reporting & QPSO capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
-\midrule
-\cite{shrivashybrid} & Network attack classification with selected features & Voting ensemble + GA-PSO feature selection & No temporal modeling; no FL & Temporal context modeling; non-IID FL evaluation \\
-\midrule
-\cite{FRIHA202217} & Privacy-preserving IDS for agricultural IoT & Federated DNN/CNN/RNN with server aggregation & Global metrics only; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
-\midrule
-\cite{herlambangfederated} & Aggregation robustness for federated IoT IDS & FedAvg vs.\ FedProx under IID and non-IID data & Two clients; no worst-client metric & \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$}; $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
-\midrule
-\cite{abdelmoniemcomprehensive} & Heterogeneity impact on FL quality and fairness & Large-scale empirical study (${\sim}$1.5K configurations) & Not IDS-specific; no deployment analysis & Heterogeneity analysis for cyberworm IDS with deployment cost \\
-\midrule
-\cite{gefedamkd} & Quantity-skew heterogeneity in FL & FedAMKD adaptive mutual knowledge distillation (MNIST, CIFAR) & Not IDS-specific & Quantity-skew study for IDS with tail-aware metrics \\
-\midrule
-\cite{ajakweconquest} & Context-aware cyberworm IDS (conference version) & QPSO + LSTM-VAE on ACI-IoT; 97.5\% detection rate, 0.8\% FPR & Centralized only; single run; random split & Leakage-free protocol; $Q$ ablation \rev{R1.2}\textcolor{red}{with statistical tests}; FL evaluation \\
-\midrule
-\textbf{This work} & Mission-critical cyberworm IDS, centralized and federated & Context features + variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation}) + LSTM(+VAE) & One-off QPSO training cost; label skew remains challenging & -- \\
+\cite{phalaagaehybrid} & IoT IDS under resource constraints & CNN--LSTM + attention + PSO feature selection; high centralized accuracy on WIoTSN & Centralized only; no stability or FL analysis & Multi-seed stability analysis; FL with worst-client metrics \\
+
+\midrule
+
+\cite{yuadaptive} & IIoT IDS with class imbalance and temporal variation & Multi-scale windows + attention transformer + adaptive focal loss & High complexity; centralized only; no cost analysis & \rev{R1.10}\textcolor{red}{Measured deployment cost (2.98\,ms/window, 541\,MB)}; FL evaluation \\
+
+\midrule
+
+\cite{donkoloptimization} & Communication-network IDS with optimized features & LPPSO + ELSTM-RNN on NSL-KDD and UNSW-NB15 & Centralized only; no stability reporting & QPSO capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
+
+\midrule
+
+\cite{shrivashybrid} & Network attack classification with selected features & Voting ensemble + GA-PSO feature selection & No temporal modeling; no FL & Temporal context modeling; non-IID FL evaluation \\
+
+\midrule
+
+\cite{FRIHA202217} & Privacy-preserving IDS for agricultural IoT & Federated DNN/CNN/RNN with server aggregation & Global metrics only; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
+
+\midrule
+
+\cite{herlambangfederated} & Aggregation robustness for federated IoT IDS & FedAvg vs.\ FedProx under IID and non-IID data & Two clients; no worst-client metric & \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$}; $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
+
+\midrule
+
+\cite{abdelmoniemcomprehensive} & Heterogeneity impact on FL quality and fairness & Large-scale empirical study (${\sim}$1.5K configurations) & Not IDS-specific; no deployment analysis & Heterogeneity analysis for cyberworm IDS with deployment cost \\
+
+\midrule
+
+\cite{gefedamkd} & Quantity-skew heterogeneity in FL & FedAMKD adaptive mutual knowledge distillation (MNIST, CIFAR) & Not IDS-specific & Quantity-skew study for IDS with tail-aware metrics \\
+
+\midrule
+
+\cite{ajakweconquest} & Context-aware cyberworm IDS (conference version) & QPSO + LSTM-VAE on ACI-IoT; 97.5\% detection rate, 0.8\% FPR & Centralized only; single run; random split & Leakage-free protocol; $Q$ ablation \rev{R1.2}\textcolor{red}{with statistical tests}; FL evaluation \\
+
+\midrule
+
+\textbf{This work} & Mission-critical cyberworm IDS, centralized and federated & Context features + variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation}) + LSTM(+VAE) & One-off QPSO training cost; label skew remains challenging & -- \\
+
 \hline\toprule
 \end{tabular}
 \end{table*}
