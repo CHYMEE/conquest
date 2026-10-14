@@ -379,112 +379,97 @@ $\min_k\,\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
 \section{\textbf{system overview and design objectives}}
 \label{sec:conquest_overview}
 
-CONQUEST is a latency-constrained, seed-controlled intrusion
-detection framework engineered for mission-critical IoT/IoV/IoD
-networks subject to real-time execution, bounded memory, and data
-sovereignty constraints. Given identical data partitions,
-hyperparameters, and a fixed random seed, the pipeline produces
-identical outputs; QPSO ablation results are therefore reported as
-mean$\pm$std over repeated seed-controlled runs to account for
-stochastic mask sampling. Table~\ref{tab:acronyms_notations}
-lists non-standard acronyms and symbols. Fig.~\ref{fig:conquest_architecture}
-illustrates the end-to-end architecture.
+CONQUEST is an intrusion detection framework for mission-critical
+IoT/IoV/IoD networks that must meet real-time, memory, and
+data-sovereignty constraints. The pipeline is seed-controlled: with
+identical data partitions, hyperparameters, and seed, it produces
+identical outputs, and its stochastic components are evaluated over
+multiple seeds. Table~\ref{tab:acronyms_notations} lists the
+notation, and Fig.~\ref{fig:conquest_architecture} shows the
+architecture.
 
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{Non-Standard Acronyms, Symbols, and Notations}
+\caption{Acronyms and notation.}
 \label{tab:acronyms_notations}
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.05}
 \begin{tabular}{p{1.8cm} p{5.2cm}}
 \hline\toprule
-\textbf{Notation / Acronym} & \textbf{Description} \\
+\textbf{Symbol} & \textbf{Description} \\
 \hline\toprule
-CONQUEST  & CONtext-Aware QUantum-Inspired Intelligence
-            framework for cyberworm detection \\
-QPSO      & Quantum-Inspired Particle Swarm Optimization \\
-QCIDS     & Quantum-Context Intrusion Detection System \\
-S-CIDS    & Static Centralized IDS (conference baseline) \\
-OS-CIDS   & Optimized Static Centralized IDS \\
-HFL       & Horizontal Federated Learning \\
-FedAvg    & Federated Averaging \\
+CONQUEST  & CONtext-aware QUantum-inspired framework for cyberworm detection \\
+QPSO      & Quantum-inspired particle swarm optimization \\
+QCIDS     & Quantum-context IDS (context features with QPSO selection) \\
+S-CIDS    & Static centralized IDS (conference baseline) \\
+OS-CIDS   & Optimized static centralized IDS (variance ranking) \\
+HFL       & Horizontal federated learning \\
+FedAvg    & Federated averaging \\
 \midrule
 $Q$                     & \rev{R1.1}\textcolor{red}{Qubit-register size; sets the
                           QPSO amplitude initialization, rotation-angle
-                          bound, and collapse probability
-                          (Eqs.~\eqref{eq:qpso_init}--\eqref{eq:qpso_collapse})} \\
+                          bound, and collapse probability} \\
 \rev{R1.1}\textcolor{red}{$d$, $k$} & \textcolor{red}{Number of input features; number
                           of selected features ($k=\|\mathbf{m}\|_0$)} \\
 \rev{R1.1}\textcolor{red}{$P$, $I$} & \textcolor{red}{QPSO particles; QPSO iterations} \\
 $K$                     & Number of federated clients \\
 $\alpha$                & Dirichlet concentration parameter \\
-$\theta$                & Model parameter vector \\
+$\theta$                & Model parameters \\
 $\mathcal{D}_k$         & Local dataset of client $k$ \\
-$\mathbf{m}^{*}$        & Optimal fixed feature mask
-                          at deployment \\
-$\mathcal{L}_{\rm e2e}$ & End-to-end pipeline latency \\
-$\mathcal{M}(Q)$        & Memory usage at qubit setting $Q$ \\
-$R_{99}$                & Round at which global F1 reaches
-                          99\% of terminal F1 \\
-$\min_k\,{\rm F1}_k$    & Worst-client F1 score \\
+$\mathbf{m}^{*}$        & Deployed feature mask \\
+\rev{R1.10}\textcolor{red}{$\mathcal{L}_{\rm infer}$} & \textcolor{red}{Inference latency per window} \\
+\rev{R1.10}\textcolor{red}{$\mathcal{M}$} & \textcolor{red}{Peak inference memory} \\
+$R_{99}$                & Round at which global F1 reaches 99\% of its final value \\
+$\min_k\,{\rm F1}_k$    & Worst-client F1 \\
 $\sigma({\rm F1})$      & Inter-client F1 dispersion \\
 \hline\toprule
 \end{tabular}
 \end{table}
 
-Let $\mathbf{X}=\{x_t\}_{t=1}^{T}$ denote raw network traffic
-observations. CONQUEST applies a three-stage transformation:
-\begin{equation}
-\mathbf{X} \xrightarrow{\mathcal{C}} \mathbf{Z}
-           \xrightarrow{\mathcal{Q}_{Q}} \mathbf{Z}^{*}
-           \xrightarrow{\mathcal{D}} \hat{y},
-\label{eq:pipeline}
-\end{equation}
-where $\mathcal{C}$ is context-aware feature conditioning
-(Section~\ref{subsec:feature_pipeline}), $\mathcal{Q}_{Q}$ is
-variable-qubit quantum-inspired feature selection
-(Section~\ref{subsec:qpsomethod}), and $\mathcal{D}$ is temporal
-binary classification (Section~\ref{subsec:model_training}).
+CONQUEST processes raw network traffic in three stages:
+context-aware feature construction
+(Section~\ref{subsec:feature_pipeline}), variable-qubit QPSO feature
+selection (Section~\ref{subsec:qpsomethod}), and temporal binary
+classification (Section~\ref{subsec:model_training}).
 \rev{R1.1}\textcolor{red}{The register size $Q$ does not change the
-dimension of a particle, which is always $d$; it controls the
-exploration--exploitation balance of the search
-(Section~\ref{subsec:qpsomethod}). CONQUEST selects $Q$
-empirically on validation data.} Quantum-inspired computation is strictly
-confined to $\mathcal{Q}_{Q}$ during training. At deployment, only
-$\mathcal{C}$ and $\mathcal{D}$ execute using the fixed stored mask
-$\mathbf{m}^{*}$, ensuring inference latency independent of $Q$:
+particle dimension $d$; it controls the exploration--exploitation
+balance of the search and is selected on validation data.} QPSO runs
+only during training. At deployment, only context-feature construction and
+classification run, with the fixed mask $\mathbf{m}^{*}$, so the
+inference latency does not depend on $Q$:
 \begin{equation}
 \mathcal{L}_{\text{infer}}(Q) =
 \mathcal{L}_{\text{infer}}^{\text{classical}}.
 \label{eq:infer_invariance}
 \end{equation}
-Training executes under centralized or federated regimes. In
-federated mode, $K$ clients with heterogeneous local datasets
-$\{\mathcal{D}_k\}_{k=1}^{K}$ train collaboratively via FedAvg:
+Training is centralized or federated. In federated mode, $K$ clients
+with local datasets $\{\mathcal{D}_k\}_{k=1}^{K}$ train
+collaboratively with FedAvg:
 \begin{equation}
 \theta^{(r+1)} = \sum_{k=1}^{K}
 \frac{|\mathcal{D}_k|}{\sum_{j=1}^{K}|\mathcal{D}_j|}
 \,\theta_k^{(r+1)},
 \label{eq:fedavg_overview}
 \end{equation}
-exchanging only model updates to preserve data sovereignty.
-CONQUEST is designed to jointly satisfy $\mathcal{L}_{\rm infer}
-\leq \mathcal{L}_{\max}$, $\mathcal{M}(Q)\leq 1$\,GB, bounded
-$\sigma(\mathrm{F1})$ under non-IID heterogeneity, and
-deployability under both execution regimes.
+\rev{R2.1}\textcolor{red}{and only model updates are exchanged, so raw
+traffic stays local.} \rev{R1.10}\textcolor{red}{The design targets are
+a per-window inference latency within the budget
+$\mathcal{B}_{\rm lat}$, a peak memory $\mathcal{M}\le1$\,GB,} and a
+bounded inter-client dispersion $\sigma(\mathrm{F1})$ under non-IID
+data, in both training regimes.
 
 \begin{figure*}[!htbp]
     \centering
 \includegraphics[width=0.8\linewidth]{images/CON-PICTURE2_rev.png}
-    \caption{CONQUEST End-to-end architecture illustrating the three-stage transformation $\mathbf{X} \xrightarrow{\mathcal{C}} \mathbf{Z} \xrightarrow{\mathcal{Q}_{Q}} \mathbf{Z}^{*} \xrightarrow{\mathcal{D}} \hat{y}$, where Stage $\mathcal{C}$ (CAP module) fuses static descriptors $\mathbf{F}_s$ and offline context-aware features $\mathbf{F}_c$ into normalized representation $\mathbf{Z}_n$, Stage $\mathcal{Q}_{Q}$ applies variable-qubit QPSO \rev{R1.1}\textcolor{red}{to $d$-dimensional amplitude particles whose initialization, rotation, and collapse are set by $Q$ (Algorithm~\ref{alg:qpso}), and returns the best-scoring $k$-feature mask $\mathbf{m}^{*}$ found on $\mathcal{D}_{\rm tr}$, with $Q$ chosen on $\mathcal{D}_{\rm va}$}, and Stage $\mathcal{D}$ executes supervised LSTM(+VAE)+SGD binary classification under centralized or horizontal federated training.}
+    \caption{CONQUEST architecture. Static flow descriptors $\mathbf{F}_s$ and context features $\mathbf{F}_c$ are fused into the normalized representation $\mathbf{Z}_n$; variable-qubit QPSO \rev{R1.1}\textcolor{red}{(Algorithm~\ref{alg:qpso}) selects a $k$-feature mask $\mathbf{m}^{*}$ on $\mathcal{D}_{\rm tr}$, with $Q$ chosen on $\mathcal{D}_{\rm va}$}; an LSTM(+VAE) classifier performs binary detection, trained centrally or by horizontal federated learning.}
 \label{fig:conquest_architecture}
 \end{figure*}
 
 
 %% ----------------------------------------------------------
 \subsection{Data Processing and Context-Aware Feature
-            Representation (Stage~$\mathcal{C}$)}
+            Representation}
 \label{subsec:feature_pipeline}
 %% ----------------------------------------------------------
 
@@ -505,7 +490,7 @@ addresses, and timestamps are excluded from the feature vector to
 prevent identity shortcuts, and so are the four \texttt{Idle}
 fields, which in ACI-IoT store absolute epoch timestamps and would
 leak capture time}) and $\mathbf{F}_c$ encodes
-context-aware features computed offline via fixed sliding-window operators and transition statistics. To ensure end-to-end reproducibility, this global fixed seed governs both the probabilistic \rev{R1.1}\textcolor{red}{measurement} sampling in Stage $\mathcal{Q}_{Q}$ and the stochastic weight initialization of the Stage D temporal classifier. Context features capture burst
+context-aware features computed offline via fixed sliding-window operators and transition statistics. To ensure end-to-end reproducibility, this global fixed seed governs both the probabilistic \rev{R1.1}\textcolor{red}{measurement} sampling in QPSO and the weight initialization of the classifier. Context features capture burst
 activity, dormant intervals, and protocol state transitions that
 are not separable under static feature selection alone; no live
 behavioral monitoring is performed at runtime.
@@ -619,16 +604,15 @@ without update to $\mathcal{D}_{\rm va}$ and $\mathcal{D}_{\rm te}$
 \rev{R1.5}\textcolor{red}{(values outside $[0,1]$ are clipped)},
 eliminating feature-induced confounding across centralized and
 federated regimes. The resulting $\mathbf{Z}_n$ is the fixed input
-to Stage~$\mathcal{Q}_{Q}$. Fig.~\ref{fig:pipeline} illustrates
+to QPSO feature selection. Fig.~\ref{fig:pipeline} illustrates
 the preprocessing and context-feature construction pipeline.
 
 %% ----------------------------------------------------------
-\subsection{Variable-Qubit QPSO Feature Selection
-            (Stage~$\mathcal{Q}_{Q}$)}
+\subsection{Variable-Qubit QPSO Feature Selection}
 \label{subsec:qpsomethod}
 %% ----------------------------------------------------------
 
-Stage $\mathcal{Q}_{Q}$ learns a sparse binary feature mask
+QPSO learns a sparse binary feature mask
 $\mathbf{m}\in\{0,1\}^d$ that gates the normalized input:
 \begin{equation}
 \tilde{\mathbf{z}} = \mathbf{m}\odot\mathbf{z}_n,\quad
@@ -698,8 +682,8 @@ are fitted on $\mathcal{D}_{\rm tr}$, so the consensus uses no
 validation or test information.}
 
 \begin{algorithm}[!t]
-\caption{\rev{R1.1}\textcolor{red}{Variable-qubit QPSO feature selection
-(Stage~$\mathcal{Q}_{Q}$). Lines marked $\triangleright Q$ are the only
+\caption{\rev{R1.1}\textcolor{red}{Variable-qubit QPSO feature selection.
+Lines marked $\triangleright Q$ are the only
 places where $Q$ enters.}}
 \label{alg:qpso}
 \color{red}
@@ -935,7 +919,7 @@ blocked by ($Q$, seed), $n=25$.}
     features $\mathbf{F}_c$ via fixed sliding-window operators.
     Feature fusion and min-max normalization produce the unified
     representation $\mathbf{Z}_n\in[0,1]^d$ that serves as the
-    fixed input to Stage~$\mathcal{Q}_{Q}$. \rev{R1.7}\textcolor{red}{$\mathbf{F}_s$:
+    fixed input to QPSO feature selection. \rev{R1.7}\textcolor{red}{$\mathbf{F}_s$:
     69 CICFlowMeter features after removing identifiers, IP
     addresses, time fields, and constant columns; $\mathbf{F}_c$: 17
     causal per-source features with $W\in\{10,60\}$\,s
@@ -953,12 +937,11 @@ the optimizer's own stochasticity), weight initialization, and
 mini-batch order.}
 
 %% ----------------------------------------------------------
-\subsection{LSTM(+VAE) Temporal Classifier
-            (Stage~$\mathcal{D}$)}
+\subsection{LSTM(+VAE) Temporal Classifier}
 \label{subsec:model_training}
 %% ----------------------------------------------------------
 
-The optimal mask $\mathbf{m}^{*}$ from Stage~$\mathcal{Q}_{Q}$
+The mask $\mathbf{m}^{*}$ selected by QPSO
 is fixed for classifier training, strictly decoupling feature
 optimization from model convergence. The masked input
 $\tilde{\mathbf{z}}=\mathbf{m}^{*}\odot\mathbf{Z}_n$ is passed
@@ -1032,13 +1015,13 @@ host.}
 every classified window. The per-window latency is decomposed as}
 \begin{equation}
 \textcolor{red}{\mathcal{L}_{\rm infer} =
-\mathcal{L}_{\mathcal{C}} + \mathcal{L}_{\mathcal{D}},}
+\mathcal{L}_{\rm ctx} + \mathcal{L}_{\rm clf},}
 \label{eq:latency_decomp}
 \end{equation}
-\textcolor{red}{where $\mathcal{L}_{\mathcal{C}}$ is the
+\textcolor{red}{where $\mathcal{L}_{\rm ctx}$ is the
 incremental context-feature update for a newly arrived flow
 (Table~\ref{tab:context_features}), including normalization and
-masking, and $\mathcal{L}_{\mathcal{D}}$ is one forward pass of
+masking, and $\mathcal{L}_{\rm clf}$ is one forward pass of
 the classifier. QPSO does not appear in~\eqref{eq:latency_decomp},
 and because $k$ is fixed, $\mathcal{L}_{\rm infer}$ does not depend
 on $Q$~\eqref{eq:infer_invariance}.}
@@ -1053,7 +1036,7 @@ $B=64$, in windows/s and its reciprocal in ms/window;
 (c) $T_{\rm infer}^{\rm te}$, the total wall-clock time to classify
 all $N_{\rm te}$ windows of $\mathcal{D}_{\rm te}$ at $B=64$
 (seconds, whole test set), reported only for continuity with
-earlier tables; and (d) $\mathcal{L}_{\mathcal{C}}$, amortized
+earlier tables; and (d) $\mathcal{L}_{\rm ctx}$, amortized
 over the test stream (ms/flow). Memory $\mathcal{M}$ is the peak
 resident set size of the inference process (MB); training memory
 is reported separately. The deployment design targets are}
@@ -1930,9 +1913,9 @@ path; Eq.~\eqref{eq:latency_decomp} replaces it.}
 \centering
 \caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in isolation on the CPU-only host of
 Table~\ref{tab:impl_setup} (two TensorFlow threads, no other load; median over the measured seeds, number in
-parentheses). $\mathcal{L}_{\mathcal{D}}$: classifier latency for one window at batch size 1 (median and 95th
+parentheses). $\mathcal{L}_{\rm clf}$: classifier latency for one window at batch size 1 (median and 95th
 percentile over 1{,}000 test windows after 50 warm-up calls). Batched: cost per window at $B{=}64$.
-$T_{\rm infer}^{\rm te}$: time to classify all 11544 test windows at $B{=}64$. $\mathcal{L}_{\mathcal{C}}$: incremental
+$T_{\rm infer}^{\rm te}$: time to classify all 11544 test windows at $B{=}64$. $\mathcal{L}_{\rm ctx}$: incremental
 context-feature update, normalization, and masking per arriving flow. Memory: peak resident set size of the
 inference process. Feature selection runs once during training and is not on the detection path.}}
 \label{tab:latency_profile_qcids}
@@ -1940,7 +1923,7 @@ inference process. Feature selection runs once during training and is not on the
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lcccccccc}
 \hline\toprule
-\textbf{Pipeline} & \multicolumn{2}{c}{$\mathcal{L}_{\mathcal{D}}$, $B{=}1$ (ms/window)} & Batched & $T_{\rm infer}^{\rm te}$ & $\mathcal{L}_{\mathcal{C}}$ & Memory & Params & Selection \\
+\textbf{Pipeline} & \multicolumn{2}{c}{$\mathcal{L}_{\rm clf}$, $B{=}1$ (ms/window)} & Batched & $T_{\rm infer}^{\rm te}$ & $\mathcal{L}_{\rm ctx}$ & Memory & Params & Selection \\
  & median & p95 & (ms/window) & (s) & ($\mu$s/flow) & (MB) & & (s, training) \\
 \hline\toprule
 OS-CIDS (3) & 2.96 & 3.69 & 0.233 & 3.30 & 5.1 & 629 & 789k & 0.0 \\
