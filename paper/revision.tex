@@ -1083,7 +1083,7 @@ Federated      & Clients / fraction  &
   \textcolor{red}{Identical across blocks} \\
                & \rev{R1.8}\textcolor{red}{Mask construction} &
   \textcolor{red}{Proxy (default); vote; central} &
-  \textcolor{red}{Section~\ref{subsec:federated_protocol_convergence}} \\
+  \textcolor{red}{Shared by all clients} \\
                & Aggregators         &
   FedAvg;\ SCAFFOLD;\ FLAME                &
   Identical partitions \\
@@ -1091,29 +1091,24 @@ Federated      & Clients / fraction  &
 \end{tabular}
 \end{table*}
 
-Three configurations
-are evaluated under identical optimizer and stopping conditions
-to isolate architectural contributions: S-CIDS (conference baseline~\cite{ajakweconquest}), OS-CIDS (optimized static
-IDS with variance-based feature selection), and QCIDS
-(context-aware IDS with QPSO-selected features). OS-CIDS and
-QCIDS differ only in the addition of (a) context-aware
-representation and (b) QPSO feature selection.
-\rev{R1.6}\textcolor{red}{Because these two factors change together, a
-$2\times2$ factorial ablation is also run: context features
-\{off, on\} $\times$ selector \{variance, QPSO\}, all with $k=40$
-and the same classifier, so that each factor's effect and their
-interaction can be estimated separately. A classical binary PSO
-selector (inertia 0.7, $c_1=c_2=1.5$, sigmoid position mapping,
-the same Fisher fitness~\eqref{eq:qpsobj}, top-$k$ decoding, and
-the same $P$ and $I$, i.e.\ an equal budget of 620 fitness
-evaluations) provides a controlled comparison of quantum-inspired
-and classical updates.} A fixed split
-$\mathcal{D}=\mathcal{D}_{\rm tr}\cup\mathcal{D}_{\rm va}
-\cup\mathcal{D}_{\rm te}$ is used; preprocessing $\mathcal{P}$
-and normalization $\mathcal{N}$ are held constant across all
-configurations. Model selection and early stopping use only
-$\mathcal{D}_{\rm va}$; all reported metrics are from
-$\mathcal{D}_{\rm te}$ \rev{R1.5}\textcolor{red}{(Table~\ref{tab:data_usage})}:
+Three configurations are evaluated with the same optimizer and
+stopping rule: S-CIDS, the conference baseline~\cite{ajakweconquest};
+OS-CIDS, a static IDS with variance-based feature selection; and
+QCIDS, which adds context-aware features and QPSO feature selection.
+OS-CIDS and QCIDS therefore differ in two factors at once.
+\rev{R1.6}\textcolor{red}{To separate them, a $2\times2$ factorial
+ablation crosses context features (off, on) with the selector
+(variance, QPSO), all with $k=40$ and the same classifier, so that the
+effect of each factor and their interaction can be estimated. A
+classical binary PSO selector provides a controlled comparison of
+quantum-inspired and classical updates. It uses inertia 0.7,
+acceleration coefficients $c_1=c_2=1.5$, a sigmoid position mapping,
+top-$k$ decoding, the same Fisher fitness~\eqref{eq:qpsobj}, and the
+same budget of 620 fitness evaluations.} All configurations share
+the same data split, preprocessing, and normalization. Model
+selection and early stopping use only $\mathcal{D}_{\rm va}$, and all
+reported metrics are computed on $\mathcal{D}_{\rm te}$,
+\rev{R1.5}\textcolor{red}{as summarized in Table~\ref{tab:data_usage}}:
 \begin{align}
 \mathbf{m}_{\rm eval} = \bigl\{
 &\,\mathrm{Acc},\;\mathrm{F1},\;\mathrm{AUC},\;\mathrm{MSE},\;
@@ -1124,15 +1119,15 @@ $\mathcal{D}_{\rm te}$ \rev{R1.5}\textcolor{red}{(Table~\ref{tab:data_usage})}:
 \bigr\}.
 \label{eq:central_metrics}
 \end{align}
-FAR and MD are computed per class from the confusion matrix.
-For QPSO ablations, each $Q$ uses identical
-$(\mathcal{D}_{\rm tr},\mathcal{D}_{\rm va},\mathcal{D}_{\rm te})$
-partitions; results are aggregated as mean$\pm$std over
-$\mathcal{S}$. \rev{R1.2}\textcolor{red}{Paired comparisons use the
-two-sided Wilcoxon signed-rank test over seeds, and differences
-across all $Q$ use the Friedman test. Selected-mask stability is
-quantified by the mean pairwise Jaccard index of the selected
-feature sets across seeds.}
+FAR and MD are computed per class from the confusion matrix. In the
+QPSO ablation, every $Q$ uses the same data partition, and results
+are reported as mean$\pm$std over ten seeds.
+\rev{R1.2}\textcolor{red}{Paired comparisons use the two-sided
+Wilcoxon signed-rank test over seeds, with Holm correction when
+several settings are compared with the same reference, and
+differences across all $Q$ use the Friedman test. Mask stability is
+measured by the mean pairwise Jaccard index of the selected feature
+sets across seeds.}
 
 %% ----------------------------------------------------------
 \subsection{Heterogeneity Modeling and Stress-Test Regimes}
