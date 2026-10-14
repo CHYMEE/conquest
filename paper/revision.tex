@@ -1428,7 +1428,21 @@ additionally secure and audit the exchange of IoT data among
 parties that do not fully trust one another~\cite{amadi2026symmetric};
 they are complementary to, and outside the scope of, the federated
 protocol evaluated here.
-% TODO(R2.1-G): add DP-FedAvg results (F1, AUC, min-F1 vs epsilon; 3 seeds) from block G and a sentence on the trade-off at K=5.
+\rev{R2.1}\textcolor{red}{\textit{Measured cost of client-level DP.}
+With the clip norm fixed at $C=0.215$, DP-FedAvg is not usable at
+$K=5$: the final global F1 falls from $96.66\%$ without DP to
+$47.2\pm5.1\%$ at $z=1$ ($\varepsilon\approx41$, AUC $0.59$),
+$42.8\%$ at $z=3$ ($\varepsilon\approx10$), and $36.7\pm10.4\%$ at
+$z=8$ ($\varepsilon\approx3.5$, AUC $0.50$), i.e.\ chance level
+(three seeds each). Because only five updates are averaged, the
+noise standard deviation $zC/K$ is of the same order as the clipped
+mean update itself; client-level DP is designed for federations of
+hundreds to thousands of clients, where this ratio shrinks as $1/K$.
+For mission federations with a handful of sites, secure
+aggregation, which leaves the aggregated model unchanged, is
+therefore the practical protection of individual updates, while
+formal DP remains a target for larger federations or for
+record-level DP-SGD within each site.}
 
 \begin{table}[!t]
 \centering
@@ -1670,8 +1684,54 @@ false alarms dominate the operational cost, or labelled data are
 scarce, variance ranking on static features gives a comparable F1
 with the fewest false alarms among the competitive pipelines, at
 negligible selection cost and without labels. Context features
-should not be added to a label-agnostic selector.}
-% TODO(C4-F/H): add the tight-budget scenario (k=10,20) for QPSO, PSO and variance when blocks F and H finish.
+should not be added to a label-agnostic selector.} \rev{R1.6}\textcolor{red}{When
+the feature budget is very tight ($k\approx10$), variance ranking is
+again preferable, as shown next.}
+
+\rev{R1.6}\rev{R2.3}\textcolor{red}{\textbf{Tight feature budgets.}
+Table~\ref{tab:kbudget} repeats the selector comparison for
+$k\in\{40,20,10\}$. With $k=40$, QPSO and PSO are equivalent and both
+exceed variance ranking on all five seeds. With $k=20$, QPSO has the
+highest F1 ($96.53\%$) and the fewest missed attacks ($4.02\%$ versus
+$4.67\%$ for PSO and $5.98\%$ for variance ranking). With $k=10$ the
+ordering reverses: variance ranking ($95.94\%$) beats QPSO
+($94.00\%$) and PSO ($94.34\%$) on all five seeds. The trace-ratio
+fitness rewards low within-class variance, so with few slots the
+swarm keeps only about 1.6 of the 17 context features, whereas
+variance ranking keeps five. Label-aware swarm selection therefore
+pays off only when the budget leaves room for both context and
+static features.}
+
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.4}\rev{R1.6}\textcolor{red}{Feature-budget scenario: test F1 (\%), FAR and MD (\%), and number
+of the 17 context features selected, for $k\in\{40,20,10\}$ (context features available; five paired seeds;
+QPSO $Q^{*}{=}6$, PSO at an equal budget). Wins: seeds on which QPSO has the higher F1. Bold: best F1 per $k$.
+Last row: consensus mask of Table~\ref{tab:selected_features} over ten seeds.}}
+\label{tab:kbudget}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{clccccc}
+\hline\toprule
+$k$ & Selector & F1 & FAR & MD & Ctx. & Wins \\
+\hline\toprule
+\multirow{3}{*}{40} & QPSO & 97.25$\pm$0.22 & 1.95 & 3.35 & 8.2 & -- \\
+ & PSO & \textbf{97.28$\pm$0.15} & 2.15 & 3.15 & 6.6 & 3/5 \\
+ & Variance & 96.43$\pm$0.15 & 1.07 & 5.38 & 14.0 & 5/5 \\
+\midrule
+\multirow{3}{*}{20} & QPSO & \textbf{96.53$\pm$0.42} & 2.72 & 4.02 & 1.8 & -- \\
+ & PSO & 96.14$\pm$0.87 & 2.75 & 4.67 & 3.2 & 3/5 \\
+ & Variance & 96.05$\pm$0.16 & 1.17 & 5.98 & 10.0 & 4/5 \\
+\midrule
+\multirow{3}{*}{10} & QPSO & 94.00$\pm$0.64 & 3.42 & 7.91 & 1.6 & -- \\
+ & PSO & 94.34$\pm$0.51 & 3.73 & 7.08 & 1.4 & 0/5 \\
+ & Variance & \textbf{95.94$\pm$0.30} & 1.15 & 6.18 & 5.0 & 0/5 \\
+\midrule
+40 & Consensus mask (10 seeds) & 97.27$\pm$0.23 & 2.46 & 2.93 & 8.0 & -- \\
+\hline\toprule
+\end{tabular}
+\end{table}
 
 % TODO(C10): old per-Q latency/memory figure; replace with measured deployment costs (Q-invariant).
 \begin{figure*}[!htbp]
@@ -1851,10 +1911,17 @@ deployed consensus mask $\mathbf{m}^{*}_{\rm cons}$ at $Q^{*}=6$.
 Every feature in it is selected in at least half of the ten runs,
 8 of the 40 are context features, and its trace-ratio fitness
 ($5089$) exceeds that of the individual runs ($4401\pm297$).
-Because $k=40$ retains $47\%$ of the features, we no longer describe
-the selected subset as compact; the reduction it provides is
-moderate.}
-% TODO(C4-F): add consensus-mask test F1 (10 seeds) and k=10/20 results (block F); revisit the compactness sentence.
+Trained with ten seeds, the consensus mask reaches F1
+$97.27\pm0.23\%$, against $97.13\pm0.31\%$ for the individual masks
+(Wilcoxon $p=0.38$), with $2.93\%$ missed attacks against $3.33\%$
+($p=0.18$) (Table~\ref{tab:kbudget}). A single, seed-independent mask
+can therefore be deployed without loss of detection, which removes
+the dependence on one QPSO run. Because $k=40$ retains $47\%$ of the
+features, we no longer describe this subset as compact. A compact
+operating point does exist: with $k=20$ ($23\%$ of the features)
+QPSO reaches $96.51\pm0.67\%$ F1 over ten seeds, $0.62$\,pp below
+$k=40$, whereas $k=10$ drops to $93.82\pm1.05\%$. We keep $k=40$ as
+the default and report $k=20$ for memory-constrained deployments.}
 
 \begin{table}[!t]
 \centering
