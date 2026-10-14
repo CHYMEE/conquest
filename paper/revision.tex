@@ -170,149 +170,27 @@ Privacy & Not analyzed & Threat model and privacy scope (Table~\ref{tab:privacy_
 \begin{table*}[!htbp]
 \centering
 \scriptsize
-\caption{Comparative analysis of CONQUEST against representative
-related works. Limitations and gaps are specific to the
-mission-critical cyberworm detection context addressed in this paper.}
+\caption{Positioning of CONQUEST against representative related work.}
 \label{tab:rw_qualitative}
 \setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.10}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{p{1.4cm} p{2.8cm} p{4.2cm} p{2.8cm} p{4.2cm}}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{p{1.1cm} p{5.0cm} p{4.4cm} p{5.6cm}}
 \hline\toprule
-\textbf{Ref.} &
-\textbf{Problem focus} &
-\textbf{Method and key contribution} &
-\textbf{Limitation} &
-\textbf{Gap addressed by CONQUEST} \\
+\textbf{Ref.} & \textbf{Approach} & \textbf{Limitation} & \textbf{Added by CONQUEST} \\
 \hline\toprule
-
-\cite{phalaagaehybrid} &
-IoT IDS under resource constraints &
-CNN--LSTM + attention + PSO feature selection;
-strong centralized accuracy on WIoTSN &
-Centralized only; no stability analysis,
-reproducibility control, or FL evaluation &
-Adds seed-controlled reproducibility, bounded
-variable-qubit QPSO, and non-IID FL robustness
-metrics ($R_{99}$, $\min_k\,\mathrm{F1}_k$,
-$\sigma(\mathrm{F1})$) \\
+\cite{phalaagaehybrid} & CNN--LSTM + attention + PSO selection; IoT (WIoTSN) & Centralized; no stability or FL analysis & Multi-seed stability; FL with worst-client metrics \\
+\cite{yuadaptive} & Multi-scale windows + transformer + focal loss; IIoT & High complexity; no FL or cost analysis & \rev{R1.10}\textcolor{red}{Measured cost (about 3\,ms/window, 541\,MB)}; FL evaluation \\
+\cite{donkoloptimization} & LPPSO + ELSTM-RNN; NSL-KDD, UNSW-NB15 & Centralized; no stability analysis & Capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
+\cite{shrivashybrid} & Voting ensemble + GA-PSO selection & No temporal modeling or FL & Temporal context modeling; FL evaluation \\
+\cite{FRIHA202217} & Federated DNN/CNN/RNN; agricultural IoT & Global metrics only; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
+\cite{herlambangfederated} & FedAvg vs.\ FedProx, IID and non-IID; IoT & Two clients; no worst-client metric & \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$}; $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
+\cite{abdelmoniemcomprehensive} & Empirical FL heterogeneity study (${\sim}$1.5K configurations) & Not IDS-specific & Heterogeneity analysis for cyberworm IDS with deployment cost \\
+\cite{gefedamkd} & FedAMKD for quantity skew; MNIST, CIFAR & Not IDS-specific & Quantity-skew study for IDS with tail-aware metrics \\
+\cite{ajakweconquest} & QPSO + LSTM-VAE on ACI-IoT (conference version) & Centralized; single run; random split & Leakage-free protocol; $Q$ ablation \rev{R1.2}\textcolor{red}{with statistical tests}; FL \\
 \midrule
-
-\cite{yuadaptive} &
-IIoT IDS with class imbalance and temporal variation &
-Adaptive multi-scale window segmentation +
-attention transformer + adaptive focal loss;
-high Acc/F1 on IIoT benchmarks &
-High model complexity; centralized evaluation
-only; no FL or latency/memory analysis &
-Adds bounded QPSO optimization overhead
-\rev{R1.10}\rev{R2.4}\textcolor{red}{(about 3\,ms per window, 541\,MB)} and FL deployability
-analysis under heterogeneous regimes \\
-\midrule
-
-\cite{donkoloptimization} &
-Communication-network IDS with optimized features &
-LPPSO + ELSTM-RNN; improves detection rate
-and training time on NSL-KDD and UNSW-NB15 &
-Centralized benchmark only; no stochastic
-stability reporting or FL evaluation &
-Adds variable-capacity QPSO ablation
-($Q\in\{1,\dots,8\}$) and federated robustness
-under quantity-skew and Dirichlet regimes \\
-\midrule
-
-\cite{shrivashybrid} &
-Network attack classification with optimized
-feature subsets &
-Voting ensemble + GA-PSO; improves binary
-and multiclass detection accuracy &
-No temporal modeling; no FL setting or
-heterogeneity analysis &
-Adds context-aware temporal cyberworm
-modeling and non-IID federated evaluation \\
-\midrule
-
-\cite{FRIHA202217} &
-Privacy-preserving IDS for agricultural IoT &
-Federated DNN/CNN/RNN with server aggregation;
-competitive global accuracy without raw sharing &
-Trusted aggregator assumption; global metrics
-only; no heterogeneity stress testing &
-Adds IID, label-skew, quantity-skew, and
-Dirichlet heterogeneity analysis with
-worst-client and dispersion reporting \\
-\midrule
-
-\cite{herlambangfederated} &
-Aggregation robustness for federated IoT IDS &
-FedAvg vs.\ FedProx on IID and non-IID;
-FedProx more stable under heterogeneity &
-Two-client setup only; no worst-client
-fairness metric or convergence stabilization
-analysis &
-Extends to $K{=}5$ clients across four
-heterogeneity regimes; reports $R_{99}$,
-$\min_k\,\mathrm{F1}_k$, and
-$\sigma(\mathrm{F1})$ \\
-\midrule
-
-\cite{abdelmoniemcomprehensive} &
-Heterogeneity impact on FL model quality
-and fairness &
-Large-scale empirical study (${\sim}$1.5K
-configs); heterogeneity causes up to $4.6\times$
-quality and $2.2\times$ fairness degradation &
-General FL study; not IDS-specific; no
-deployment or latency analysis &
-Operationalizes heterogeneity findings
-directly for cyberworm IDS; adds
-mission-facing latency and memory bounds \\
-\midrule
-
-\cite{gefedamkd} &
-Quantity-skew heterogeneity in FL &
-FedAMKD adaptive mutual knowledge distillation;
-outperforms FedAvg, SCAFFOLD, FedPer on
-MNIST and CIFAR benchmarks &
-General FL optimization study; not
-IDS-specific; no deployment metrics &
-Transfers quantity-skew analysis to
-cyberworm IDS; adds $R_{99}$,
-$\min_k\,\mathrm{F1}_k$, and
-$\sigma(\mathrm{F1})$ \\
-\midrule
-
-\cite{ajakweconquest} &
-Context-aware cyberworm IDS (conference
-prototype) &
-QPSO + LSTM-VAE on ACI-IoT; 97.5\%
-detection rate, 0.8\% FPR; first
-cyberworm-focused CONQUEST prototype &
-Centralized only; no reproducibility
-control, qubit ablation, or FL robustness
-evaluation &
-Journal extension adds $Q{=}1$--$8$ ablation,
-\rev{R1.2}\textcolor{red}{tests it statistically}, and evaluates FL across
-four heterogeneity regimes \\
-\midrule
-
-\textbf{This work} &
-Mission-critical cyberworm IDS: centralized
-and federated robustness &
-Seed-controlled context-aware representation;
-variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation});
-supervised LSTM(+VAE)+SGD; HFL under IID,
-label-skew, quantity-skew, Dirichlet &
-Additional training-time overhead from
-QPSO optimization &
-Uniquely integrates (i)~reproducibility,
-(ii)~bounded QPSO with capacity ablation,
-(iii)~non-IID FL robustness, and
-(iv)~mission-facing deployability metrics
-in a single unified framework \\
-
+\textbf{This work} & Context features + variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation}) + LSTM(+VAE); centralized and FL & One-off QPSO training cost; label skew remains challenging & -- \\
 \hline\toprule
-\end{tabular}}
+\end{tabular}
 \end{table*}
 
 
@@ -369,143 +247,103 @@ and Section~\ref{sec:conclusion} concludes.
 \section{\textbf{related works}}
 \label{sec:related_works}
 
-Effective cyberworm detection in mission-critical networks demands
-solutions that jointly address high-dimensional traffic complexity,
-privacy-constrained distributed deployment, and operational
-robustness under heterogeneous conditions. Prior work has advanced
-each of these dimensions independently, yet their integrated
-treatment under a single deployment-oriented framework remains
-absent. This section traces that progression to motivate the design
-of CONQUEST.
+Cyberworm detection in mission-critical networks must cope with
+high-dimensional traffic, training data that cannot be pooled, and
+heterogeneous operating conditions. Prior work has advanced these
+aspects largely in isolation. This section reviews each line of work
+and positions CONQUEST against representative studies
+(Table~\ref{tab:rw_qualitative}).
 
 \subsection{Deep Temporal Intrusion Detection}
 
-Intrusion detection in IoT/IIoT environments has shifted from
-signature-driven and shallow-learning approaches toward deep
-architectures that model temporal traffic behavior directly,
-reflecting the reality that cyberworm propagation manifests as
-low-intensity, time-evolving deviations rather than abrupt
-anomalies. CNN--LSTM and attention-based variants improve temporal
-discrimination by combining local feature extraction with long-range
-dependency modeling~\cite{phalaagaehybrid,yuadaptive}, while
-lightweight recurrent autoencoding detectors reduce inference cost
-without sacrificing real-time sensitivity~\cite{yupgtad}. Multi-view
-flow packet pipelines further reduce single-view detection
-errors~\cite{sudyanaflow}. These works confirm that temporal deep
-modeling is necessary for complex traffic, yet they share a common
-limitation: all operate on the full, high-dimensional feature space
-without principled selection, increasing both computational burden
-and sensitivity to noisy or irrelevant features. This raises a
-practical question, how to identify compact, discriminative feature
-subsets that preserve temporal structure while reducing optimization
-cost which brings feature selection to the center of the design
-problem.
+Intrusion detection for IoT/IIoT has moved from signature-based and
+shallow models toward deep architectures that model temporal traffic
+behavior, because cyberworm propagation appears as low-intensity,
+time-evolving deviations rather than abrupt anomalies. CNN--LSTM and
+attention-based models combine local feature extraction with
+long-range dependency modeling~\cite{phalaagaehybrid,yuadaptive},
+lightweight recurrent autoencoders reduce inference
+cost~\cite{yupgtad}, and multi-view flow--packet pipelines reduce
+single-view detection errors~\cite{sudyanaflow}. These detectors
+typically operate on the full feature space, which raises
+computational cost and sensitivity to redundant features and
+motivates principled feature selection.
 
 \subsection{Feature Selection via Swarm and Quantum-Inspired Optimization}
 
-Recognizing that intrusion telemetry is typically high-dimensional
-and redundant, a substantial body of work formulates feature
-selection as a combinatorial optimization problem and applies swarm
-or evolutionary search. PSO-coupled temporal backbones reduce
-dimensionality while preserving discriminative
-structure~\cite{donkoloptimization}. Multi-objective formulations
-balance detection performance against subset
-size~\cite{sezginmulti,raeisientropy}, metaheuristics optimize model
-hyperparameters directly~\cite{kishoreimproved}, and ensemble wrapper
-methods extend this line to fog and cloud anomaly
+Feature selection for IDS is commonly cast as a combinatorial
+optimization problem solved by swarm or evolutionary search.
+PSO coupled with temporal backbones reduces dimensionality while
+preserving discriminative structure~\cite{donkoloptimization};
+multi-objective formulations trade detection performance against
+subset size~\cite{sezginmulti,raeisientropy}; metaheuristics tune
+model hyperparameters~\cite{kishoreimproved}; and wrapper ensembles
+extend these ideas to fog and cloud anomaly
 detection~\cite{yaseenefficient,bilalevaluation,maryenhancing,shrivashybrid}.
-Quantum-inspired sampling has recently been introduced as a stronger
-exploration mechanism~\cite{vivekquantum}, yet it is consistently
-treated as a drop-in improvement without controlled analysis of how
-optimizer expressiveness affects convergence stability, overhead, or
-deployment-time cost. Crucially, these studies report only final
-detection performance with limited analysis of stochastic stability
-or latency and memory behavior properties that are non-negotiable
-in mission-critical deployment. More fundamentally, all of these
-systems assume centralized access to training data, an assumption
-that is increasingly violated in distributed mission environments
-where raw traffic cannot leave each node due to sovereignty and
-regulatory constraints. Addressing this constraint requires moving
-from centralized optimization to privacy-preserving distributed
-training, which is precisely what federated learning provides.
+Quantum-inspired sampling has been proposed to strengthen
+exploration~\cite{vivekquantum}, but it is usually adopted as a
+drop-in replacement, without analysis of how its capacity affects
+stability, cost, or detection, \rev{R2.3}\textcolor{red}{and without
+comparison against classical search at an equal evaluation budget}.
+These studies also assume centralized access to training data, which
+distributed mission environments often cannot provide.
 
 \subsection{Federated Learning for Distributed IDS}
 
-Federated learning (FL) has emerged as the dominant paradigm for
-privacy-preserving collaborative intrusion detection, keeping raw
-traffic local and exchanging only model updates~\cite{hamadsystematic}.
-Representative FL-IDS systems span agricultural IoT
+Federated learning (FL) enables collaborative intrusion detection
+while keeping raw traffic local~\cite{hamadsystematic}.
+Representative systems include agricultural IoT
 deployments~\cite{FRIHA202217}, privacy-preserving distributed
 designs~\cite{amrosecuring}, federated sequential
 detectors~\cite{selvamfederated,anweradvanced}, and unsupervised
-VAE/GMM anomaly detectors targeting unknown-threat
-coverage~\cite{camposfederated}. FedProx has been shown to outperform
-FedAvg under non-IID partitions on CICIoT2023~\cite{herlambangfederated},
-secure aggregation strengthens FL against collusion and replay
-attacks~\cite{yaoenhanced}, and fog-hierarchical architectures improve
-scalability across distributed sites~\cite{alsalehheterogeneity,islamprivacy}.
-These works confirm that FL can achieve competitive detection accuracy
-without raw data sharing. However, they consistently evaluate only
-global average metrics under IID or mildly non-IID settings, masking
-the behavior of underperforming clients and obscuring whether the
-system is genuinely robust or merely average-robust. In mission
-deployments, where a single compromised subsystem can propagate a
-worm across the network, tail performance matters as much as mean
-performance, a distinction that existing FL-IDS work does not
-address. This motivates a closer look at heterogeneity modeling and
-its effect on worst-case detection reliability.
+VAE/GMM detectors for unknown threats~\cite{camposfederated}. FedProx
+has been reported to outperform FedAvg under non-IID partitions on
+CICIoT2023~\cite{herlambangfederated}, secure aggregation hardens FL
+against collusion and replay attacks~\cite{yaoenhanced}, and
+fog-hierarchical architectures improve
+scalability~\cite{alsalehheterogeneity,islamprivacy}. These studies
+show that FL can reach competitive accuracy without sharing raw data,
+but most report global averages under IID or mildly non-IID settings.
+In mission deployments, where a single poorly served subsystem can
+let a worm spread, worst-client performance matters as much as the
+average.
 
 \subsection{Federated Robustness Under Heterogeneous Data}
 
-Motivated by the inadequacy of IID assumptions, a dedicated line of
-work studies FL robustness under realistic heterogeneity. Large-scale
-empirical analyses confirm that device and behavioral heterogeneity
-substantially degrades model quality and fairness, with up to
-$4.6\times$ quality reduction and $2.2\times$ fairness degradation
-reported across heterogeneous
-configurations~\cite{abdelmoniemcomprehensive}, establishing that
-heterogeneity must be a primary design variable, not a benchmark
-afterthought. Hierarchical Dirichlet partitioning extends label-skew
-simulation with feature-space
-clustering~\cite{arisdakessiantwo}, quantity-skewed non-IID learning
-has been addressed through adaptive mutual knowledge
+A separate line of work studies FL under realistic heterogeneity. A
+large-scale empirical study reports up to $4.6\times$ quality and
+$2.2\times$ fairness degradation under heterogeneous
+configurations~\cite{abdelmoniemcomprehensive}. Hierarchical
+Dirichlet partitioning extends label-skew simulation with
+feature-space clustering~\cite{arisdakessiantwo}; quantity skew has
+been addressed with adaptive mutual knowledge
 distillation~\cite{gefedamkd} and regularization-adjusted gradient
-optimization~\cite{chaaddressing}, and within the IDS domain,
-adaptive personalized FL improves per-client
-utility~\cite{almansouradaptive} while stability-aware client
-selection reduces convergence
-instability~\cite{vinothinienhancing}. Despite these advances, no
-existing work connects non-IID robustness to mission-facing IDS
-criteria: none report thresholded stabilization ($R_{99}$),
-worst-client detection utility ($\min_k\,\mathrm{F1}_k$), or
-deployment readiness under operational traffic-volume imbalance.
-More broadly, the literature has yet to combine temporal deep
-modeling, capacity-controlled quantum-inspired feature selection,
-and federated heterogeneity robustness within a single reproducible
-pipeline; the precise integration that CONQUEST provides.
+optimization~\cite{chaaddressing}; and in IDS, personalized FL
+improves per-client utility~\cite{almansouradaptive}, while
+stability-aware client selection reduces convergence
+instability~\cite{vinothinienhancing}. These works seldom report
+convergence stabilization, worst-client utility, and inter-client
+dispersion together for intrusion detection, and they do not combine
+them with capacity-controlled feature selection.
 
 \subsection{Research Gap and Positioning of CONQUEST}
 
-Table~\ref{tab:rw_qualitative} positions CONQUEST relative to
-representative recent work. The foregoing review identifies a clear
-and consistent gap: while temporal IDS, swarm-based feature
-selection, and federated learning have each advanced significantly,
-no existing work integrates all three under a unified,
-deployment-oriented methodology. Specifically, no prior system
-simultaneously provides seed-controlled reproducibility, context-aware
-temporal feature construction for cyberworm dynamics,
-capacity-controlled quantum-inspired selection with bounded latency
-and memory, and federated robustness reporting under mission-relevant
-quantity-skew. The conference prototype of
-CONQUEST~\cite{ajakweconquest} established the feasibility of
-QPSO-based feature selection with a temporal backbone for centralized
-cyberworm detection; the present journal extension closes the
-remaining gaps \rev{R2.5}\textcolor{red}{(itemized in
-Table~\ref{tab:conf_vs_journal})} by adding a controlled variable-qubit ablation over
-$Q\in\{1,\dots,8\}$, a strong optimized non-quantum baseline for
-rigorous comparison, and a comprehensive federated evaluation across
-IID, label-skew, quantity-skew, and Dirichlet regimes quantified
-through $R_{99}$, $\min_k\,\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
+Temporal deep detection, swarm-based feature selection, and federated
+learning have each matured, but they are rarely integrated and
+evaluated together under deployment constraints.
+Table~\ref{tab:rw_qualitative} summarizes representative work.
+Relative to it, CONQUEST combines causal context features for
+cyberworm dynamics, quantum-inspired selection whose capacity is
+analyzed explicitly and compared with classical search, measured
+deployment cost, and federated evaluation with tail-aware metrics.
+The conference prototype~\cite{ajakweconquest} established QPSO-based
+selection with a temporal backbone for centralized detection; this
+extension \rev{R2.5}\textcolor{red}{(Table~\ref{tab:conf_vs_journal})}
+adds a variable-qubit ablation over
+\rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}, an optimized
+non-quantum baseline, and a federated evaluation across IID,
+label-skew, quantity-skew, and Dirichlet regimes using $R_{99}$,
+$\min_k\,\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
 
 
 
