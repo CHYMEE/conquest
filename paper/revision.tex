@@ -462,12 +462,7 @@ data, in both training regimes.
 \begin{figure*}[!htbp]
     \centering
 \includegraphics[width=0.8\linewidth]{images/CON-PICTURE2_rev.png}
-    \caption{CONQUEST architecture. Static and context features are
-    fused and normalized; variable-qubit QPSO \rev{R1.1}\textcolor{red}{selects
-    a fixed feature mask on the training data, with the register size
-    chosen on validation data}; an LSTM(+VAE) classifier detects
-    attacks and is trained centrally or by horizontal federated
-    learning.}
+    \caption{CONQUEST architecture: context-aware features, variable-qubit QPSO feature selection, and LSTM(+VAE) detection, trained centrally or by federated learning.}
 \label{fig:conquest_architecture}
 \end{figure*}
 
@@ -619,14 +614,7 @@ Fig.~\ref{fig:pipeline} illustrates the full preprocessing pipeline.
 \begin{figure*}[!htbp]
     \centering
     \includegraphics[width=1.00\linewidth]{images/Data_flowchart_rev.png}
-    \caption{Preprocessing pipeline. Traffic is split into static flow
-    descriptors and context features, which are fused and min--max
-    normalized to form the input to QPSO feature selection.
-    \rev{R1.7}\textcolor{red}{The static part keeps 69 CICFlowMeter
-    features after identifiers, IP addresses, time fields, and constant
-    columns are removed; the 17 context features are listed in
-    Table~\ref{tab:context_features}; normalization is fitted on the
-    training data only.}}
+    \caption{Preprocessing pipeline: static and context features are fused and normalized before QPSO feature selection.}
     \label{fig:pipeline}
 \end{figure*}
 
@@ -806,10 +794,7 @@ amplitudes remain spread out and rarely reproduce the best subset.}
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.95\linewidth]{images/qpso_dynamics_vs_Q.png}
-\caption{\rev{R1.1}\textcolor{red}{QPSO search dynamics versus register
-size on the training data, averaged over ten seeds. Left: entropy of
-the measurement distribution. Middle: diversity of the masks in the
-swarm. Right: best fitness found.}}
+\caption{\rev{R1.1}\textcolor{red}{QPSO search dynamics versus register size over ten seeds: measurement entropy (left), mask diversity (middle), and best fitness (right).}}
 \label{fig:qpso_dynamics}
 \end{figure*}
 
@@ -1088,7 +1073,9 @@ reported metrics are computed on $\mathcal{D}_{\rm te}$,
 \bigr\}.
 \label{eq:central_metrics}
 \end{align}
-FAR and MD are computed per class from the confusion matrix. In the
+FAR is the share of benign flows flagged as attack and MD the share
+of attacks missed; per-class values are computed from the confusion
+matrix. In the
 QPSO ablation, every $Q$ uses the same data partition, and results
 are reported as mean$\pm$std over ten seeds.
 \rev{R1.2}\textcolor{red}{Paired comparisons use the two-sided
@@ -1182,22 +1169,14 @@ FedAvg:
 
 \begin{table*}[!t]
 \centering
-\caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{Centralized detection on
-ACI-IoT with 40 selected features, averaged over ten seeds. QPSO uses
-Q = 6, and PSO the same budget of 620 fitness evaluations. FAR: benign
-flows flagged as attack; MD: attacks missed. The two p-value columns
-give two-sided Wilcoxon signed-rank tests against CONQUEST, paired by
-seed. Sel.: median feature-selection time in seconds.
-\textsuperscript{\textdagger}Conference result~\cite{ajakweconquest},
-obtained with a random split of pooled data in a single run and
-quoted for reference only.}}
+\caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{Centralized detection over ten seeds, with Wilcoxon p-values against CONQUEST. \textsuperscript{\textdagger}Conference result~\cite{ajakweconquest}, not directly comparable.}}
 \label{tab:cyberworm_high_impact}
 \color{red}
 \setlength{\tabcolsep}{3pt}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lccccccccc}
 \hline\toprule
-\textbf{Pipeline} & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & $p_{\rm F1}$ & $p_{\rm MD}$ & Sel. (s) \\
+\textbf{Pipeline} & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & $p$ (F1) & $p$ (MD) & Selection (s) \\
 \hline\toprule
 S-CIDS~\cite{ajakweconquest}\textsuperscript{\textdagger} & 85.14 & 80.62 & -- & -- & -- & -- & -- & -- & -- \\
 \midrule
@@ -1406,18 +1385,14 @@ below.}
 
 \begin{table*}[!t]
 \centering
-\caption{\rev{R1.2}\textcolor{red}{Variable-qubit QPSO ablation with
-context features and 40 selected features, over ten seeds per register
-size. FAR: benign flows flagged as attack; MD: attacks missed. Last
-column: Holm-adjusted Wilcoxon p-value of test F1 against Q = 6, the
-setting selected on validation data.}}
+\caption{\rev{R1.2}\textcolor{red}{Detection versus QPSO register size over ten seeds; last column: Holm-adjusted p-value against Q = 6.}}
 \label{tab:qubit_ablation_improved_robust}
 \color{red}
 \setlength{\tabcolsep}{3.5pt}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{ccccccccc}
 \hline\toprule
-$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p_{Q^*}$ \\
+$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p$ vs.\ $Q{=}6$ \\
 \hline\toprule
 1 & 97.20$\pm$0.23 & 97.20$\pm$0.22 & 0.9926$\pm$0.0009 & 0.0243$\pm$0.0024 & 1.90$\pm$0.29 & 3.45$\pm$0.53 & 95.27$\pm$0.74 & 1.00 \\
 2 & 97.08$\pm$0.17 & 97.09$\pm$0.17 & 0.9918$\pm$0.0011 & 0.0253$\pm$0.0019 & 2.19$\pm$0.58 & 3.44$\pm$0.55 & 95.00$\pm$1.58 & 1.00 \\
@@ -1502,18 +1477,13 @@ features.}
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.4}\rev{R1.6}\textcolor{red}{Selector comparison for
-feature budgets of 40, 20, and 10, with context features available and
-five paired seeds. F1, FAR, and MD in \%. Ctx.: number of the 17
-context features selected. Wins: seeds on which QPSO has a higher F1
-than the selector in that row. Bold: best F1 per budget. Last row:
-consensus mask over ten seeds.}}
+\caption{\rev{R1.4}\rev{R1.6}\textcolor{red}{Selector comparison under feature budgets of 40, 20, and 10.}}
 \label{tab:kbudget}
 \color{red}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{clccccc}
 \hline\toprule
-$k$ & Selector & F1 & FAR & MD & Ctx. & Wins \\
+$k$ & Selector & F1 (\%) & FAR (\%) & MD (\%) & Context feat. & QPSO wins \\
 \hline\toprule
 \multirow{3}{*}{40} & QPSO & 97.25$\pm$0.22 & 1.95 & 3.35 & 8.2 & -- \\
  & PSO & \textbf{97.28$\pm$0.15} & 2.15 & 3.15 & 6.6 & 3/5 \\
@@ -1567,10 +1537,7 @@ test F1.}
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{images/q_ablation_boxplot.png}
-\caption{\rev{R1.2}\textcolor{red}{Test F1 of CONQUEST versus QPSO
-register size, with ten seeds per setting; dots are individual runs.
-The star marks Q = 6, selected on validation data. Hatched boxes: Q = 9
-and 10, with five seeds each, beyond the tested range.}}
+\caption{\rev{R1.2}\textcolor{red}{Test F1 versus QPSO register size; hatched boxes use five seeds, the others ten.}}
 \label{fig:q_boxplot}
 \end{figure}
 
@@ -1605,9 +1572,7 @@ for detection at the lowest cost.}
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.3}\textcolor{red}{Search-budget sensitivity of QPSO,
-given as particles by iterations, with five seeds per cell. Fitness:
-best trace-ratio fitness found on the training data.}}
+\caption{\rev{R1.3}\textcolor{red}{Search-budget sensitivity of QPSO over five seeds per cell.}}
 \label{tab:budget_sensitivity}
 \color{red}
 \setlength{\tabcolsep}{3pt}
@@ -1646,10 +1611,7 @@ $Q$ & $P{\times}I$ & Evals & Fitness & Test F1 (\%) & Val.\ F1 (\%) \\
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.9\linewidth]{images/budget_sensitivity.png}
-\caption{\rev{R1.3}\textcolor{red}{Search-budget sensitivity of QPSO
-over five seeds. (a)~Search only, without classifier training: best
-fitness found for Q = 1 to 10 at three budgets. (b)~Test F1 of trained
-detectors for Q = 6 to 10 under four budgets.}}
+\caption{\rev{R1.3}\textcolor{red}{Search-budget sensitivity: (a)~best fitness of the search alone; (b)~test F1 of trained detectors.}}
 \label{fig:budget}
 \end{figure*}
 
@@ -1691,9 +1653,7 @@ $k=20$ is reported for deployments that require fewer features.}
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.4}\textcolor{red}{Deployed consensus mask: the 40
-features selected most often across ten QPSO runs with Q = 6. Freq.:
-selection frequency. Context features in italics, 8 of 17.}}
+\caption{\rev{R1.4}\textcolor{red}{Deployed consensus mask at Q = 6; context features in italics.}}
 \label{tab:selected_features}
 \color{red}
 \setlength{\tabcolsep}{3pt}
@@ -1729,11 +1689,7 @@ Fwd IAT Std & 0.6 & Active Max & 0.5 \\
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=\linewidth]{images/feature_selection_heatmap.png}
-\caption{\rev{R1.4}\textcolor{red}{Selection frequency of each of the
-86 features across seeds for every register size, with ten seeds for Q
-up to 8 and five for Q = 9 and 10. Features are sorted by pooled
-frequency; context features are labelled in red, and dots mark the
-consensus mask.}}
+\caption{\rev{R1.4}\textcolor{red}{Selection frequency of each feature for every register size; dots mark the consensus mask.}}
 \label{fig:feature_heatmap}
 \end{figure*}
 
@@ -1783,16 +1739,7 @@ Eq.~\eqref{eq:latency_decomp}.}
 
 \begin{table*}[!t]
 \centering
-\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in
-isolation on the CPU-only host with two TensorFlow threads and no other
-load; medians over the measured seeds, whose number is given in
-parentheses. Latency: classifier time for one window at batch size 1,
-median and 95th percentile over 1{,}000 test windows after 50 warm-up
-calls. Batched: cost per window at batch size 64. Test set: time to
-classify all 11{,}544 test windows. Context update: incremental
-context-feature update, normalization, and masking per arriving flow.
-Memory: peak resident set size of the inference process. Selection:
-one-time feature-selection cost during training.}}
+\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in isolation; medians over seeds, with the number of seeds in parentheses.}}
 \label{tab:latency_profile_qcids}
 \color{red}
 \setlength{\tabcolsep}{4pt}
@@ -1817,11 +1764,7 @@ CONQUEST, $k{=}10$ (3) & 3.09 & 4.33 & 0.257 & 3.37 & 16.5 & 645 & 758k & 22.8 \
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.95\linewidth]{images/deployment_cost.png}
-\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in
-isolation on the CPU-only host. (a)~Classifier latency per window at
-batch size 1; bars show the median and diamonds the 95th percentile.
-(b)~Throughput at batch size 64. (c)~Peak inference memory against the
-1\,GB edge budget.}}
+\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost: (a)~latency per window, (b)~batched throughput, and (c)~peak inference memory.}}
 \label{fig:deploy_cost}
 \end{figure*}
 
@@ -1830,16 +1773,13 @@ batch size 1; bars show the median and diamonds the 95th percentile.
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.6}\textcolor{red}{Factorial ablation of context
-features and QPSO with 40 selected features and ten seeds. Each cell
-gives test F1, FAR, and MD in \%. Effects are mean paired differences
-in F1 with Wilcoxon p-values.}}
+\caption{\rev{R1.6}\textcolor{red}{Factorial ablation of context features and QPSO over ten seeds.}}
 \label{tab:centralized_compare}
 \color{red}
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lcc}
 \hline\toprule
- & \textbf{Variance ranking} & \textbf{QPSO ($Q^{*}{=}6$)} \\
+F1 / FAR / MD (\%) & \textbf{Variance ranking} & \textbf{QPSO ($Q^{*}{=}6$)} \\
 \hline\toprule
 Static features only & 96.96 / 1.43 / 4.21 & 95.90 / 4.95 / 3.49 \\
 Static + context & 96.45 / 1.06 / 5.36 & \textbf{97.13} / 2.24 / \textbf{3.33} \\
@@ -1938,30 +1878,13 @@ same per-window latency.}
 \begin{figure*}[!t]
     \centering
     \includegraphics[width=0.9\linewidth]{images/fl_results.png}
-    \caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated
-    CONQUEST with 30 rounds, two local epochs, and three seeds.
-    (a)~Global test F1 per round for five partition regimes, with
-    FedAvg, five clients, and the proxy mask; dashed line: centralized
-    CONQUEST. (b)~Per-client F1 on client-specific test sets.
-    (c)~Global F1, worst-client F1, and convergence round versus the
-    number of clients. (d)~Global F1 and worst-client F1 for the three
-    mask-construction modes.}}
+    \caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST: (a)~global F1 per round, (b)~per-client F1, (c)~number of clients, and (d)~mask construction.}}
     \label{fig:hfl-multianalysis}
 \end{figure*}
 
 \begin{table*}[!t]
 \centering
-\caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated
-CONQUEST on ACI-IoT with one configuration for every row: 30 rounds,
-two local epochs, batch size 64, full participation, and the QPSO mask
-with 40 features; means over three seeds, with standard deviations for
-global F1. Global F1 and AUC are measured on the test set. Per-client
-columns evaluate the final global model on client-specific test sets
-that match each client's training mix. Min-F1: worst client;
-Dispersion: population standard deviation of F1 across clients; Max
-MD: largest per-client missed-attack rate; R\textsubscript{99}: first
-round reaching 99\% of the final global F1, not meaningful for label
-skew.}}
+\caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST under one configuration, averaged over three seeds.}}
 \label{tab:fl_performance_extended}
 \color{red}
 \setlength{\tabcolsep}{4pt}
@@ -2010,12 +1933,7 @@ Centralized CONQUEST & 97.13 & 0.9924 & -- & -- & -- & -- \\
 \begin{table*}[!t]
 \centering
 \scriptsize
-\caption{Structured comparison of CONQUEST against
-representative IDS and FL approaches. Methods are evaluated
-on different datasets; direct accuracy comparison is not
-valid. Comparison focuses on deployment-oriented
-capabilities. CONQUEST results are under centralized
-evaluation on ACI-IoT unless stated.}
+\caption{Comparison with representative IDS and FL approaches; results come from different datasets and are not directly comparable.}
 \label{tab:comparative_analysis}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.05}
