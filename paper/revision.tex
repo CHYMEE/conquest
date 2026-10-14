@@ -462,7 +462,12 @@ data, in both training regimes.
 \begin{figure*}[!htbp]
     \centering
 \includegraphics[width=0.8\linewidth]{images/CON-PICTURE2_rev.png}
-    \caption{CONQUEST architecture. Static flow descriptors $\mathbf{F}_s$ and context features $\mathbf{F}_c$ are fused into the normalized representation $\mathbf{Z}_n$; variable-qubit QPSO \rev{R1.1}\textcolor{red}{selects a $k$-feature mask $\mathbf{m}^{*}$ on $\mathcal{D}_{\rm tr}$, with $Q$ chosen on $\mathcal{D}_{\rm va}$}; an LSTM(+VAE) classifier performs binary detection, trained centrally or by horizontal federated learning.}
+    \caption{CONQUEST architecture. Static and context features are
+    fused and normalized; variable-qubit QPSO \rev{R1.1}\textcolor{red}{selects
+    a fixed feature mask on the training data, with the register size
+    chosen on validation data}; an LSTM(+VAE) classifier detects
+    attacks and is trained centrally or by horizontal federated
+    learning.}
 \label{fig:conquest_architecture}
 \end{figure*}
 
@@ -509,7 +514,10 @@ window $W$, the history of flow $i$ is}
 \label{eq:context_history}
 \end{equation}
 \rev{R1.7}\textcolor{red}{and $\mathrm{prev}(i)$ is the most recent
-earlier flow of the same source. Flow $i$ itself is excluded, so
+earlier flow of the same source. In Table~\ref{tab:context_features},
+$n^{\rm pk}_j$ and $n^{\rm by}_j$ are the packets and bytes of flow
+$j$ in both directions, and $\mathbf{1}[\cdot]$ is the indicator
+function. Flow $i$ itself is excluded, so
 every feature depends only on past traffic of the same source and
 uses no labels. Two windows are used: $W=10$\,s for short scanning
 and flooding bursts, and $W=60$\,s for slower propagation and
@@ -531,17 +539,14 @@ Section~\ref{subsec:obj2_latency}.}
 \begin{table*}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.7}\textcolor{red}{Context-aware features
-$\mathbf{F}_c$ ($|\mathbf{F}_c|=17$). $\mathcal{H}_W(i)$: earlier
-flows of the same source within $W$\,s; $\mathrm{prev}(i)$: the
-source's previous flow; $n^{\rm pk}_j$, $n^{\rm by}_j$: packets and
-bytes of flow $j$ (both directions); $\mathbf{1}[\cdot]$: indicator.
-Default: value when the source has no earlier flow.}}
+\caption{\rev{R1.7}\textcolor{red}{Definitions of the 17 context
+features. Default is the value used when the source has no earlier
+flow.}}
 \label{tab:context_features}
 \color{red}
 \setlength{\tabcolsep}{6pt}
 \renewcommand{\arraystretch}{1.25}
-\begin{tabular}{l l l c c c}
+\begin{tabular}{l l >{\raggedright\arraybackslash}p{4.3cm} c c c}
 \hline\toprule
 \textbf{Group} & \textbf{Feature} & \textbf{Definition} & \textbf{$W$ (s)} & \textbf{Default} & \textbf{Dim.} \\
 \hline\toprule
@@ -553,7 +558,7 @@ Default: value when the source has no earlier flow.}}
 \multirow{3}{*}{Dormant interval}
  & \texttt{dt\_prev\_src}     & $t_i-t_{\mathrm{prev}(i)}$ & -- & $10^{6}$ & 1 \\
  & \texttt{dt\_prev\_src\_log} & $\log(1+\texttt{dt\_prev\_src})$ & -- & $\log(1+10^{6})$ & 1 \\
- & \texttt{max\_gap\_src\_60}  & Largest gap between consecutive flows in $\mathcal{H}_{60}(i)\cup\{i\}$ & 60 & 60 & 1 \\
+ & \texttt{max\_gap\_src\_60}  & Max.\ gap between consecutive flows in $\mathcal{H}_{60}(i)\cup\{i\}$ & 60 & 60 & 1 \\
 \midrule
 \multirow{2}{*}{Diversity}
  & \texttt{n\_distinct\_dst\_W}   & $|\{a_j: j\in\mathcal{H}_W(i)\}|$ & 10, 60 & 0 & 2 \\
@@ -563,7 +568,7 @@ Default: value when the source has no earlier flow.}}
  & \texttt{proto\_switch}       & $\mathbf{1}[\pi_i\neq\pi_{\mathrm{prev}(i)}]$ & -- & 0 & 1 \\
  & \texttt{dport\_switch}       & $\mathbf{1}[p_i\neq p_{\mathrm{prev}(i)}]$ & -- & 0 & 1 \\
  & \texttt{n\_proto\_switch\_60} & $\sum_{j\in\mathcal{H}_{60}(i)} \texttt{proto\_switch}_j$ & 60 & 0 & 1 \\
- & \texttt{syn\_frac\_src\_60}  & Fraction of flows in $\mathcal{H}_{60}(i)$ with $\mathrm{SYN}_j>0$ & 60 & 0 & 1 \\
+ & \texttt{syn\_frac\_src\_60}  & Share of flows in $\mathcal{H}_{60}(i)$ with $\mathrm{SYN}_j>0$ & 60 & 0 & 1 \\
 \midrule
 \multicolumn{5}{l}{\textbf{Total} (burst 6, dormant interval 3, diversity 4, transition 4)} & \textbf{17} \\
 \hline\toprule
@@ -600,14 +605,15 @@ six.}
 The fused representation is normalized as
 \begin{equation}
 \mathbf{Z}_n = \mathcal{N}(\mathbf{Z}),\quad
-\mathbf{Z}_n \in [0,1]^d,
+\mathbf{Z}_n \in [0,1]^d.
 \label{eq:normalization}
 \end{equation}
-using min--max parameters computed on $\mathcal{D}_{\rm tr}$ and
-applied unchanged to $\mathcal{D}_{\rm va}$ and $\mathcal{D}_{\rm te}$
-\rev{R1.5}\textcolor{red}{(values outside $[0,1]$ are clipped)}, so
-centralized and federated training see identical inputs.
-$\mathbf{Z}_n$ is the fixed input to QPSO feature selection, and
+\rev{R1.5}\textcolor{red}{The min--max parameters are computed on
+$\mathcal{D}_{\rm tr}$ only and applied unchanged to
+$\mathcal{D}_{\rm va}$ and $\mathcal{D}_{\rm te}$, with values
+outside $[0,1]$ clipped.} Centralized and federated training
+therefore see identical inputs. $\mathbf{Z}_n$ is the fixed input to
+QPSO feature selection, and
 Fig.~\ref{fig:pipeline} illustrates the full preprocessing pipeline.
 
 %% ----------------------------------------------------------
@@ -916,18 +922,14 @@ blocked by ($Q$, seed), $n=25$.}
 \begin{figure*}[!htbp]
     \centering
     \includegraphics[width=1.00\linewidth]{images/Data_flowchart_rev.png}
-    \caption{Seed-controlled deterministic
-    preprocessing pipeline. IoT/IoV/IoD traffic is decomposed into
-    static descriptors $\mathbf{F}_s$ and offline context-aware
-    features $\mathbf{F}_c$ via fixed sliding-window operators.
-    Feature fusion and min-max normalization produce the unified
-    representation $\mathbf{Z}_n\in[0,1]^d$ that serves as the
-    fixed input to QPSO feature selection. \rev{R1.7}\textcolor{red}{$\mathbf{F}_s$:
-    69 CICFlowMeter features after removing identifiers, IP
-    addresses, time fields, and constant columns; $\mathbf{F}_c$: 17
-    causal per-source features with $W\in\{10,60\}$\,s
-    (Table~\ref{tab:context_features}); $d=86$; normalization is
-    fitted on $\mathcal{D}_{\rm tr}$ only.}}
+    \caption{Preprocessing pipeline. Traffic is split into static flow
+    descriptors and context features, which are fused and min--max
+    normalized to form the input to QPSO feature selection.
+    \rev{R1.7}\textcolor{red}{The static part keeps 69 CICFlowMeter
+    features after identifiers, IP addresses, time fields, and constant
+    columns are removed; the 17 context features are listed in
+    Table~\ref{tab:context_features}; normalization is fitted on the
+    training data only.}}
     \label{fig:pipeline}
 \end{figure*}
 
