@@ -909,10 +909,9 @@ optimizer itself.}
 \label{subsec:model_training}
 %% ----------------------------------------------------------
 
-The mask $\mathbf{m}^{*}$ selected by QPSO
-is fixed for classifier training, strictly decoupling feature
-optimization from model convergence. The masked input
-$\tilde{\mathbf{z}}=\mathbf{m}^{*}\odot\mathbf{Z}_n$ is passed
+The QPSO mask $\mathbf{m}^{*}$ is fixed before classifier training,
+so feature selection and model training are decoupled. The masked
+input $\tilde{\mathbf{z}}=\mathbf{m}^{*}\odot\mathbf{Z}_n$ is passed
 to a binary temporal classifier:
 \begin{equation}
 \hat{\mathbf{y}} = \mathrm{softmax}\bigl(g(\mathbf{u})\bigr),\quad
@@ -922,46 +921,44 @@ to a binary temporal classifier:
 \end{cases}}
 \label{eq:classifier}
 \end{equation}
-\rev{R1.11}\textcolor{red}{where $(\boldsymbol{\mu},\log\boldsymbol{\sigma}^2)
-\in\mathbb{R}^{64}\times\mathbb{R}^{64}$ are linear projections of
-the final recurrent state $h_T$ and
-$\boldsymbol{\epsilon}\sim\mathcal{N}(\mathbf{0},\mathbf{I})$.
-The recurrent encoder is an LSTM (256 units, returning sequences,
-dropout 0.2), followed by layer normalization, two-head
-self-attention with a residual connection, layer normalization, a
-second LSTM (128 units) and layer normalization, applied over
-windows of $T=10$ flows. The head $g$ is Dense(64, ReLU)--Dropout
-(0.2)--Dense(32, ReLU)--Dense(2). The LSTM captures temporal
-dependencies associated with cyberworm state transitions. The
-variational latent acts as a stochastic regularizing bottleneck;
-it is not used as an anomaly scorer and has no reconstruction
-decoder. At inference, the latent mean is used, so predictions are
-deterministic.} The total training objective is:
+\rev{R1.11}\textcolor{red}{where $\boldsymbol{\mu}$ and
+$\log\boldsymbol{\sigma}^2$ are 64-dimensional linear projections of
+the final recurrent state and
+$\boldsymbol{\epsilon}\sim\mathcal{N}(\mathbf{0},\mathbf{I})$. The
+encoder processes windows of $T=10$ flows with an LSTM of 256 units,
+two-head self-attention with a residual connection, and a second LSTM
+of 128 units, each followed by layer normalization; both LSTMs use
+dropout 0.2. The head $g$ consists of dense layers of 64 and 32 ReLU
+units, with dropout 0.2 after the first, and a two-unit output layer.
+The LSTMs capture the temporal dependencies of cyberworm state
+transitions. The variational latent acts only as a stochastic
+regularizing bottleneck: it has no reconstruction decoder and is not
+used as an anomaly score. At inference, the latent mean is used, so
+predictions are deterministic.} The training objective is
 \begin{equation}
 \mathcal{L}_{\rm total} = \textcolor{red}{\mathcal{L}_{\rm CE}
 + \gamma\,D_{\rm KL}\!\left(q(\mathbf{u}|\tilde{\mathbf{z}}_{1:T})\,\|\,
 \mathcal{N}(\mathbf{0},\mathbf{I})\right)},
 \label{eq:total_loss}
 \end{equation}
-\textcolor{red}{where $\mathcal{L}_{\rm CE}$ is the two-class
-cross-entropy and $\gamma=10^{-3}$.} \rev{R1.11}\textcolor{red}{Parameters $\theta$ are
-optimized with SGD (learning rate $10^{-3}$, Nesterov momentum 0.9,
-batch size 32) for all results reported in this paper: every
-centralized configuration (S-CIDS is quoted from~\cite{ajakweconquest}),
-the $Q$ ablation, the budget and selector comparisons, and the local
-updates of all federated clients (batch size 64). Adam is not used
-in any reported experiment; the comparison of SGD, Adam, and
-Newton--Hessian updates belongs to the conference
-version~\cite{ajakweconquest}, which retained SGD.} \rev{R1.5}\textcolor{red}{Training
-runs for at most 35 epochs; early stopping monitors validation
-loss with patience 6 and restores the best weights, and the
-learning rate is halved after 3 epochs without validation-loss
-improvement (minimum $10^{-6}$).} At
-deployment, no QPSO computation occurs; inference executes
-solely as $\hat{\mathbf{y}}=f_\theta(\mathbf{m}^{*}\odot\mathbf{Z}_n)$,
-\rev{R1.10}\textcolor{red}{which is the basis of~\eqref{eq:infer_invariance};
-the corresponding measurements are defined in
-Section~\ref{subsec:latency_design}.}
+\rev{R1.11}\textcolor{red}{where $\mathcal{L}_{\rm CE}$ is the
+two-class cross-entropy and $\gamma=10^{-3}$.}
+\rev{R1.11}\textcolor{red}{The parameters $\theta$ are optimized with
+SGD with Nesterov momentum 0.9, learning rate $10^{-3}$, and batch
+size 32. The same optimizer is used in every reported experiment:
+all centralized configurations, the $Q$ ablation, the budget and
+selector comparisons, and the local updates of all federated clients,
+which use batch size 64. Adam is not used. The comparison of SGD,
+Adam, and Newton--Hessian updates belongs to the conference
+version~\cite{ajakweconquest}, which retained SGD and from which the
+S-CIDS results are quoted.} \rev{R1.5}\textcolor{red}{Training runs
+for at most 35 epochs. Early stopping monitors the validation loss
+with patience 6 and restores the best weights, and the learning rate
+is halved after 3 epochs without improvement, down to $10^{-6}$.}
+At deployment, no QPSO computation occurs, and inference reduces to
+$\hat{\mathbf{y}}=f_\theta(\mathbf{m}^{*}\odot\mathbf{Z}_n)$.
+\rev{R1.10}\textcolor{red}{This is why the inference latency does
+not depend on $Q$, as stated in~\eqref{eq:infer_invariance}.}
 
 
 
