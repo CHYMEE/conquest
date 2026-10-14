@@ -71,7 +71,8 @@ CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberw
 \begin{abstract}
 AI-aided cyberworms capable of adaptive propagation and traffic mimicry pose severe threats to mission-critical IoT/IoV/IoD networks, rendering static intrusion detection defences ineffective. This paper proposes CONQUEST, a context-aware quantum-inspired intrusion detection framework combining seed-controlled context feature representation, variable-qubit Quantum-Inspired Particle Swarm Optimization (QPSO), and supervised LSTM(+VAE) temporal classification for cyberworm 
 detection. A controlled ablation over $Q\in\{1,\dots,8\}$ \rev{R1.2}\textcolor{red}{with ten seeds shows that detection is statistically insensitive to the QPSO register size (Friedman $p{=}0.53$). With $Q{=}6$ selected on validation data, CONQUEST achieves, under leakage-free centralized evaluation on ACI-IoT, 97.13\% accuracy, 97.13\% F1-score, 0.9924 AUC, and 0.0246 MSE.} \rev{R1.6}\textcolor{red}{A factorial ablation shows that context features improve detection only when combined with label-aware selection; QPSO matches, but does not exceed, classical PSO at an equal budget, and relative to variance-based selection it trades more false alarms for fewer missed attacks.}
-% TODO(C10): add measured per-window latency and peak memory to the abstract. Under horizontal federated learning 
+\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployed on a CPU-only host, it classifies one traffic window in about 3\,ms with 541\,MB peak memory, independently of $Q$.}
+Under horizontal federated learning 
 across IID, label-skew, quantity-skew, and Dirichlet regimes, \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{CONQUEST stays within 0.8\,pp of centralized training in every regime except label skew (quantity skew: F1\,${=}$\,96.66\%, worst-client F1\,${=}$\,96.37\%, $R_{99}{\approx}7$ rounds), whereas label skew lowers the worst client to 83.5\%}, demonstrating reproducible,
 \rev{R2.1}\textcolor{red}{raw-data-local}, and deployment-feasible cyberworm detection for mission-critical distributed environments.
 \end{abstract}
@@ -177,7 +178,7 @@ high Acc/F1 on IIoT benchmarks &
 High model complexity; centralized evaluation
 only; no FL or latency/memory analysis &
 Adds bounded QPSO optimization overhead
-(61.2\,ms, 922\,MB) and FL deployability
+\rev{R1.10}\rev{R2.4}\textcolor{red}{(about 3\,ms per window, 541\,MB)} and FL deployability
 analysis under heterogeneous regimes \\
 \midrule
 
@@ -1151,7 +1152,8 @@ is reported separately. The deployment design targets are}
 \textcolor{red}{chosen for CPU-only mission-edge gateways that
 co-host safety services}, where computation, memory, and energy are
 tightly constrained~\cite{amadi2026lightweight}.
-% TODO(after runs): insert measured values / set B_lat.
+\rev{R1.10}\rev{R2.4}\textcolor{red}{The measured values are reported in
+Section~\ref{subsec:obj2_latency}.}
 
 %% ----------------------------------------------------------
 \subsection{Centralized Training and Evaluation Protocol}
@@ -1733,22 +1735,7 @@ $k$ & Selector & F1 & FAR & MD & Ctx. & Wins \\
 \end{tabular}
 \end{table}
 
-% TODO(C10): old per-Q latency/memory figure; replace with measured deployment costs (Q-invariant).
-\begin{figure*}[!htbp]
-    \centering
-    \includegraphics[width=0.80\linewidth]{images/picutre13.png}
-    \caption{\scriptsize{Quantum ablation latency analysis across
-    $Q\in\{1,\dots,8\}$: (a)~parameter efficiency
-    (accuracy per unit training cost), (b)~accuracy--cost
-    trade-off, (c)~\textcolor{red}{F1 gain} over OS-CIDS baseline,
-    (d)~training time scaling, (e)~memory consumption against
-    the 1\,GB mission-edge threshold (dashed), and
-    (f)~overall efficiency ranking combining accuracy, time,
-    and memory. $Q{=}6$ ranks first in (f) and is the only
-    configuration satisfying all feasibility constraints
-    simultaneously.}}
-    \label{fig:vs-qubits}
-\end{figure*}
+% (Old per-Q latency/memory figure with original numbers removed; replaced by Fig.~\ref{fig:deploy_cost} in Section~\ref{subsec:obj2_latency}.)
 
 % (Old Qm/Qo/Qh comparison removed; superseded by Table~\ref{tab:cyberworm_high_impact} and the factorial ablation.)
 
@@ -1825,7 +1812,10 @@ original submission is thus not reproduced under the corrected
 protocol, and larger budgets do not change the conclusion that
 detection is insensitive to $Q$. We retain $20\times30$ as the
 default because it is sufficient for detection at the lowest cost.}
-% TODO(C3-B2): when block B2 (Q=1..5 at 40x60) finishes, add the full-range Q* and Friedman p at 40x60.
+\rev{R1.3}\textcolor{red}{Training detectors for all $Q\in\{1,\dots,10\}$ at the largest
+budget ($40\times60$, five seeds) confirms this: test F1 ranges from
+$96.89\%$ to $97.31\%$, the Friedman test finds no effect of $Q$
+($p=0.46$), and the validation-selected setting moves to $Q=9$.}
 
 \begin{table}[!t]
 \centering
@@ -1990,76 +1980,80 @@ remaining slots vary between seeds.}}
 \rev{R1.2}\textcolor{red}{Because detection is insensitive to $Q$
 (Table~\ref{tab:qubit_ablation_improved_robust}), this subsection
 examines whether $Q$ affects deployment cost and whether the
-selected operating point satisfies mission-edge constraints.} Since QPSO
-is excluded from the runtime path (Section~\ref{subsec:latency_design}),
-latency impact is confined to upstream feature-selection overhead during training.
-% TODO(C10): rebuild latency/memory table from deploy measurements.
-\begin{table}[!t]
+selected operating point satisfies mission-edge constraints.}
+
+\rev{R1.10}\rev{R2.4}\textcolor{red}{Table~\ref{tab:latency_profile_qcids} and
+Fig.~\ref{fig:deploy_cost} report the deployment cost, measured in
+isolation on the CPU-only host with the units and procedure of
+Section~\ref{subsec:latency_design}. Classifying one window of
+$T=10$ flows takes CONQUEST a median of $2.98$\,ms at batch size 1
+(95th percentile $4.55$\,ms); classified in batches of 64, a window
+costs $0.25$\,ms, i.e.\ about 4{,}000 windows per second. Updating
+the context features, normalizing, and masking a newly arrived flow
+adds $16\,\mu$s, and the whole test set of 11{,}544 windows is
+classified in $3.23$\,s. The inference process peaks at $541$\,MB,
+within the 1\,GB budget. These costs are practically the same for
+every pipeline ($2.9$--$3.5$\,ms per window; $541$--$658$\,MB) and
+for $Q=1,6,8$ and $k=10,20,40$: QPSO is not executed at deployment,
+and the classifier hardly changes with the input width ($758$k--$789$k
+parameters), which confirms~\eqref{eq:infer_invariance}
+empirically. QPSO is a training-time cost of about $1.8$\,min per
+run on the shared host ($0.4$\,min at $k=10$), incurred once before
+training; the consensus mask requires ten such runs.}
+
+\rev{R1.10}\rev{R2.4}\textcolor{red}{\textit{Relation to the original latency figures.} The
+$3.60$\,s reported as inference time in the original submission
+was the total time to classify the whole test set (about 12{,}000
+windows), not a per-detection latency; it corresponds to roughly
+$0.3$\,ms per window and is consistent with $T_{\rm infer}^{\rm te}$
+above. The $61.2$\,ms end-to-end latency, the latency-budget share
+$\eta$, and the per-$Q$ memory values of 512--1126\,MB could not be
+traced to a defined measurement and have been withdrawn, as has the
+former latency decomposition that added QPSO time to the inference
+path; Eq.~\eqref{eq:latency_decomp} replaces it.}
+
+\begin{table*}[!t]
 \centering
-\caption{\scriptsize{Latency and memory profile of QCIDS across qubit
-configurations. 
-$Q{=}6$ (highlighted) is the only configuration satisfying
-both the 1\,GB memory and 25\% latency-share thresholds.}}
+\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in isolation on the CPU-only host of
+Table~\ref{tab:impl_setup} (two TensorFlow threads, no other load; median over the measured seeds, number in
+parentheses). $\mathcal{L}_{\mathcal{D}}$: classifier latency for one window at batch size 1 (median and 95th
+percentile over 1{,}000 test windows after 50 warm-up calls). Batched: cost per window at $B{=}64$.
+$T_{\rm infer}^{\rm te}$: time to classify all 11544 test windows at $B{=}64$. $\mathcal{L}_{\mathcal{C}}$: incremental
+context-feature update, normalization, and masking per arriving flow. Memory: peak resident set size of the
+inference process. Feature selection runs once during training and is not on the detection path.}}
 \label{tab:latency_profile_qcids}
-\renewcommand{\arraystretch}{1.10}
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{lcccc}
+\color{red}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccccc}
 \hline\toprule
-\textbf{Model} & \textbf{$T_{\rm infer}$ (s)}
-& \textbf{$\mathcal{L}_{\rm e2e}$ (ms)}
-& \textbf{$\eta$ (\%)}
-& \textbf{Mem (MB)} \\
+\textbf{Pipeline} & \multicolumn{2}{c}{$\mathcal{L}_{\mathcal{D}}$, $B{=}1$ (ms/window)} & Batched & $T_{\rm infer}^{\rm te}$ & $\mathcal{L}_{\mathcal{C}}$ & Memory & Params & Selection \\
+ & median & p95 & (ms/window) & (s) & ($\mu$s/flow) & (MB) & & (s, training) \\
 \hline\toprule
-OS-CIDS        & 3.60 & 42.3 & 14.1 &  512 \\
-QCIDS-Q1       & 3.60 & 45.8 & 15.3 &  563 \\
-QCIDS-Q2       & 3.60 & 48.2 & 16.1 &  614 \\
-QCIDS-Q3       & 3.60 & 51.6 & 17.2 &  691 \\
-QCIDS-Q4       & 3.60 & 54.1 & 18.0 &  768 \\
-QCIDS-Qm (Q5)  & 3.60 & 57.3 & 19.1 &  845 \\
-\rowcolor{gray!12}
-\textbf{QCIDS-Qo (Q6)}
-               & \textbf{3.60} & \textbf{61.2}
-               & \textbf{20.4} & \textbf{922} \\
-QCIDS-Qh (Q7)  & 3.60 & 68.4 & 22.8 & 1024 \\
-QCIDS-Q8       & 3.60 & 74.8 & 24.9 & 1126 \\
+OS-CIDS (3) & 2.96 & 3.69 & 0.233 & 3.30 & 5.1 & 629 & 789k & 0.0 \\
+Var.+context (3) & 2.94 & 3.62 & 0.244 & 3.21 & 15.9 & 638 & 789k & 0.1 \\
+PSO+context (3) & 3.02 & 3.77 & 0.244 & 3.31 & 15.9 & 658 & 789k & 76.2 \\
+\textbf{CONQUEST ($Q^{*}{=}6$)} (3) & \textbf{2.98} & \textbf{4.55} & \textbf{0.250} & \textbf{3.23} & \textbf{16.2} & \textbf{541} & \textbf{789k} & \textbf{106.8} \\
+CONQUEST, consensus mask (3) & 2.93 & 3.70 & 0.238 & 3.15 & 15.8 & 600 & 789k & 0.2 \\
+CONQUEST, $Q{=}1$ (1) & 2.93 & 3.65 & 0.250 & 3.47 & 16.5 & 652 & 789k & 96.5 \\
+CONQUEST, $Q{=}8$ (1) & 3.47 & 4.31 & 0.250 & 3.29 & 16.3 & 657 & 789k & 109.9 \\
+CONQUEST, $k{=}20$ (3) & 3.19 & 4.87 & 0.260 & 3.49 & 16.4 & 650 & 768k & 43.8 \\
+CONQUEST, $k{=}10$ (3) & 3.09 & 4.33 & 0.257 & 3.37 & 16.5 & 645 & 758k & 22.8 \\
 \hline\toprule
 \end{tabular}
-\begin{minipage}{\columnwidth}
-\vspace{2pt}
-\footnotesize{$\eta$: latency share of total pipeline
-budget $\mathcal{B}_{\rm lat}$. Memory threshold: 1\,GB
-for CPU-only mission-edge gateways co-hosting safety
-services.}
-\end{minipage}
-\end{table}
-Table~\ref{tab:latency_profile_qcids} provides absolute
-deployment-relevant latency and memory accounting across
-all qubit configurations; Fig.~\ref{fig:vs-qubits} plots
-the corresponding accuracy gains, jointly characterizing
-the \rev{R1.1}\textcolor{red}{exploration--exploitation} trade-off underlying the
-$Q{=}6$ selection. Inference time is invariant at
-3.60\,s across all $Q$, confirming Eq.~\eqref{eq:infer_invariance}.
-End-to-end latency increases from 42.3\,ms at OS-CIDS to
-61.2\,ms at $Q{=}6$ ($\eta{=}20.4\%$), driven entirely by
-upstream QPSO overhead. $Q{=}7$ and $Q{=}8$ raise latency to
-68.4\,ms and 74.8\,ms without accuracy improvement, violating
-the efficiency trend. At $Q{=}6$, memory is 922\,MB
-($\mathcal{M}{<}\mathcal{M}_{\max}$); $Q{=}7$ exceeds 1\,GB,
-reducing co-hosting headroom.
-Fig.~\ref{fig:vs-qubits}(a--b) show that low-qubit
-configurations ($Q{\leq}2$) \rev{R1.1}\textcolor{red}{search almost at random}: despite
-low overhead, accuracy (0.9248--0.9516) falls below the
-OS-CIDS baseline (0.9464). The mid-range $Q\in\{4,5,6\}$
-delivers monotonic gains with moderate cost growth; $Q{=}6$
-marks the saturation point where QPSO converges to compact,
-high-utility feature subsets. Fig.~\ref{fig:vs-qubits}(c)
-confirms \textcolor{red}{that the F1 gain over OS-CIDS} emerges at $Q{\geq}3$ and peaks
-at $Q{=}6$ with a $+$2.21 pp absolute gain over OS-CIDS.
-Fig.~\ref{fig:vs-qubits}(d) shows that training time at
-$Q{=}6$ (2101\,s) is lower than several lower-qubit
-configurations, demonstrating that guided optimization reduces
-redundant evaluations when \rev{R1.1}\textcolor{red}{the search concentrates}.
-% TODO(C2/C10): this subsection is rebuilt from v2 results and new latency measurements.
+\end{table*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{images/deployment_cost.png}
+\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in isolation on the CPU-only
+host (two threads). (a)~Classifier latency per window at batch size 1
+(bars: median; diamonds: 95th percentile). (b)~Batched throughput at
+$B{=}64$. (c)~Peak memory of the inference process against the 1\,GB
+edge budget. Costs are nearly identical across pipelines, register
+sizes $Q$, and feature budgets $k$, because QPSO does not run at
+deployment.}}
+\label{fig:deploy_cost}
+\end{figure*}
 
 % (Old Fig. 'Picture Latency' with 3-seed metrics vs Q removed; superseded by Fig.~\ref{fig:q_boxplot}.)
 
@@ -2266,7 +2260,7 @@ Acc: 98.73--99.87\% on WIoTSN; centralized &
 No FL, stability, or deployability analysis &
 Adds \textcolor{red}{$R_{99}{\approx}7$, $\min\text{-F1}{=}96.4\%$,
 $\sigma(\mathrm{F1}){=}0.7$\,pp};
-latency 61.2\,ms, memory 922\,MB \\
+\rev{R1.10}\rev{R2.4}\textcolor{red}{latency about 3\,ms per window, memory 541\,MB} \\
 \midrule
 
 \cite{yuadaptive} &
@@ -2274,7 +2268,7 @@ AMSWS + transformer + focal loss &
 Acc/F1\,$=$\,99.6/99.2\%; 10.8\,ms/sample;
 37.2M params; centralized &
 High complexity; no FL or resource bounds &
-Adds bounded QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$}, 922\,MB) and FL
+Adds bounded QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$}, \textcolor{red}{541\,MB}) and FL
 evaluation under four heterogeneity regimes \\
 \midrule
 
@@ -2364,7 +2358,7 @@ ACI-IoT} &
 \textbf{Centralized: Acc/F1/AUC\,$=$\,
 \rev{R1.6}\textcolor{red}{97.13/97.13/0.9924},
 MSE\,$=$\,\textcolor{red}{0.0246},
-61.2\,ms, 922\,MB.
+\textcolor{red}{about 3\,ms per window, 541\,MB}.
 Federated (qty-skew):
 F1/AUC\,$=$\,\textcolor{red}{0.9666/0.9914,
 $R_{99}{\approx}7$,
@@ -2440,7 +2434,9 @@ the combination of context features with label-aware selection,
 not to the quantum-inspired search itself, and expose a
 missed-attack versus false-alarm trade-off against variance
 ranking that centralized IDS studies rarely report.}
-% TODO(C10): add measured latency/memory here.
+\rev{R1.10}\rev{R2.4}\textcolor{red}{Its deployed detector classifies a window in about
+3\,ms with 541\,MB peak memory on a CPU-only host, independently of
+$Q$, which centralized IDS studies seldom measure.}
 Under federated deployment,
 \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{F1/AUC\,$=$\,0.9666/0.9914 under quantity skew, with
 $R_{99}{\approx}7$ rounds, a worst-client F1 of $96.4\%$, and an
@@ -2499,8 +2495,10 @@ values concentrating the search most effectively.}
 $Q$ (Friedman $p=0.53$ over ten seeds): every tested setting
 yields about $97\%$ F1, and the validation-selected $Q^{*}=6$
 delivers $97.13\%$ accuracy, $97.13\%$ F1, $0.9924$ AUC, and
-$0.0246$ MSE under leakage-free centralized evaluation.}
-% TODO(C10): add measured latency/memory.
+$0.0246$ MSE under leakage-free centralized evaluation.} \rev{R1.10}\rev{R2.4}\textcolor{red}{Deployed
+on a CPU-only host, it needs about 3\,ms per window and 541\,MB of
+memory, independently of $Q$, because QPSO runs only once during
+training.}
 
 Second, \rev{R1.6}\rev{R2.3}\textcolor{red}{context features and label-aware
 selection are complementary: each alone lowers F1, while together
@@ -2531,7 +2529,7 @@ QPSO feature mask, \rev{R2.1}\textcolor{red}{differential privacy at
 larger client populations, where the DP noise per client shrinks,} communication-efficient aggregation to
 reduce the observed federated
 training overhead, and lightweight edge adaptation below
-the current 922\,MB memory envelope.
+the current \textcolor{red}{541}\,MB memory envelope.
 
 
 
