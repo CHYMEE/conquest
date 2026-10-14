@@ -72,7 +72,7 @@ CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberw
 AI-aided cyberworms capable of adaptive propagation and traffic mimicry pose severe threats to mission-critical IoT/IoV/IoD networks, rendering static intrusion detection defences ineffective. This paper proposes CONQUEST, a context-aware quantum-inspired intrusion detection framework combining seed-controlled context feature representation, variable-qubit Quantum-Inspired Particle Swarm Optimization (QPSO), and supervised LSTM(+VAE) temporal classification for cyberworm 
 detection. A controlled ablation over $Q\in\{1,\dots,8\}$ \rev{R1.2}\textcolor{red}{with ten seeds shows that detection is statistically insensitive to the QPSO register size (Friedman $p{=}0.53$). With $Q{=}6$ selected on validation data, CONQUEST achieves, under leakage-free centralized evaluation on ACI-IoT, 97.13\% accuracy, 97.13\% F1-score, 0.9924 AUC, and 0.0246 MSE.} \rev{R1.6}\textcolor{red}{A factorial ablation shows that context features improve detection only when combined with label-aware selection; QPSO matches, but does not exceed, classical PSO at an equal budget, and relative to variance-based selection it trades more false alarms for fewer missed attacks.}
 % TODO(C10): add measured per-window latency and peak memory to the abstract. Under horizontal federated learning 
-across IID, label-skew, quantity-skew, and Dirichlet regimes, CONQUEST achieves F1\,${=}$\,0.9162 and AUC\,${=}$\,0.9708 in the strongest heterogeneous setting, stabilizing at $R_{90}{=}25$ rounds with worst-client F1\,${=}$\,0.893 and $\sigma(\mathrm{F1}){=}$\,0.017, demonstrating reproducible,
+across IID, label-skew, quantity-skew, and Dirichlet regimes, \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{CONQUEST stays within 0.8\,pp of centralized training in every regime except label skew (quantity skew: F1\,${=}$\,96.66\%, worst-client F1\,${=}$\,96.37\%, $R_{99}{\approx}7$ rounds), whereas label skew lowers the worst client to 83.5\%}, demonstrating reproducible,
 \rev{R2.1}\textcolor{red}{raw-data-local}, and deployment-feasible cyberworm detection for mission-critical distributed environments.
 \end{abstract}
 
@@ -130,7 +130,7 @@ Feature subset & Not reported & Selected features, selection frequency, stabilit
 FL evaluation & None & IID, label-, quantity-skew, Dirichlet; FedAvg, SCAFFOLD, FLAME; $K\in\{5,10,20\}$; privacy--utility trade-off \\
 \midrule
 \multicolumn{3}{l}{\textit{Analytical}} \\
-Metrics & Detection rate, FPR & F1, AUC, MSE, FAR/MD, per-window latency, peak memory, $R_{90}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$, $\varepsilon$ \\
+Metrics & Detection rate, FPR & F1, AUC, MSE, FAR/MD, per-window latency, peak memory, $\textcolor{red}{R_{99}}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$, $\varepsilon$ \\
 Statistics & Single run & Mean$\pm$std over seeds; Friedman and Holm-corrected Wilcoxon tests \\
 Search analysis & None & QPSO search dynamics versus $Q$ (Fig.~\ref{fig:qpso_dynamics}) \\
 Privacy & Not analyzed & Threat model and privacy scope (Table~\ref{tab:privacy_scope}) \\
@@ -165,7 +165,7 @@ Centralized only; no stability analysis,
 reproducibility control, or FL evaluation &
 Adds seed-controlled reproducibility, bounded
 variable-qubit QPSO, and non-IID FL robustness
-metrics ($R_{90}$, $\min_k\,\mathrm{F1}_k$,
+metrics ($\textcolor{red}{R_{99}}$, $\min_k\,\mathrm{F1}_k$,
 $\sigma(\mathrm{F1})$) \\
 \midrule
 
@@ -222,7 +222,7 @@ Two-client setup only; no worst-client
 fairness metric or convergence stabilization
 analysis &
 Extends to $K{=}5$ clients across four
-heterogeneity regimes; reports $R_{90}$,
+heterogeneity regimes; reports $\textcolor{red}{R_{99}}$,
 $\min_k\,\mathrm{F1}_k$, and
 $\sigma(\mathrm{F1})$ \\
 \midrule
@@ -248,7 +248,7 @@ MNIST and CIFAR benchmarks &
 General FL optimization study; not
 IDS-specific; no deployment metrics &
 Transfers quantity-skew analysis to
-cyberworm IDS; adds $R_{90}$,
+cyberworm IDS; adds $\textcolor{red}{R_{99}}$,
 $\min_k\,\mathrm{F1}_k$, and
 $\sigma(\mathrm{F1})$ \\
 \midrule
@@ -292,7 +292,7 @@ in a single unified framework \\
     %\item We propose CONQUEST, a reproducible context-aware quantum-inspired IDS framework for robust detection of AI-aided cyberworms in mission-critical IoT/IoV/IoD environments.
     %\item We establish, through a controlled variable-qubit ablation, that QPSO-based feature selection exhibits an expressiveness stability trade-off with a stability-optimal operating point at $Q{=}6$, yielding 96.85\% accuracy and F1-score, 0.9947 AUC, and 0.0240 MSE under centralized evaluation on the ACI-IoT dataset, with end-to-end latency of 61.2\,ms and memory of 922\,MB.
 
-    %\item We evaluate CONQUEST under horizontal federated learning across four heterogeneity regimes, quantifying deployability via worst-client reliability ($\min_k\,\mathrm{F1}_k{=}0.893$), inter-client dispersion ($\sigma(\mathrm{F1}){=}0.017$), and convergence stability ($R_{90}{=}25$), demonstrating a centralised to federated performance gap of only 2.9\% in F1-score.
+    %\item We evaluate CONQUEST under horizontal federated learning across four heterogeneity regimes, quantifying deployability via worst-client reliability ($\min_k\,\mathrm{F1}_k{=}0.893$), inter-client dispersion ($\sigma(\mathrm{F1}){=}0.017$), and convergence stability ($\textcolor{red}{R_{99}}{=}25$), demonstrating a centralised to federated performance gap of only 2.9\% in F1-score.
 %\end{itemize}
 
 \subsection{Key Contributions}
@@ -303,7 +303,7 @@ The core contributions of this manuscript, which significantly advance the preli
 
     \item \textbf{\rev{R1.1, R1.2}\textcolor{red}{Characterization of the Qubit-Register Size}:} Through an extensive variable-qubit ablation study ($Q \in \{1, \dots, 8\}$), we characterize the expressiveness-stability trade-off in QPSO-based feature selection. \textcolor{red}{We make explicit how $Q$ enters the search, show that it interpolates between near-random exploration (small $Q$) and frozen exploitation (large $Q$), and show, with Friedman and Holm-corrected Wilcoxon tests over ten seeds and a search-budget sensitivity analysis, that detection is statistically insensitive to $Q$ within the tested range, so the operating point $Q^{*}{=}6$ is fixed by a pre-declared validation rule rather than claimed as an optimum.}
 
-    \item \textbf{Stress-Testing Federated Robustness under Heterogeneity:} We provide the first systematic evaluation of quantum-inspired IDS under four distinct federated heterogeneity regimes: IID, label-skew, quantity-skew, and Dirichlet partitions. By introducing mission-centric metrics—specifically thresholded stabilization ($R_{90}=25$), worst-client reliability ($\min_{k} F1_{k}=0.893$), and inter-client dispersion ($\sigma(F1)=0.017$), we demonstrate that \textit{CONQUEST} bounds the centralized-to-federated performance gap to a marginal 2.9\%. \textcolor{red}{We further vary the number of clients ($K\in\{5,10,20\}$) and compare three privacy-compatible mask-construction modes for non-IID clients.}
+    \item \textbf{Stress-Testing Federated Robustness under Heterogeneity:} We provide the first systematic evaluation of quantum-inspired IDS under four distinct federated heterogeneity regimes: IID, label-skew, quantity-skew, and Dirichlet partitions. By introducing mission-centric metrics, namely thresholded stabilization, worst-client reliability, and inter-client dispersion, \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{evaluated on client-specific test sets, we show that \textit{CONQUEST} stays within 0.8\,pp of centralized F1 under IID, quantity, and Dirichlet heterogeneity and within 0.9\,pp with up to 20 clients, and we identify label skew as the regime in which a single global model fails its worst client.} \textcolor{red}{We further vary the number of clients ($K\in\{5,10,20\}$) and compare three privacy-compatible mask-construction modes for non-IID clients.}
 
     \item \textbf{Ablative Attribution via Optimized Baseline:} We introduce a rigorous non-quantum baseline (\textit{OS-CIDS}) \textcolor{red}{and a factorial ablation (context features on/off $\times$ variance vs.\ QPSO selection), together with a classical PSO baseline at an equal fitness-evaluation budget, to separate the contributions of context-aware representation and quantum-inspired search.} \rev{R1.6}\textcolor{red}{The ablation shows that the two components are complementary rather than separately beneficial, that QPSO and classical PSO are statistically equivalent, and that the choice between label-aware and variance-based selection is a trade-off between missed attacks and false alarms, for which we give scenario-based guidance.}
 \end{itemize}
@@ -426,7 +426,7 @@ utility~\cite{almansouradaptive} while stability-aware client
 selection reduces convergence
 instability~\cite{vinothinienhancing}. Despite these advances, no
 existing work connects non-IID robustness to mission-facing IDS
-criteria: none report thresholded stabilization ($R_{90}$),
+criteria: none report thresholded stabilization ($\textcolor{red}{R_{99}}$),
 worst-client detection utility ($\min_k\,\mathrm{F1}_k$), or
 deployment readiness under operational traffic-volume imbalance.
 More broadly, the literature has yet to combine temporal deep
@@ -455,7 +455,7 @@ Table~\ref{tab:conf_vs_journal})} by adding a controlled variable-qubit ablation
 $Q\in\{1,\dots,8\}$, a strong optimized non-quantum baseline for
 rigorous comparison, and a comprehensive federated evaluation across
 IID, label-skew, quantity-skew, and Dirichlet regimes quantified
-through $R_{90}$, $\min_k\,\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
+through $\textcolor{red}{R_{99}}$, $\min_k\,\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
 
 
 
@@ -510,8 +510,8 @@ $\mathbf{m}^{*}$        & Optimal fixed feature mask
                           at deployment \\
 $\mathcal{L}_{\rm e2e}$ & End-to-end pipeline latency \\
 $\mathcal{M}(Q)$        & Memory usage at qubit setting $Q$ \\
-$R_{90}$                & Round at which global F1 reaches
-                          90\% of terminal F1 \\
+$\textcolor{red}{R_{99}}$                & Round at which global F1 reaches
+                          \textcolor{red}{99\%} of terminal F1 \\
 $\min_k\,{\rm F1}_k$    & Worst-client F1 score \\
 $\sigma({\rm F1})$      & Inter-client F1 dispersion \\
 \hline\toprule
@@ -1315,7 +1315,7 @@ $\boldsymbol{\pi}^{(c)}\sim\textsc{Dirichlet}(\alpha\mathbf{1})$,
 with smaller $\alpha$ yielding sharper per-client concentration.
 Because mission readiness is governed by tail behavior, all
 regimes are evaluated using global F1/AUC alongside
-$R_{90}$, $\min_k\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
+$\textcolor{red}{R_{99}}$, $\min_k\mathrm{F1}_k$, and $\sigma(\mathrm{F1})$.
 
 %% ----------------------------------------------------------
 \subsection{Federated Learning Protocol and Convergence
@@ -1459,12 +1459,20 @@ $R=30$ rounds, $E=2$ local epochs, full participation, and batch
 size 64, with $K=5$ unless stated otherwise. Clients are built from contiguous 250-flow chunks of
 $\mathcal{D}_{\rm tr}$, so no flow or window is shared between
 clients; label- and Dirichlet-skew assign chunks by their majority
-label. Each client holds out 15\% of its own chunks as a local
-evaluation set; the global test set is $\mathcal{D}_{\rm te}$.
-Global metrics are computed on $\mathcal{D}_{\rm te}$, and
-per-client metrics evaluate the global model on each client's
-local evaluation set after every round. Client-count sensitivity
-repeats the quantity-skew experiment with $K\in\{5,10,20\}$.}
+label. Each client's chronologically last 15\% of chunks are
+excluded from its training. Global metrics are computed on
+$\mathcal{D}_{\rm te}$.} \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Per-client metrics evaluate
+the final global model on a client-specific test set drawn from
+$\mathcal{D}_{\rm te}$: for client $k$, up to 2{,}000 test windows
+are sampled so that their class and attack-type proportions match
+those of the client's training windows, restricted to the types
+present in $\mathcal{D}_{\rm te}$ (at least 80\% of every client's
+training mix is covered). This measures how well the shared model
+serves each client's own traffic mix with sets large enough to be
+reliable; the client's held-out chunks are not used for reporting,
+because the temporal clustering of ACI-IoT attacks makes them
+small and often single-class. Client-count sensitivity repeats the
+quantity-skew experiment with $K\in\{5,10,20\}$.}
 
 \textcolor{red}{\textit{Aggregators.} SCAFFOLD follows option~II of
 its original formulation: server and client control variates
@@ -1483,22 +1491,26 @@ Gaussian noise with standard deviation $\lambda$ times the median
 norm ($\lambda=10^{-3}$).} Convergence is monitored
 using the thresholded stabilization metric:
 \begin{equation}
-R_{90}=\min\bigl\{r:\mathrm{F1}^{(r)}\ge
-0.9\,\mathrm{F1}^{(R)}\bigr\},
+\textcolor{red}{R_{99}}=\min\bigl\{r:\mathrm{F1}^{(r)}\ge
+\textcolor{red}{0.99}\,\mathrm{F1}^{(R)}\bigr\},
 \label{eq:r90}
 \end{equation}
 which remains comparable across heterogeneity regimes and
 aggregators by normalizing to terminal performance.
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{The 90\% threshold of the original submission is
+reached in the first round in every regime under the corrected
+protocol and therefore no longer discriminates; we use 99\%.}
 \rev{R1.5}\textcolor{red}{The per-round global F1 on
 $\mathcal{D}_{\rm te}$ is logged only to describe convergence; the
 reported federated model is always the one after the fixed final
 round, never a round selected on $\mathcal{D}_{\rm te}$.} Per-client
 consistency is tracked via worst-case performance
-$\min_k\mathrm{F1}_k^{(r)}$ and inter-client dispersion:
+$\min_k\mathrm{F1}_k$ and inter-client dispersion
+\textcolor{red}{of the final global model}:
 \begin{equation}
-\sigma\!\left(\mathrm{F1}^{(r)}\right)=
+\sigma\!\left(\mathrm{F1}\right)=
 \sqrt{\frac{1}{K}\sum_{k=1}^{K}
-\Bigl(\mathrm{F1}_k^{(r)}-\bar{\mathrm{F1}}^{(r)}\Bigr)^2}.
+\Bigl(\mathrm{F1}_k-\bar{\mathrm{F1}}\Bigr)^2}.
 \label{eq:client_var_round}
 \end{equation}
 Federated training does not modify the deployed inference graph;
@@ -1550,10 +1562,7 @@ because both classes are well represented.}
     \centering
     \includegraphics[width=\linewidth]{images/cm_conquest_vs_os.png}
     \caption{\rev{R1.6}\textcolor{red}{Row-normalized confusion matrices on
-    $\mathcal{D}_{\rm te}$, averaged over ten seeds, for OS-CIDS
-    (variance ranking, static features) and CONQUEST (QPSO,
-    static plus context features). CONQUEST misses fewer attacks;
-    OS-CIDS raises fewer false alarms.}}
+    $\mathcal{D}_{\rm te}$, averaged over ten seeds, for OS-CIDS and CONQUEST.}}
     \label{fig:baseline_cm}
 \end{figure}
 \textbf{S-CIDS} (conference baseline~\cite{ajakweconquest})
@@ -2022,149 +2031,143 @@ whether CONQUEST remains operationally viable under realistic
 data heterogeneity. Fig.~\ref{fig:hfl-multianalysis} and
 Table~\ref{tab:fl_performance_extended} jointly address this.
 
-\textbf{Heterogeneity:}
-Under IID partitioning, FedAvg achieves F1\,$=$\,0.901,
-AUC\,$=$\,0.949, $R_{90}{=}22$, and
-$\min_k\,\mathrm{F1}_k{=}0.884$ the best-case federated reference. Label-skew degrades F1 to 0.808
-($\sigma(\mathrm{F1}){=}0.034$, $R_{90}{=}28$), confirming
-that severe class imbalance disrupts stable global optimization.
-Quantity-skew yields the strongest federated result:
-F1\,$=$\,0.910, AUC\,$=$\,0.963, $R_{90}{=}25$,
-$\min_k\,\mathrm{F1}_k{=}0.891$, $\sigma(\mathrm{F1}){=}0.014$.
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{\textbf{One configuration for all federated
+results.} The original submission mixed configurations (8 rounds
+with one local epoch for the aggregator comparison, 15 rounds for
+the heterogeneity sweep, and 60 rounds for the extended run),
+which is why it reported two different FedAvg results for quantity
+skew (F1 $0.910$ and $0.869$). All federated experiments have been
+re-run with one configuration ($R=30$, $E=2$, batch 64, full
+participation, proxy mask unless stated, three seeds), so every row
+of Table~\ref{tab:fl_performance_extended} is directly comparable.}
 
-This counterintuitive result of quantity-skew outperforming
-IID arises because attack-heavy high-volume clients
-contribute stronger gradient signals for the minority attack
-class under FedAvg's sample-weighted aggregation
-(Eq.~\eqref{eq:fedavg_weighted_obj}), improving global
-attack-class separability. This closely models mission
-deployments where compromised subsystems generate
-disproportionately high traffic volumes. Dirichlet partitions
-($\alpha\in\{0.10,0.30,0.50,1.00\}$) confirm a smooth
-stability--heterogeneity trade-off: at $\alpha{=}0.10$,
-F1\,$=$\,0.838 with slow convergence ($R_{90}{=}30$);
-at $\alpha{=}1.00$, F1 recovers to 0.905 with
-$\sigma(\mathrm{F1}){=}0.011$. Quantity-skew is selected
-as the primary stress-test regime.
+\rev{R1.9}\textcolor{red}{\textbf{Heterogeneity.} Under IID,
+quantity-skew, and Dirichlet partitions, the global F1 lies between
+$96.34\%$ and $96.94\%$, within $0.2$--$0.8$\,pp of centralized
+CONQUEST ($97.13\%$); for the quantity-skew stress regime the gap is
+$0.47$\,pp. These regimes also serve every client well: the worst
+client keeps F1 $\ge96.4\%$ and the inter-client dispersion stays
+below $0.9$\,pp. The earlier observation that quantity skew
+outperforms IID is not reproduced; the two differ by $0.11$\,pp.
+Label skew is the one damaging regime: the global F1 falls to
+$86.59\pm6.95\%$, the worst client to $83.50\%$, and one
+attack-dominated client misses $44.5\%$ of its attacks.
+Fig.~\ref{fig:hfl-multianalysis}(a) shows the mechanism: the global
+F1 peaks near $94\%$ around round 9 and then oscillates downward as
+clients that see almost only one class pull the shared model in
+opposite directions (client drift). Convergence is fast in the
+benign regimes ($R_{99}$ of 7--11 rounds).}
 
-\textbf{Aggregation strategy:}
-Under quantity-skew, FedAvg achieves F1\,$=$\,0.869,
-AUC\,$=$\,0.926, $R_{90}{=}25$,
-$\min_k\,\mathrm{F1}_k{=}0.842$. SCAFFOLD collapses:
-F1\,$=$\,0.522, $\sigma(\mathrm{F1}){=}0.052$,
-$R_{90}{=}45$. FLAME partially recovers (F1\,$=$\,0.705)
-but still lags FedAvg. The variance-reduction correction
-in SCAFFOLD is counterproductive under quantity imbalance:
-correcting client gradients toward the global mean suppresses the informative high-volume client signals that are beneficial
-in this regime. FedAvg's weighted averaging preserves these
-signals, making it the most stable and deployable aggregator
-for federated CONQUEST.
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{\textbf{Aggregation strategy.} Under quantity skew,
+FedAvg ($96.66\%$), SCAFFOLD ($96.56\%$), and FLAME ($96.77\%$)
+differ by at most $0.21$\,pp, within one seed standard deviation,
+and all keep the
+worst client above $96.2\%$. FedAvg converges fastest ($R_{99}=7.3$
+versus $13.7$ and $16.3$ rounds), so it remains the default. The
+original submission's collapse of SCAFFOLD (F1 $0.522$) is not
+reproduced: that result came from a server-momentum approximation
+that was labelled SCAFFOLD, whereas the revision implements the
+published SCAFFOLD and FLAME algorithms
+(Section~\ref{subsec:federated_protocol_convergence}).}
 
-\begin{figure*}[!htbp]
+\rev{R2.2}\textcolor{red}{\textbf{Number of clients.} Splitting the same
+training data among $K=5$, $10$, and $20$ quantity-skewed clients
+gives global F1 of $96.66\%$, $96.71\%$, and $96.25\%$
+(Fig.~\ref{fig:hfl-multianalysis}(c)). Larger federations of
+smaller clients converge more slowly ($R_{99}$ of 7.3, 10.7, and
+16.0 rounds) and widen the tail: at $K=20$ the worst client drops
+to $94.65\%$ F1 and misses up to $8.0\%$ of its attacks. CONQUEST
+therefore scales to at least 20 clients with a modest cost in
+global F1 ($-0.41$\,pp) but a noticeable cost for the weakest
+client, which motivates the tail-aware reporting adopted here.}
+
+\rev{R1.8}\textcolor{red}{\textbf{Global mask for non-IID clients.} The
+proxy set used for server-side QPSO contains 2{,}750 training flows
+($5\%$ of $\mathcal{D}_{\rm tr}$, $54\%$ attacks, five attack
+types) and is never given to a client. Building the single global
+mask from this proxy, from client votes, or from all pooled
+training data (an oracle that violates data locality) gives
+$96.66\%$, $97.17\%$, and $97.17\%$ global F1 under quantity skew
+and $96.68\%$, $96.60\%$, and $97.06\%$ under Dirichlet
+$\alpha=0.1$ (Fig.~\ref{fig:hfl-multianalysis}(d)). A global mask
+built without pooling data therefore costs at most about
+$0.5$\,pp relative to the oracle, and the worst client is not
+systematically worse off (Min-F1 $96.2$--$97.6\%$ across all six
+settings). Clients largely agree on what matters: in vote mode,
+38--43 of the 40 selected features are chosen by at least three of
+the five clients. Voting needs no server-held data and reveals only
+feature indices (Table~\ref{tab:privacy_scope}), which makes it the
+preferred mode when no suitable proxy data exist.}
+
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{\textbf{Cost.} Federated training costs about
+170\,s per round on the shared CPU host (about 85\,min for 30
+rounds). This cost is incurred only during collaborative training;
+the deployed detector is identical to the centralized one and has
+the same per-window latency
+(Section~\ref{subsec:obj2_latency}).}
+
+\begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.80\linewidth]{images/hfl-multianalysis.png}
-    \caption{\scriptsize{Horizontal federated learning (HFL) analysis under
-    heterogeneous mission deployments:
-    (a)~aggregator comparison under quantity-skew non-IID
-    (FedAvg, SCAFFOLD, FLAME);
-    (b)~F1 vs.\ heterogeneity regime under FedAvg;
-    (c)~FedAvg convergence curve under quantity-skew
-    ($R_{90}{=}25$ marked);
-    (d)~\rev{R2.1}\textcolor{red}{data-locality}--utility--efficiency trade-off;
-    (e)~training-time scalability across regimes;
-    (f)~centralized vs.\ federated summary (F1 gap: 2.9\%).}}
+    \includegraphics[width=0.9\linewidth]{images/fl_results.png}
+    \caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST under one configuration
+    ($R{=}30$, $E{=}2$, three seeds). (a)~Global test F1 per round
+    under five heterogeneity regimes (FedAvg, $K{=}5$, proxy mask);
+    dashed: centralized CONQUEST. (b)~Per-client F1 on client-specific
+    test sets (all clients of the three seeds). (c)~Global F1,
+    worst-client F1, and $R_{99}$ versus the number of clients.
+    (d)~Global F1 (bars, $\pm$std) and worst-client F1 (diamonds) for
+    the three mask-construction modes.}}
     \label{fig:hfl-multianalysis}
 \end{figure*}
 
-\textbf{Convergence and final federated performance:}
-The highlighted row in Table~\ref{tab:fl_performance_extended}
-re-evaluates FedAvg under quantity-skew with extended training
-($R{=}60$) to confirm that $R_{90}{=}25$ is not an artefact
-of the 15-round main budget. The identical $R_{90}$ value
-across both runs confirms genuine stabilization: no further
-F1 gain is achieved beyond round 25. The final configuration
-achieves F1\,$=$\,0.9162, AUC\,$=$\,0.9708,
-$\min_k\,\mathrm{F1}_k{=}0.893$,
-$\sigma(\mathrm{F1}){=}0.017$ a centralized federated gap
-of only 2.9\% in F1 and 1.8\% in AUC, while preserving
-\rev{R2.1}\textcolor{red}{raw-data locality}. Inference latency remains at
-3.58-3.60\,s across all federated configurations,
-confirming that distributed training does not alter the
-deployed runtime path.
-The primary federated cost is training time, quantity-skew
-incurs ${\approx}3.4{\times}$ wall-clock overhead over
-centralized training due to communication rounds and
-client-side optimization. Critically, this overhead is strictly localized to the offline collaborative training phase and does not degrade the real-time execution path; as demonstrated in Table~\ref{tab:fl_performance_extended}, inference latency remains invariant at 3.58–3.60s across all federated configurations, ensuring that the mission-critical response time is preserved regardless of the training regime. This trade-off is operationally
-acceptable as federated CONQUEST exchanges training efficiency
-for \rev{R2.1}\textcolor{red}{raw-data locality} and deployment flexibility, both of
-which are non-negotiable in a multi-organizational mission
-environments.
-
-
-
-
 \begin{table*}[!t]
 \centering
-\scriptsize
-\caption{\scriptsize{Federated CONQUEST performance under heterogeneous
-deployments ($K{=}5$, ACI-IoT). Heterogeneity block: FedAvg
-across IID, label-skew, quantity-skew, and Dirichlet regimes
-($R{=}15$). Aggregator block: FedAvg vs.\ SCAFFOLD vs.\ FLAME
-under quantity-skew. Highlighted row: extended run ($R{=}60$)
-confirming $R_{90}{=}25$.`
-}}
+\caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST on ACI-IoT under one configuration for every
+row ($R{=}30$ rounds, $E{=}2$ local epochs, batch 64, full participation, QPSO $Q^{*}{=}6$ mask, $k{=}40$; mean over
+three seeds, $\pm$std for global F1). Global F1 and AUC: final global model on $\mathcal{D}_{\rm te}$. Per-client
+columns: the final global model on a client-specific test set drawn from $\mathcal{D}_{\rm te}$ with the class and
+attack-type mix of that client's training data. Min-F1: worst client; $\sigma$(F1): population std across clients;
+Max MD: largest per-client missed-attack rate; $R_{99}$: first round reaching 99\% of the final global F1 (not meaningful for label skew, whose global F1 peaks near round 9 and then declines).}}
 \label{tab:fl_performance_extended}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{llcccccccc}
-\toprule
-\textbf{Block} &
-\textbf{Aggregator} &
-\textbf{Regime} &
-\textbf{$\alpha$} &
-\textbf{F1} &
-\textbf{AUC} &
-\textbf{$T_{\rm infer}$ (s)} &
-\textbf{$R_{90}$} &
-\textbf{Min-F1} &
-\textbf{$\sigma$(F1)} \\
+\color{red}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{lcccccc}
+\hline\toprule
+\textbf{Setting} & \textbf{Global F1 (\%)} & \textbf{AUC} & \textbf{Min-F1 (\%)} & \textbf{$\sigma$(F1) (pp)} & \textbf{Max MD (\%)} & \textbf{$R_{99}$} \\
+\hline\toprule
+\multicolumn{7}{l}{\textit{Heterogeneity (FedAvg, proxy mask, $K{=}5$)}} \\
+IID & 96.77$\pm$0.10 & 0.9905 & 96.61 & 0.59 & 4.73 & 11.3 \\
+Label skew & 86.59$\pm$6.95 & 0.9863 & 83.50 & 6.37 & 44.52 & 5.0 \\
+Quantity skew & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+Dirichlet $\alpha{=}0.1$ & 96.68$\pm$0.37 & 0.9906 & 97.63 & 0.54 & 7.55 & 7.7 \\
+Dirichlet $\alpha{=}0.3$ & 96.34$\pm$0.60 & 0.9905 & 97.22 & 0.72 & 6.87 & 9.0 \\
+Dirichlet $\alpha{=}0.5$ & 96.49$\pm$0.38 & 0.9900 & 96.61 & 0.84 & 4.74 & 7.7 \\
+Dirichlet $\alpha{=}1.0$ & 96.94$\pm$0.13 & 0.9907 & 96.56 & 0.82 & 5.00 & 10.0 \\
 \midrule
-\multirow{7}{*}{\shortstack[l]{\textbf{Heterogeneity}\\\textbf{Analysis}\\(FedAvg)}}
-& FedAvg & IID        & --   & 0.901 & 0.949 & 3.60 & 22 & 0.884 & 0.012 \\
-& FedAvg & Label-skew & --   & 0.808 & 0.887 & 3.62 & 28 & 0.761 & 0.034 \\
-& FedAvg & \textbf{Qty-skew}
-                      & --   & \textbf{0.910} & \textbf{0.963}
-                              & \textbf{3.58} & \textbf{25}
-                              & \textbf{0.891} & \textbf{0.014} \\
-& FedAvg & Dirichlet  & 0.10 & 0.838 & 0.901 & 3.65 & 30 & 0.802 & 0.028 \\
-& FedAvg & Dirichlet  & 0.30 & 0.890 & 0.946 & 3.61 & 24 & 0.872 & 0.015 \\
-& FedAvg & Dirichlet  & 0.50 & 0.906 & 0.953 & 3.59 & 23 & 0.889 & 0.013 \\
-& FedAvg & Dirichlet  & 1.00 & 0.905 & 0.957 & 3.60 & 22 & 0.890 & 0.011 \\
+\multicolumn{7}{l}{\textit{Aggregator (quantity skew, $K{=}5$)}} \\
+FedAvg & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+SCAFFOLD & 96.56$\pm$0.45 & 0.9887 & 96.28 & 0.71 & 5.27 & 13.7 \\
+FLAME & 96.77$\pm$0.10 & 0.9893 & 96.48 & 0.64 & 4.69 & 16.3 \\
 \midrule
-\multirow{3}{*}{\shortstack[l]{\textbf{Aggregator}\\\textbf{Comparison}\\(Qty-skew)}}
-& \textbf{FedAvg}
-          & Qty-skew & -- & \textbf{0.869} & \textbf{0.926}
-                          & \textbf{3.58} & \textbf{25}
-                          & \textbf{0.842} & \textbf{0.019} \\
-& SCAFFOLD & Qty-skew & -- & 0.522 & 0.605 & 3.64 & 45 & 0.483 & 0.052 \\
-& FLAME    & Qty-skew & -- & 0.705 & 0.774 & 3.71 & 38 & 0.651 & 0.041 \\
+\multicolumn{7}{l}{\textit{Number of clients (quantity skew, FedAvg)}} \\
+$K{=}5$ & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+$K{=}10$ & 96.71$\pm$0.06 & 0.9903 & 97.10 & 0.60 & 3.73 & 10.7 \\
+$K{=}20$ & 96.25$\pm$0.05 & 0.9889 & 94.65 & 1.03 & 8.03 & 16.0 \\
 \midrule
-\rowcolor{gray!12}
-\textbf{Extended run} ($R{=}60$)
-& FedAvg & Qty-skew & -- & 0.9162 & 0.9708 & 3.60 & 25 & 0.893 & 0.017 \\
-Centralized ref.\
-& Centralized & Full data & -- & 0.9449 & 0.9887 & 3.72
-& N/A & N/A & N/A \\
-\bottomrule
-\end{tabular}}
-\vspace{1mm}
-\begin{minipage}{\linewidth}
-\footnotesize{\textit{Qty-skew}: non-IID quantity-skew.
-\textit{Min-F1}: worst-client F1 ($\min_k\,\mathrm{F1}_k$).
-\textit{$\sigma$(F1)}: inter-client F1 dispersion.
-\textit{$R_{90}$}: rounds to $\geq$90\% of terminal F1.
-Centralized row included for gap quantification only;
-cross-regime accuracy comparison is not valid.}
-\end{minipage}
+\multicolumn{7}{l}{\textit{Mask construction (quantity skew)}} \\
+Proxy & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+Vote & 97.17$\pm$0.21 & 0.9917 & 96.82 & 0.56 & 3.82 & 7.3 \\
+Central (oracle) & 97.17$\pm$0.18 & 0.9921 & 97.07 & 0.50 & 3.62 & 8.0 \\
+\midrule
+\multicolumn{7}{l}{\textit{Mask construction (Dirichlet $\alpha{=}0.1$)}} \\
+Proxy & 96.68$\pm$0.37 & 0.9906 & 97.63 & 0.54 & 7.55 & 7.7 \\
+Vote & 96.60$\pm$0.32 & 0.9908 & 96.24 & 0.84 & 3.74 & 7.0 \\
+Central (oracle) & 97.06$\pm$0.61 & 0.9922 & 97.51 & 0.59 & 6.72 & 8.0 \\
+\midrule
+Centralized CONQUEST & 97.13 & 0.9924 & -- & -- & -- & -- \\
+\hline\toprule
+\end{tabular}
 \end{table*}
 
 
@@ -2194,8 +2197,8 @@ evaluation on ACI-IoT unless stated.}
 CNN--LSTM + attn + PSO &
 Acc: 98.73--99.87\% on WIoTSN; centralized &
 No FL, stability, or deployability analysis &
-Adds $R_{90}{=}25$, $\min\text{-F1}{=}0.893$,
-$\sigma(\mathrm{F1}){=}0.017$;
+Adds \textcolor{red}{$R_{99}{\approx}7$, $\min\text{-F1}{=}96.4\%$,
+$\sigma(\mathrm{F1}){=}0.7$\,pp};
 latency 61.2\,ms, memory 922\,MB \\
 \midrule
 
@@ -2232,7 +2235,7 @@ Up to 99.71\% (InSDN); global metrics only &
 Trusted aggregator; no heterogeneity
 stress-test &
 Adds IID, label-skew, qty-skew, Dirichlet
-regimes; $R_{90}$, $\min\text{-F1}$,
+regimes; $\textcolor{red}{R_{99}}$, $\min\text{-F1}$,
 $\sigma(\mathrm{F1})$ \\
 \midrule
 
@@ -2242,9 +2245,9 @@ IID: 98.75\%; non-IID: 98.44\%;
 two-client setup &
 No worst-client metric or stabilization
 analysis &
-Extends to $K{=}5$; $R_{90}{=}25$,
-$\min\text{-F1}{=}0.893$,
-$\sigma(\mathrm{F1}){=}0.017$ \\
+Extends to \textcolor{red}{$K\in\{5,10,20\}$; $R_{99}{\approx}7$,
+$\min\text{-F1}{=}96.4\%$,
+$\sigma(\mathrm{F1}){=}0.7$\,pp} \\
 \midrule
 
 \cite{abdelmoniemcomprehensive} &
@@ -2262,7 +2265,7 @@ FedAMKD &
 general FL &
 Not IDS-specific; no deployment metrics &
 Applies qty-skew analysis to cyberworm IDS;
-adds $R_{90}$, $\sigma(\mathrm{F1})$ \\
+adds $\textcolor{red}{R_{99}}$, $\sigma(\mathrm{F1})$ \\
 \midrule
 
 \cite{ajakweconquest} &
@@ -2296,10 +2299,10 @@ ACI-IoT} &
 MSE\,$=$\,\textcolor{red}{0.0246},
 61.2\,ms, 922\,MB.
 Federated (qty-skew):
-F1/AUC\,$=$\,0.9162/0.9708,
-$R_{90}{=}25$,
-$\min\text{-F1}{=}0.893$,
-$\sigma(\mathrm{F1}){=}0.017$} &
+F1/AUC\,$=$\,\textcolor{red}{0.9666/0.9914,
+$R_{99}{\approx}7$,
+$\min\text{-F1}{=}0.964$,
+$\sigma(\mathrm{F1}){=}0.007$}} &
 \rev{R1.6}\textcolor{red}{No F1 gain over
 variance ranking or
 classical PSO; more
@@ -2358,7 +2361,7 @@ degradation, while FL optimization
 studies~\cite{gefedamkd} address quantity-skew on general
 vision benchmarks without IDS-specific deployment metrics.
 None of these works link non-IID robustness to
-mission-facing criteria such as $R_{90}$,
+mission-facing criteria such as $\textcolor{red}{R_{99}}$,
 $\min_k\,\mathrm{F1}_k$, or $\sigma(\mathrm{F1})$.
 CONQUEST addresses the limitations of both lines of work
 within a unified reproducible pipeline. Under centralized
@@ -2370,12 +2373,13 @@ the combination of context features with label-aware selection,
 not to the quantum-inspired search itself, and expose a
 missed-attack versus false-alarm trade-off against variance
 ranking that centralized IDS studies rarely report.}
-% TODO(C10): add measured latency/memory here. Under federated deployment,
-F1/AUC\,$=$\,0.9162/0.9708 with $R_{90}{=}25$,
-$\min_k\,\mathrm{F1}_k{=}0.893$, and
-$\sigma(\mathrm{F1}){=}0.017$ demonstrate that the
-centralized-federated performance gap is bounded at 2.9\%
-F1 while preserving \rev{R2.1}\textcolor{red}{raw-data locality}, a trade-off that
+% TODO(C10): add measured latency/memory here.
+Under federated deployment,
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{F1/AUC\,$=$\,0.9666/0.9914 under quantity skew, with
+$R_{99}{\approx}7$ rounds, a worst-client F1 of $96.4\%$, and an
+inter-client dispersion of $0.7$\,pp, show that the
+centralized-federated gap stays below 0.9\,pp outside label skew}
+while preserving \rev{R2.1}\textcolor{red}{raw-data locality}, a trade-off that
 prior FL-IDS work neither quantifies nor justifies
 experimentally.
 
@@ -2441,13 +2445,14 @@ favours it where undetected propagation is the costlier error.}
 Third, federated evaluation across IID, label-skew,
 quantity-skew, and Dirichlet regimes shows that CONQUEST
 remains operationally viable without raw data sharing.
-Under the strongest heterogeneous setting, it achieves
-F1/AUC\,$=$\,0.9162/0.9708, $R_{90}{=}25$,
-$\min_k\,\mathrm{F1}_k{=}0.893$, and
-$\sigma(\mathrm{F1}){=}0.017$ a centralized-federated
-gap of only 2.9\% in F1 with inference latency unchanged
-at 3.58-3.60\,s, confirming that distributed training
-does not alter the deployed runtime path.
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Under quantity skew it reaches F1/AUC\,$=$\,96.66\%/0.9914
+within about 7 rounds, keeps the worst client at 96.4\%, and stays
+within 0.9\,pp of centralized training across IID, quantity, and
+Dirichlet heterogeneity and with up to 20 clients
+and with a global mask built from a small proxy set or from client
+votes. Label skew is the exception: client drift lowers the global
+F1 to 86.6\% and leaves one client missing 44.5\% of its attacks,
+which calls for drift-aware aggregation or personalization.}
 
 The unified contribution is the first \rev{R1.1}\textcolor{red}{explicit
 characterization of how the QPSO register size controls search
