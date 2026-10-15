@@ -1,3 +1,4 @@
+\PassOptionsToPackage{table}{xcolor}
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
@@ -19,7 +20,6 @@
 \usepackage[left=1.62cm,right=1.62cm,top=1.9cm]{geometry}
 \usepackage{textcomp}
 \usepackage{orcidlink}
-\usepackage{xcolor}
 \usepackage[table]{xcolor}
 % --- Revision tags: visible [R1.x]/[R2.x] markers linking each change to a reviewer comment.
 % Set \showrevtagsfalse to hide all tags (e.g., for the camera-ready version).
@@ -664,7 +664,7 @@ particle and iteration. Third, each amplitude independently
 exponentially in $Q$, and the vector is then renormalized:}
 \begin{equation}
 \textcolor{red}{a_{i,j} \leftarrow u_{i,j}\sim\mathcal{U}(0,1)
-\ \text{ with prob. } 2^{-Q},\qquad
+\ \text{w.p. } 2^{-Q},\quad
 \mathbf{a}_i \leftarrow |\mathbf{a}_i| / \|\mathbf{a}_i\|_1 .}
 \label{eq:qpso_collapse}
 \end{equation}
@@ -702,7 +702,7 @@ register size for the 86 input features.}}
 \color{red}
 \begin{tabular}{cccccc}
 \hline\toprule
-$Q$ & \makecell{Initial\\perturbation} & \makecell{Max.\ rotation\\(deg)} & \makecell{Reset\\probability} & \makecell{Resets per particle\\and iteration} & Regime \\
+$Q$ & \makecell{Initial\\perturb.} & \makecell{Max.\ rot.\\(deg)} & \makecell{Reset\\prob.} & \makecell{Resets per\\particle-iter.} & Regime \\
 \hline\toprule
 1  & 0.71 & 90.0 & 0.500  & 43.0 & near-random \\
 2  & 0.40 & 45.0 & 0.250  & 21.5 & exploratory \\
@@ -1148,9 +1148,11 @@ are exposed. Each client $k$ holds
 $\mathcal{D}_k=\{(\mathbf{Z}_{k,i},y_{k,i})\}_{i=1}^{N_k}$, built with
 the same preprocessing pipeline. The global objective is
 \begin{equation}
-\min_{\theta}\,F(\theta)=\sum_{k=1}^{K}\frac{N_k}{N}F_k(\theta),
-\quad F_k(\theta)=\frac{1}{N_k}\sum_{i=1}^{N_k}
+\begin{aligned}
+&\min_{\theta}\,F(\theta)=\sum_{k=1}^{K}\frac{N_k}{N}F_k(\theta),\\
+&F_k(\theta)=\frac{1}{N_k}\sum_{i=1}^{N_k}
 \ell\!\left(f_\theta(\mathbf{Z}_{k,i}),y_{k,i}\right).
+\end{aligned}
 \label{eq:hfl_objective}
 \end{equation}
 In each round $r$, the server broadcasts $\theta^{(r)}$, each
@@ -1328,7 +1330,11 @@ Table~\ref{tab:cyberworm_high_impact} reports centralized detection
 performance \rev{R1.6}\textcolor{red}{of five pipelines that share the
 classifier, the data protocol, and $k=40$. They differ only in the
 feature representation, static only or static plus context, and in
-the selector: variance ranking, classical PSO, or QPSO. All metrics
+the selector: variance ranking, classical PSO, or QPSO. They are named
+OS-CIDS (variance ranking, static only), Var.+context (variance
+ranking, static plus context), QPSO, no context, PSO+context
+(classical PSO, static plus context), and CONQUEST (QPSO, static plus
+context). All metrics
 are computed on $\mathcal{D}_{\rm te}$, which contains 41.8\% benign
 and 58.2\% attack windows, and averaged over ten seeds; accuracy and
 weighted F1 nearly coincide because both classes are well
@@ -1418,17 +1424,15 @@ static features, as listed in Table~\ref{tab:selected_features}.}
 \caption{\rev{R1.6}\textcolor{red}{Factorial ablation of context features and QPSO over ten seeds.}}
 \label{tab:centralized_compare}
 \color{red}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lcc}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccc}
 \hline\toprule
-F1 / FAR / MD (\%) & \textbf{Variance ranking} & \textbf{QPSO ($Q^{*}{=}6$)} \\
+\makecell[l]{F1 / FAR / MD\\(\%)} & \makecell{Variance\\ranking} & \makecell{QPSO\\($Q^{*}{=}6$)} & \makecell{Effect of\\QPSO (pp)} \\
 \hline\toprule
-Static features only & 96.96 / 1.43 / 4.21 & 95.90 / 4.95 / 3.49 \\
-Static + context & 96.45 / 1.06 / 5.36 & \textbf{97.13} / 2.24 / \textbf{3.33} \\
+Static only & 96.96 / 1.43 / 4.21 & 95.90 / 4.95 / 3.49 & \makecell{$-1.07$\\($p{=}0.002$)} \\
+\makecell[l]{Static +\\context} & 96.45 / 1.06 / 5.36 & \textbf{97.13} / 2.24 / \textbf{3.33} & \makecell{$+0.68$\\($p{=}0.002$)} \\
 \midrule
-Effect of context & -0.51\,pp ($p{=}0.014$) & +1.23\,pp ($p{=}0.004$) \\
-Effect of QPSO & \multicolumn{2}{l}{static: -1.07\,pp ($p{=}0.002$);\ \ with context: +0.68\,pp ($p{=}0.002$)} \\
-Interaction & \multicolumn{2}{l}{+1.74\,pp ($p{=}0.002$)} \\
+\makecell[l]{Effect of\\context (pp)} & \makecell{$-0.51$\\($p{=}0.014$)} & \makecell{$+1.23$\\($p{=}0.004$)} & \makecell{Interaction\\$+1.74$\\($p{=}0.002$)} \\
 \hline\toprule
 \end{tabular}
 \end{table}
@@ -1439,9 +1443,9 @@ Interaction & \multicolumn{2}{l}{+1.74\,pp ($p{=}0.002$)} \\
 \caption{\rev{R1.4}\textcolor{red}{Deployed consensus mask at Q = 6; context features in italics.}}
 \label{tab:selected_features}
 \color{red}
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{2.5pt}
 \renewcommand{\arraystretch}{1.02}
-\begin{tabular}{p{2.75cm}c p{2.75cm}c}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.0cm}c >{\raggedright\arraybackslash}p{3.0cm}c}
 \hline\toprule
 Feature & Freq. & Feature & Freq. \\
 \hline\toprule
@@ -1506,13 +1510,13 @@ features.}
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.4}\rev{R1.6}\textcolor{red}{Selector comparison under feature budgets of 40, 20, and 10 over five seeds.}}
+\caption{\rev{R1.4}\rev{R1.6}\textcolor{red}{Selector comparison under feature budgets of 40, 20, and 10 over five seeds; the consensus mask uses ten. Ctx.: context features kept. Wins: seeds on which QPSO has the higher F1.}}
 \label{tab:kbudget}
 \color{red}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{clccccc}
 \hline\toprule
-$k$ & Selector & F1 (\%) & FAR (\%) & MD (\%) & Context feat. & QPSO wins \\
+$k$ & Selector & F1 (\%) & FAR (\%) & MD (\%) & Ctx. & Wins \\
 \hline\toprule
 \multirow{3}{*}{40} & QPSO & 97.25$\pm$0.22 & 1.95 & 3.35 & 8.2 & -- \\
  & PSO & \textbf{97.28$\pm$0.15} & 2.15 & 3.15 & 6.6 & 3/5 \\
@@ -1526,7 +1530,7 @@ $k$ & Selector & F1 (\%) & FAR (\%) & MD (\%) & Context feat. & QPSO wins \\
  & PSO & 94.34$\pm$0.51 & 3.73 & 7.08 & 1.4 & 0/5 \\
  & Variance & \textbf{95.94$\pm$0.30} & 1.15 & 6.18 & 5.0 & 0/5 \\
 \midrule
-40 & Consensus mask (10 seeds) & 97.27$\pm$0.23 & 2.46 & 2.93 & 8.0 & -- \\
+40 & Consensus & 97.27$\pm$0.23 & 2.46 & 2.93 & 8.0 & -- \\
 \hline\toprule
 \end{tabular}
 \end{table}
@@ -1721,7 +1725,10 @@ constraints.}
 
 \rev{R1.10}\rev{R2.4}\textcolor{red}{Table~\ref{tab:latency_profile_qcids}
 and Fig.~\ref{fig:deploy_cost} report the deployment cost, measured in
-isolation on the CPU-only host. Classifying one window of ten flows
+isolation on the CPU-only host, for the pipelines of
+Section~\ref{subsec:obj1_cyberworm_perf} and for five variants of
+CONQUEST: the consensus mask, register sizes $Q=1$ and 8 instead of
+$Q^{*}=6$, and feature budgets $k=20$ and 10 instead of 40. Classifying one window of ten flows
 takes CONQUEST a median of 2.98\,ms at batch size 1, with a 95th
 percentile of 4.55\,ms. In batches of 64, a window costs 0.25\,ms, or
 4{,}004 windows per second. Updating the context features,
