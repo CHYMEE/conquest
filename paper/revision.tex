@@ -21,7 +21,11 @@
 %\usepackage{hyperref}
 \usepackage{orcidlink}
 \usepackage{xcolor}
-\usepackage[table]{xcolor}
+\usepackage[table]{xcolor}% Revision-markup command: display reviewer tags in red.
+\newcommand{\rev}[1]{\textcolor{red}{\textbf{[#1]}}}
+% Alias used by existing \textcolor{r}{...} markup.
+\colorlet{r}{red}
+
 \usepackage{balance}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
