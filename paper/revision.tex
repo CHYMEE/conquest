@@ -146,8 +146,8 @@ methodological, experimental, and analytical differences.}
 \textbf{Aspect} & \textbf{Conference~\cite{ajakweconquest}} & \textbf{This journal extension} \\
 \hline\toprule
 \multicolumn{3}{l}{\textit{Methodological}} \\
-Data protocol & Random split of pooled data & Blocked temporal split; every fitting step on $\mathcal{D}_{\rm tr}$ only (Table~\ref{tab:data_usage}); zero-variance filter \\
-Context features & Described qualitatively & 17 causal per-source features with exact definitions, windows, and dimensions (Table~\ref{tab:context_features}) \\
+Data protocol & Random split of pooled data & Blocked temporal split; every fitting step on $\mathcal{D}_{\rm tr}$ only, as listed in Table~\ref{tab:data_usage}; zero-variance filter \\
+Context features & Described qualitatively & 17 causal per-source features with exact definitions, windows, and dimensions in Table~\ref{tab:context_features} \\
 QPSO & Fixed qubit setting & Explicit role of $Q$ (Eqs.~\eqref{eq:qpso_init}--\eqref{eq:qpso_measure}, Algorithm~\ref{alg:qpso}); best-evaluated mask; consensus mask over seeds \\
 Classifier & LSTM-VAE; optimizer comparison & LSTM(+VAE) with attention, SGD, KL-regularized latent, deterministic inference \\
 Training regime & Centralized & Centralized and horizontal FL with three mask-construction modes; DP-FedAvg variant \\
@@ -162,7 +162,7 @@ FL evaluation & None & IID, label-, quantity-skew, Dirichlet; FedAvg, SCAFFOLD, 
 Metrics & Detection rate, FPR & F1, AUC, MSE, FAR/MD, per-window latency, peak memory, $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$, $\varepsilon$ \\
 Statistics & Single run & Mean$\pm$std over seeds; Friedman and Holm-corrected Wilcoxon tests \\
 Search analysis & None & QPSO search dynamics versus $Q$ (Fig.~\ref{fig:qpso_dynamics}) \\
-Privacy & Not analyzed & Threat model and privacy scope (Table~\ref{tab:privacy_scope}) \\
+Privacy & Not analyzed & Threat model and privacy scope in Table~\ref{tab:privacy_scope} \\
 \hline\toprule
 \end{tabular}
 \end{table}
@@ -277,9 +277,9 @@ and Section~\ref{sec:conclusion} concludes.
 Cyberworm detection in mission-critical networks must cope with
 high-dimensional traffic, training data that cannot be pooled, and
 heterogeneous operating conditions. Prior work has advanced these
-aspects largely in isolation. This section reviews each line of work
-and positions CONQUEST against representative studies
-(Table~\ref{tab:rw_qualitative}).
+aspects largely in isolation. This section reviews each line of work,
+and Table~\ref{tab:rw_qualitative} positions CONQUEST against
+representative studies.
 
 \subsection{Deep Temporal Intrusion Detection}
 
@@ -365,8 +365,8 @@ analyzed explicitly and compared with classical search, measured
 deployment cost, and federated evaluation with tail-aware metrics.
 The conference prototype~\cite{ajakweconquest} established QPSO-based
 selection with a temporal backbone for centralized detection; this
-extension \rev{R2.5}\textcolor{red}{(Table~\ref{tab:conf_vs_journal})}
-adds a variable-qubit ablation over
+extension\rev{R2.5}\textcolor{red}{, summarized in
+Table~\ref{tab:conf_vs_journal},} adds a variable-qubit ablation over
 \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}, an optimized
 non-quantum baseline, and a federated evaluation across IID,
 label-skew, quantity-skew, and Dirichlet regimes using $R_{99}$,
@@ -867,9 +867,9 @@ FL per-client metrics & Client-matched windows of $\mathcal{D}_{\rm te}$, final 
 $Q=1$ to $8$ with the highest mean validation F1 over ten seeds, with
 ties going to the smaller $Q$; this rule selects $Q^{*}=6$. Because
 QPSO is not on the inference path and $k$ is fixed, deployment
-latency and memory do not depend on $Q$. On the test set, $Q$ has no
-significant effect within this range
-(Table~\ref{tab:qubit_ablation_improved_robust}), so $Q^{*}$ is a
+latency and memory do not depend on $Q$. On the test set,
+Table~\ref{tab:qubit_ablation_improved_robust} shows no significant
+effect of $Q$ within this range, so $Q^{*}$ is a
 reproducible default rather than an optimum.}
 
 \rev{R1.3}\textcolor{red}{Two experiments test whether the default
@@ -1435,7 +1435,7 @@ context (both $p\le0.004$), and their interaction, $+1.74$\,pp
 ($p=0.002$), is the dominant effect. The gain of CONQUEST therefore
 comes from combining context-aware representation with label-aware
 selection, which keeps eight context features alongside complementary
-static features (Table~\ref{tab:selected_features}).}
+static features, as listed in Table~\ref{tab:selected_features}.}
 
 \rev{R2.3}\textcolor{red}{\textbf{Quantum-inspired versus classical
 search.} At an equal budget of 620 fitness evaluations, classical
@@ -1544,8 +1544,8 @@ four budgets and a gain of 387 from $20\times30$ to $40\times60$
 (Wilcoxon $p<10^{-6}$). Intermediate $Q$ from 3 to 6 reaches the
 highest fitness at every budget, consistent with
 Fig.~\ref{fig:qpso_dynamics}. The additional search, however, does not
-improve detection (Table~\ref{tab:budget_sensitivity},
-Fig.~\ref{fig:budget}(b)). Test F1 stays within 96.9--97.3\% in every
+improve detection, as Table~\ref{tab:budget_sensitivity} and
+Fig.~\ref{fig:budget}(b) show. Test F1 stays within 96.9--97.3\% in every
 cell, with no budget effect (Friedman $p=0.50$; $20\times30$ versus
 $40\times60$: mean difference $-0.10$\,pp, Wilcoxon $p=0.15$), and
 validation F1 even decreases slightly at $40\times60$ ($-0.6$\,pp,
@@ -1836,9 +1836,9 @@ global mask built without pooling data therefore costs at most
 systematically worse off, with a worst-client F1 of 96.2--97.6\%
 across all six settings. Clients largely agree on what matters: in
 vote mode, 38--43 of the 40 selected features are chosen by at least
-three of the five clients. Voting needs no server-held data and
-reveals only feature indices (Table~\ref{tab:privacy_scope}), which
-makes it the preferred mode when no suitable proxy data exist.}
+three of the five clients. Voting needs no server-held data and,
+as Table~\ref{tab:privacy_scope} shows, reveals only feature indices,
+which makes it the preferred mode when no suitable proxy data exist.}
 
 \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{\textbf{Cost.} Federated
 training takes 169\,s per round on the shared CPU host, or 85\,min for
@@ -2003,8 +2003,8 @@ The conference prototype~\cite{ajakweconquest} reported
 97.5\% detection rate and 0.8\% FPR on ACI-IoT under
 centralized evaluation, establishing the first
 cyberworm-focused CONQUEST result. \rev{R2.5}\textcolor{red}{The
-two works differ in method, experiments, and analysis
-(Table~\ref{tab:conf_vs_journal}). Methodologically, the extension
+two works differ in method, experiments, and analysis,
+as Table~\ref{tab:conf_vs_journal} summarizes. Methodologically, the extension
 replaces random splitting of pooled data with a blocked temporal,
 training-only protocol, defines the context features and the role
 of $Q$ exactly, and adds federated training. Experimentally and
