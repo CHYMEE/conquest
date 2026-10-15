@@ -104,8 +104,8 @@ Quantum-inspired optimization targets the first
 challenge~\cite{ajakwe2025eqai,vivekquantum}: QPSO introduces
 probabilistic search dynamics \rev{R2.3}\textcolor{red}{that have been reported
 to improve exploration over classical metaheuristics}. In IDS,
-however, its use remains ad hoc: the effect of optimizer capacity is
-rarely analyzed, stability is seldom quantified, and
+however, its use remains ad hoc: the effect of the optimizer's
+configuration on its search is rarely analyzed, stability is seldom quantified, and
 \rev{R2.3}\textcolor{red}{comparisons with classical search at an equal
 evaluation budget are missing}. Federated learning (FL) targets the
 third challenge by keeping raw traffic local and exchanging only
@@ -247,7 +247,7 @@ representative studies.
 
 \midrule
 
-\cite{donkoloptimization} & Communication-network IDS with optimized features & LPPSO + ELSTM-RNN on NSL-KDD and UNSW-NB15 & Centralized only; no stability reporting & QPSO capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
+\cite{donkoloptimization} & Communication-network IDS with optimized features & LPPSO + ELSTM-RNN on NSL-KDD and UNSW-NB15 & Centralized only; no stability reporting & QPSO register-size ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
 
 \midrule
 
@@ -309,7 +309,7 @@ extend these ideas to fog and cloud anomaly
 detection~\cite{yaseenefficient,bilalevaluation,maryenhancing,shrivashybrid}.
 Quantum-inspired sampling has been proposed to strengthen
 exploration~\cite{vivekquantum}, but it is usually adopted as a
-drop-in replacement, without analysis of how its capacity affects
+drop-in replacement, without analysis of how its configuration affects
 stability, cost, or detection, \rev{R2.3}\textcolor{red}{and without
 comparison against classical search at an equal evaluation budget}.
 These studies also assume centralized access to training data, which
@@ -351,7 +351,7 @@ stability-aware client selection reduces convergence
 instability~\cite{vinothinienhancing}. These works seldom report
 convergence stabilization, worst-client utility, and inter-client
 dispersion together for intrusion detection, and they do not combine
-them with capacity-controlled feature selection.
+them with feature selection whose search behavior is analyzed.
 
 \subsection{Research Gap and Positioning of CONQUEST}
 
@@ -360,7 +360,7 @@ learning have each matured, but they are rarely integrated and
 evaluated together under deployment constraints.
 Table~\ref{tab:rw_qualitative} summarizes representative work.
 Relative to it, CONQUEST combines causal context features for
-cyberworm dynamics, quantum-inspired selection whose capacity is
+cyberworm dynamics, quantum-inspired selection whose register size is
 analyzed explicitly and compared with classical search, measured
 deployment cost, and federated evaluation with tail-aware metrics.
 The conference prototype~\cite{ajakweconquest} established QPSO-based
@@ -1910,7 +1910,7 @@ detector~\cite{yuadaptive} reaches 99.6\%/99.2\% Acc/F1 at
 Optimization-enhanced pipelines~\cite{donkoloptimization,shrivashybrid}
 exceed 99\% on NSL-KDD and UNSW-NB15. These results are
 obtained under centralized assumptions with no evaluation of
-optimizer-capacity stability, heterogeneous client behavior,
+optimizer stability across settings and seeds, heterogeneous client behavior,
 or deployment constraints. They establish performance
 ceilings on well-studied benchmarks but do not address the
 reproducibility, bounded overhead, or mission-edge feasibility
@@ -1932,7 +1932,7 @@ requirements central to this work.
 \midrule
 \cite{yuadaptive} & Multi-scale windows + transformer + focal loss & 99.6\% accuracy, 99.2\% F1; 10.8\,ms per sample; 37.2M parameters & High complexity; no FL or resource bounds & \rev{R1.10}\rc{789k parameters, 541\,MB}; FL under four heterogeneity regimes \\
 \midrule
-\cite{donkoloptimization} & LPPSO + ELSTM-RNN & 99.95\% DR on NSL-KDD, 99.4\% on UNSW-NB15; centralized & No optimizer-capacity study; no FL & \rev{R1.2}\rc{Register-size ablation, $Q=1$ to 10}; FL under quantity and Dirichlet skew \\
+\cite{donkoloptimization} & LPPSO + ELSTM-RNN & 99.95\% DR on NSL-KDD, 99.4\% on UNSW-NB15; centralized & No study of optimizer settings; no FL & \rev{R1.2}\rc{Register-size ablation, $Q=1$ to 10}; FL under quantity and Dirichlet skew \\
 \midrule
 \cite{shrivashybrid} & Ensemble + GA-PSO & Binary and multiclass accuracy gains; centralized & No temporal modeling; no FL & Context-aware temporal modeling; non-IID FL evaluation \\
 \midrule
@@ -1999,7 +1999,7 @@ training-only protocol, defines the context features and the role
 of $Q$ exactly, and adds federated training. Experimentally and
 analytically,} the journal extension
 advances this in three ways that are not incremental: (i)~a
-controlled variable-qubit ablation over $Q=1$ to 8
+variable-qubit analysis over $Q=1$ to 10
 that \rev{R1.1}\textcolor{red}{makes the role of $Q$ explicit and
 characterizes its effect on search dynamics and detection}
 \rev{R1.2}\textcolor{red}{and shows that detection is statistically
