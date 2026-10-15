@@ -1301,10 +1301,9 @@ R_{99}=\min\bigl\{r:\mathrm{F1}^{(r)}\ge
 \end{equation}
 which is normalized to the final F1 and therefore comparable across
 regimes and aggregators.
-\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{The 90\% threshold of the
-original submission is reached in the first round in every regime
-under the corrected protocol and no longer discriminates, so 99\% is
-used.} \rev{R1.5}\textcolor{red}{The per-round global F1 on
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{A 99\% threshold is used
+because a 90\% threshold is reached in the first round in every regime
+and does not discriminate.} \rev{R1.5}\textcolor{red}{The per-round global F1 on
 $\mathcal{D}_{\rm te}$ is logged only to describe convergence; the
 reported model is always the one after the fixed final round, never a
 round selected on $\mathcal{D}_{\rm te}$.} Per-client consistency is
@@ -1413,8 +1412,6 @@ CONQUEST reaches the highest mean F1, $97.13\pm0.31\%$, and the lowest
 missed-attack rate, 3.33\%. Its F1, however, is not significantly
 higher than that of OS-CIDS, 96.96\% with Wilcoxon $p=0.32$, or of
 classical PSO with context features, 96.99\% with $p=0.23$. The
-$+2.21$\,pp gain over OS-CIDS reported in the original submission
-therefore does not hold under the leakage-free protocol. The
 pipelines differ instead in the type of error they make. CONQUEST
 misses significantly fewer attacks than OS-CIDS, 3.33\% versus 4.21\%
 with $p=0.004$, but raises significantly more false alarms, 2.24\%
@@ -1516,13 +1513,10 @@ ten seeds, re-executing QPSO in every run. Test F1 ranges only from
 means is smaller than the average seed-to-seed standard deviation of
 0.32\,pp. A Friedman test finds no significant effect of $Q$ on test
 F1 ($\chi^2_7=6.07$, $p=0.53$), test AUC ($p=0.63$), or validation F1
-($p=0.54$). The pre-declared validation rule selects $Q^{*}=6$, the
-same setting as in the original submission, but $Q^{*}=6$ is
-statistically indistinguishable from every other setting
+($p=0.54$). The pre-declared validation rule selects $Q^{*}=6$, but
+$Q^{*}=6$ is statistically indistinguishable from every other setting
 (Holm-adjusted Wilcoxon $p\ge0.59$). It is therefore a reproducible
-default selected on validation data, not a stability optimum; the
-earlier description of $Q=6$ as stability-optimal rested on three
-seeds with a single QPSO run per $Q$. The two settings beyond the
+default selected on validation data, not a stability optimum. The two settings beyond the
 tested range, evaluated with five seeds each, fall in the same band,
 with test F1 of 97.30\% at $Q=9$ and 97.25\% at $Q=10$.}
 
@@ -1559,9 +1553,7 @@ $p=0.02$). Pushing the training-split fitness further thus mildly
 overfits the selection. No degradation at $Q=7$ or 8 appears at any
 budget, and the validation-selected $Q$ within 6 to 10 changes with
 the budget, to 10, 7, 9, and 9, as expected when no setting is
-genuinely better. The degradation reported for $Q=7$ and 8 in the
-original submission is therefore not reproduced, and larger budgets
-do not change the conclusion that detection is insensitive to $Q$.
+genuinely better. Larger budgets therefore do not change the conclusion that detection is insensitive to $Q$.
 Training detectors for all $Q$ from 1 to 10 at the largest budget of
 $40\times60$ with five seeds confirms this: test F1 ranges from
 96.89\% to 97.31\%, the Friedman test finds no effect of $Q$
@@ -1726,17 +1718,6 @@ training-time cost of 1.8\,min per run on the shared host, or
 0.4\,min at $k=10$, incurred once before training; the consensus mask
 requires ten such runs.}
 
-\rev{R1.10}\rev{R2.4}\textcolor{red}{\textbf{Relation to the original
-latency figures.} The 3.60\,s inference time of the original
-submission was the total time to classify the whole test set of about
-12{,}000 windows, not a per-detection latency; it corresponds to
-0.3\,ms per window and is consistent with the batched measurement
-above. The 61.2\,ms end-to-end latency, the latency-budget share
-$\eta$, the per-$Q$ memory values of 512--1126\,MB, and the former
-decomposition that placed QPSO on the inference path are superseded
-by the isolated measurements above and by
-Eq.~\eqref{eq:latency_decomp}.}
-
 \begin{table*}[!t]
 \centering
 \caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in isolation; medians over seeds, with the number of seeds in parentheses.}}
@@ -1802,16 +1783,11 @@ remains operationally viable under realistic data heterogeneity, which
 Fig.~\ref{fig:hfl-multianalysis} and
 Table~\ref{tab:fl_performance_extended} address.
 
-\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{\textbf{One configuration
-for all federated results.} The original submission used different
-configurations for the aggregator comparison, with 8 rounds and one
-local epoch, the heterogeneity sweep, with 15 rounds, and the extended
-run, with 60 rounds, which led to two different FedAvg results for
-quantity skew, F1 of 0.910 and 0.869. All federated experiments have
-been re-run with one configuration: 30 rounds, two local epochs, batch
-size 64, full participation, the proxy mask unless stated otherwise,
-and three seeds. Every row of Table~\ref{tab:fl_performance_extended}
-is therefore directly comparable.}
+\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{All federated experiments
+use one configuration: 30 rounds, two local epochs, batch size 64,
+full participation, the proxy mask unless stated otherwise, and three
+seeds. Every row of Table~\ref{tab:fl_performance_extended} is
+therefore directly comparable.}
 
 \rev{R1.9}\textcolor{red}{\textbf{Heterogeneity.} Under IID,
 quantity-skew, and Dirichlet partitions, the global F1 lies between
@@ -1819,8 +1795,7 @@ quantity-skew, and Dirichlet partitions, the global F1 lies between
 97.13\%; for the quantity-skew stress regime, the gap is 0.47\,pp.
 These regimes also serve every client well: the worst client keeps an
 F1 of at least 96.37\%, and the inter-client dispersion stays below
-0.9\,pp. The earlier observation that quantity skew outperforms IID is
-not reproduced; the two differ by 0.11\,pp. Label skew is the one
+0.9\,pp, and quantity skew and IID differ by only 0.11\,pp. Label skew is the one
 damaging regime: the global F1 falls to $86.59\pm6.95\%$, the worst
 client to 83.50\%, and one attack-dominated client misses 44.5\% of
 its attacks. Fig.~\ref{fig:hfl-multianalysis}(a) shows the mechanism:
@@ -1835,11 +1810,7 @@ strategy.} Under quantity skew, FedAvg, SCAFFOLD, and FLAME reach
 96.66\%, 96.56\%, and 96.77\% F1. They differ by at most 0.21\,pp,
 within one seed standard deviation, and all keep the worst client
 above 96.2\%. FedAvg converges fastest, with $R_{99}$ of 7.3 rounds
-against 13.7 and 16.3, so it remains the default. The SCAFFOLD
-collapse reported in the original submission, an F1 of 0.522, is not
-reproduced: that result came from a server-momentum approximation,
-whereas the revision implements the published SCAFFOLD and FLAME
-algorithms.}
+against 13.7 and 16.3, so it remains the default.}
 
 \rev{R2.2}\textcolor{red}{\textbf{Number of clients.} Splitting the
 same training data among 5, 10, and 20 quantity-skewed clients gives a
