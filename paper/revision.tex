@@ -1081,8 +1081,7 @@ sets across seeds.}
 \label{subsec:heterogeneity_modeling}
 %% ----------------------------------------------------------
 
-Centralized training is an idealized upper bound. In practice,
-mission clients differ in traffic volume, class distribution, and
+Mission clients differ in traffic volume, class distribution, and
 behavioral context because of their roles, duty cycles, and exposure
 to attacks. Federated training is therefore evaluated under four
 partition regimes of increasing heterogeneity.
@@ -1766,12 +1765,10 @@ Interaction & \multicolumn{2}{l}{+1.74\,pp ($p{=}0.002$)} \\
 \subsection{Federated Robustness Under Heterogeneous Mission Deployments}
 \label{subsec:obj3_heterogeneity}
 %% ----------------------------------------------------------
-Centralized training is an idealized upper bound; in practice, raw
-traffic cannot be pooled across organizational, operational, or
-jurisdictional boundaries. The question is therefore whether CONQUEST
-remains operationally viable under realistic data heterogeneity, which
 Fig.~\ref{fig:hfl-multianalysis} and
-Table~\ref{tab:fl_performance_extended} address.
+Table~\ref{tab:fl_performance_extended} report whether CONQUEST
+remains viable when training data are distributed across
+heterogeneous clients.
 
 \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{All federated experiments
 use one configuration: 30 rounds, two local epochs, batch size 64,
