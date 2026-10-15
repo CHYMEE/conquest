@@ -22,9 +22,8 @@
 \usepackage{orcidlink}
 \usepackage{xcolor}
 \usepackage[table]{xcolor}% Revision-markup command: display reviewer tags in red.
-\newcommand{\rev}[1]{\textcolor{red}{\textbf{[#1]}}}
-% Alias used by existing \textcolor{r}{...} markup.
-\colorlet{r}{red}
+\renewcommand{\thetable}{\Roman{table}}
+\DeclareRobustCommand{\rev}[1]{\textcolor{red}{\textsuperscript{\textbf{[#1]}}}}
 
 \usepackage{balance}
 \usepackage{algorithm}
