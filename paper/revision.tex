@@ -933,10 +933,7 @@ SGD with Nesterov momentum 0.9, learning rate $10^{-3}$, and batch
 size 32. The same optimizer is used in every reported experiment:
 all centralized configurations, the $Q$ ablation, the budget and
 selector comparisons, and the local updates of all federated clients,
-which use batch size 64. Adam is not used. The comparison of SGD,
-Adam, and Newton--Hessian updates belongs to the conference
-version~\cite{ajakweconquest}, which retained SGD and from which the
-S-CIDS results are quoted.} \rev{R1.5}\textcolor{red}{Training runs
+which use batch size 64.} \rev{R1.5}\textcolor{red}{Training runs
 for at most 35 epochs. Early stopping monitors the validation loss
 with patience 6 and restores the best weights, and the learning rate
 is halved after 3 epochs without improvement, down to $10^{-6}$.}
