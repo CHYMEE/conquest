@@ -2029,17 +2029,19 @@ cyberworm detection in mission-critical IoT/IoV/IoD networks,
 combining seed-controlled context-aware feature representation,
 variable-qubit QPSO feature selection, and supervised
 LSTM(+VAE) temporal classification.
-Three findings are central. First, a controlled ablation over
-$Q=1$ to 8 establishes that \rev{R1.1}\textcolor{red}{$Q$ controls
-the exploration--exploitation balance of QPSO, with intermediate
-values concentrating the search most effectively.}
+Three findings are central. First, \rev{R1.1}\textcolor{red}{an
+analysis of the QPSO search over $Q=1$ to 10 shows that $Q$ controls
+the exploration--exploitation balance of QPSO: $Q=1$ samples almost
+uniformly, $Q\ge9$ barely moves the particles, and intermediate
+values, $Q=4$ to 7, concentrate the search on a feature subset.}
 \rev{R1.2}\textcolor{red}{Detection, however, is statistically insensitive to
-$Q$ (Friedman $p=0.53$ over ten seeds): every tested setting
-yields between 96.95\% and 97.20\% F1, and the validation-selected $Q^{*}=6$
+$Q$ (Friedman $p=0.53$ over ten seeds): every setting from 1 to 8
+yields between 96.95\% and 97.20\% F1, $Q=9$ and 10 fall in the same
+band, and the validation-selected $Q^{*}=6$
 delivers $97.13\%$ accuracy, $97.13\%$ F1, $0.9924$ AUC, and
 $0.0246$ MSE under leakage-free centralized evaluation.} \rev{R1.10}\rev{R2.4}\textcolor{red}{Deployed
 on a CPU-only host, it needs 2.98\,ms per window and 541\,MB of
-memory, independently of $Q$, because QPSO runs only once during
+memory, independently of $Q$, because QPSO runs only during
 training.}
 
 Second, \rev{R1.6}\rev{R2.3}\textcolor{red}{context features and label-aware
