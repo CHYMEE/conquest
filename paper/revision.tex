@@ -204,8 +204,9 @@ The main contributions of this work are as follows.
     inter-client dispersion, and $R_{99}$ on client-specific test sets,
     we show that federated CONQUEST stays within 0.8\,pp of centralized
     F1 under IID, quantity, and Dirichlet heterogeneity and within
-    0.9\,pp with up to 20 clients, compare three privacy-compatible
-    mask-construction modes, and identify label skew as the most
+    0.9\,pp with up to 20 clients, compare two privacy-compatible
+    mask-construction modes with a pooled-data oracle, and identify
+    label skew as the most
     challenging regime.}
 \end{itemize}
 
@@ -799,7 +800,8 @@ amplitudes remain spread out and rarely reproduce the best subset.}
 \end{figure*}
 
 \rev{R1.1}\rev{R1.5}\textcolor{red}{Each measured mask is scored by the
-Fisher class-separability ratio of its selected features,}
+Fisher trace ratio of its selected features, a class-separability
+criterion referred to below as the trace-ratio fitness,}
 \begin{equation}
 \textcolor{red}{\mathcal{J}(\mathbf{m}) =
 \frac{\sum_{c}n_c\,\|\boldsymbol{\mu}_c^{\mathbf{m}}-
@@ -849,7 +851,7 @@ Model & \rev{R1.11}\rc{Encoder} & \rc{LSTM 256, 2-head attention, LSTM 128} & \r
 QPSO & Particles, iterations & $P=20$, $I=30$ & Default budget \\
  & \rev{R1.3}\rc{Budget sensitivity} & \rc{$P=20$ or 40, $I=30$ or 60} & \rc{Five seeds} \\
  & \rev{R1.5}\rc{Selected features} & \rc{$k=40$, fitness on $\mathcal{D}_{\rm tr}$} & \rc{All selectors} \\
- & \rev{R1.2}\rc{Register size} & \rc{$Q=1$ to 8} & \rc{Ten seeds each} \\
+ & \rev{R1.2}\rc{Register size} & \rc{$Q=1$ to 8; $Q=9$, 10} & \rc{Ten seeds; five seeds} \\
 \midrule
 Federated & \rev{R2.2}\rc{Clients} & \rc{$K=5$; 10 and 20 for sensitivity} & \rc{Full participation} \\
  & \rev{R1.9}\rc{Rounds, local epochs} & \rc{$R=30$, $E=2$} & \rc{All FL experiments} \\
@@ -869,14 +871,16 @@ the learning-rate schedule monitor the $\mathcal{D}_{\rm va}$ loss.
 The search budget, $k=40$, and the classifier hyperparameters were
 fixed before the experiments. $\mathcal{D}_{\rm te}$ is evaluated
 once per trained model, after training, to report the final
-metrics.}
+metrics. In federated training, the global F1 on $\mathcal{D}_{\rm te}$
+is also logged after every round to measure convergence, but it never
+selects a round, a model, or a setting.}
 
 \begin{table}[!t]
 \centering
 \scriptsize
 \caption{\rev{R1.5}\textcolor{red}{Data used by each fitting,
-selection, and stopping step. Only the final evaluation uses the test
-set.}}
+selection, and stopping step. The test set is used only for
+reporting.}}
 \label{tab:data_usage}
 \color{red}
 \setlength{\tabcolsep}{3pt}
@@ -900,6 +904,7 @@ FL stopping & Fixed $R=30$ rounds & no \\
 \midrule
 Reported metrics & $\mathcal{D}_{\rm te}$, once per trained model & yes \\
 FL per-client metrics & Client-matched windows of $\mathcal{D}_{\rm te}$, final model only & yes \\
+FL convergence ($R_{99}$) & Per-round global F1 on $\mathcal{D}_{\rm te}$, reporting only & yes \\
 \hline\toprule
 \end{tabular}
 \end{table}
@@ -916,6 +921,7 @@ the conclusions about $Q$ depend on it. First, the search alone is
 repeated for $Q=1$ to $10$ with 40 particles and 60 iterations, and
 with 80 particles and 60 iterations. Second, full detectors are
 trained for $Q=6$ to $10$ with 20 or 40 particles and 30 or 60
+iterations, and for $Q=1$ to $10$ with 40 particles and 60
 iterations, using five seeds each. Budget effects are tested with
 Friedman and Wilcoxon signed-rank tests, blocked by register size
 and seed.}
@@ -1035,10 +1041,12 @@ constrained~\cite{amadi2026lightweight}.
 %% -----------------------------------------------------
 Centralized training establishes the upper-bound detection
 performance under full data visibility. 
-Three configurations are evaluated with the same optimizer and
-stopping rule: S-CIDS, the conference baseline~\cite{ajakweconquest};
-OS-CIDS, a static IDS with variance-based feature selection; and
-QCIDS, which adds context-aware features and QPSO feature selection.
+Two configurations are trained with the same optimizer and stopping
+rule: OS-CIDS, a static IDS with variance-based feature selection,
+and QCIDS, which adds context-aware features and QPSO feature
+selection. \rev{R1.6}\textcolor{red}{S-CIDS, the baseline of the conference
+version~\cite{ajakweconquest}, is quoted from that work for reference
+only, because it was evaluated under a different protocol.}
 OS-CIDS and QCIDS therefore differ in two factors at once.
 \rev{R1.6}\textcolor{red}{To separate them, a $2\times2$ factorial
 ablation crosses context features (off, on) with the selector
@@ -1047,7 +1055,7 @@ effect of each factor and their interaction can be estimated. A
 classical binary PSO selector provides a controlled comparison of
 quantum-inspired and classical updates. It uses inertia 0.7,
 acceleration coefficients $c_1=c_2=1.5$, a sigmoid position mapping,
-top-$k$ decoding, the same Fisher fitness of Eq.~\eqref{eq:qpsobj}, and the
+top-$k$ decoding, the same trace-ratio fitness of Eq.~\eqref{eq:qpsobj}, and the
 same budget of 620 fitness evaluations.} All configurations share
 the same data split, preprocessing, and normalization. Model
 selection and early stopping use only $\mathcal{D}_{\rm va}$, and all
@@ -1063,8 +1071,8 @@ reported metrics are computed on $\mathcal{D}_{\rm te}$,
 \bigr\}.
 \label{eq:central_metrics}
 \end{align}
-FAR is the share of benign flows flagged as attack and MD the share
-of attacks missed; per-class values are computed from the confusion
+FAR is the share of benign windows flagged as attack and MD the share
+of attack windows missed; per-class values are computed from the confusion
 matrix. In the
 QPSO ablation, every $Q$ uses the same data partition, and results
 are reported as mean$\pm$std over ten seeds.
@@ -1246,7 +1254,11 @@ attacks makes them small and often single-class. Client-count
 sensitivity repeats the quantity-skew experiment with $K=5$, 10, and
 20.}
 
-\rev{R1.9}\textcolor{red}{SCAFFOLD~\cite{karimireddy2020scaffold} follows
+\rev{R1.9}\textcolor{red}{Two aggregators are compared with FedAvg.
+SCAFFOLD~\cite{karimireddy2020scaffold} corrects the client drift
+caused by non-IID data, and FLAME~\cite{nguyen2022flame} filters
+anomalous updates, which serves as a robustness reference beyond the
+honest-client assumption. SCAFFOLD follows
 option~II of its original formulation. Server and client control variates $\mathbf{c}$ and
 $\mathbf{c}_k$, initialized to zero, correct every local gradient by
 $\mathbf{c}-\mathbf{c}_k$, and after local training
@@ -1255,7 +1267,7 @@ $\mathbf{c}_k^{+}=\mathbf{c}_k-\mathbf{c}+(\theta^{(r)}-
 of local steps. Because local updates use momentum $\mu=0.9$, the
 effective step size $\eta_{\rm eff}=\eta/(1-\mu)$ is used; with the
 raw $\eta$, the control variates are overestimated tenfold and
-training diverges. FLAME~\cite{nguyen2022flame} clusters the client
+training diverges. FLAME clusters the client
 updates with HDBSCAN, a density-based hierarchical clustering
 method~\cite{campello2013hdbscan}, on pairwise cosine distances, with minimum cluster size
 $\lfloor K/2\rfloor+1$, and admits the largest cluster. It clips the
@@ -1286,8 +1298,7 @@ model}:
 \end{equation}
 Federated training does not change the deployed inference graph:
 each client runs the same pipeline with the fixed mask
-$\mathbf{m}^{*}$, so the inference latency remains independent of
-$Q$.
+$\mathbf{m}^{*}$.
 
 %% ----------------------------------------------------------
 \subsection{Experimental Environment}
@@ -1346,12 +1357,7 @@ PSO+context & 96.98$\pm$0.40 & 96.99$\pm$0.39 & 0.9918$\pm$0.0018 & 0.0254$\pm$0
 \end{table*}
 
 \textbf{S-CIDS}, the conference baseline~\cite{ajakweconquest},
-achieves 85.14\% accuracy and 80.62\% F1, and the 4.5-point gap
-between its recall and F1 indicates unstable class separation. In
-mission-critical settings, where cyberworm propagation appears as
-low-intensity temporal deviations, such instability either overwhelms
-operators with false alarms or lets early worm activity go
-undetected. \rev{R1.6}\textcolor{red}{This single-run result was
+achieves 85.14\% accuracy and 80.62\% F1. \rev{R1.6}\textcolor{red}{This single-run result was
 obtained with a random split of pooled data and is quoted for
 reference only; it is not comparable with the leakage-free results
 below.}
@@ -1500,7 +1506,7 @@ features.}
 \begin{table}[!t]
 \centering
 \scriptsize
-\caption{\rev{R1.4}\rev{R1.6}\textcolor{red}{Selector comparison under feature budgets of 40, 20, and 10.}}
+\caption{\rev{R1.4}\rev{R1.6}\textcolor{red}{Selector comparison under feature budgets of 40, 20, and 10 over five seeds.}}
 \label{tab:kbudget}
 \color{red}
 \setlength{\tabcolsep}{3pt}
@@ -1542,8 +1548,8 @@ F1 ($\chi^2_7=6.07$, $p=0.53$), test AUC ($p=0.63$), or validation F1
 ($p=0.54$). The pre-declared validation rule selects $Q^{*}=6$, but
 $Q^{*}=6$ is statistically indistinguishable from every other setting
 (Holm-adjusted Wilcoxon $p\ge0.59$). It is therefore a reproducible
-default selected on validation data, not a stability optimum. The two settings beyond the
-tested range, evaluated with five seeds each, fall in the same band,
+default selected on validation data, not a stability optimum. The two
+settings beyond $Q=8$, evaluated with five seeds each, fall in the same band,
 with test F1 of 97.30\% at $Q=9$ and 97.25\% at $Q=10$.}
 
 \begin{table*}[!t]
@@ -1836,7 +1842,7 @@ quantity-skew, and Dirichlet partitions, the global F1 lies between
 97.13\%; for the quantity-skew stress regime, the gap is 0.47\,pp.
 These regimes also serve every client well: the worst client keeps an
 F1 of at least 96.37\%, and the inter-client dispersion stays below
-0.9\,pp, and quantity skew and IID differ by only 0.11\,pp. Label skew is the one
+0.9\,pp. Quantity skew and IID differ by only 0.11\,pp. Label skew is the one
 damaging regime: the global F1 falls to $86.59\pm6.95\%$, the worst
 client to 83.50\%, and one attack-dominated client misses 44.5\% of
 its attacks. Fig.~\ref{fig:hfl-multianalysis}(a) shows the mechanism:
@@ -1876,8 +1882,8 @@ global mask built without pooling data therefore costs at most
 0.51\,pp relative to the oracle, and the worst client is not
 systematically worse off, with a worst-client F1 of 96.2--97.6\%
 across all six settings. Clients largely agree on what matters: in
-vote mode, 38--43 of the 40 selected features are chosen by at least
-three of the five clients. Voting needs no server-held data and,
+vote mode, 38 to 43 features are each chosen by at least three of the
+five clients, nearly as many as the 40 slots of the mask. Voting needs no server-held data and,
 as Table~\ref{tab:privacy_scope} shows, reveals only feature indices,
 which makes it the preferred mode when no suitable proxy data exist.}
 
@@ -1926,7 +1932,7 @@ requirements central to this work.
 \renewcommand{\arraystretch}{1.3}
 \begin{tabular}{>{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.4cm}}
 \hline\toprule
-\textbf{Ref.} & \textbf{Approach} & \textbf{Key result} & \textbf{Limitation} & \textbf{CONQUEST advantage} \\
+\textbf{Ref.} & \textbf{Approach} & \textbf{Key result} & \textbf{Limitation} & \textbf{Gap addressed by CONQUEST} \\
 \hline\toprule
 \cite{phalaagaehybrid} & CNN--LSTM + attention + PSO & 98.73--99.87\% accuracy on WIoTSN; centralized & No FL, stability, or deployment analysis & \rev{R1.9}\rev{R1.10}\rc{Worst-client F1 of 96.4\%; 2.98\,ms per window, 541\,MB} \\
 \midrule
@@ -1946,7 +1952,7 @@ requirements central to this work.
 \midrule
 \cite{ajakweconquest} & Conference CONQUEST: QPSO + LSTM-VAE, centralized & 97.5\% DR, 0.8\% FPR on ACI-IoT; three optimizers compared & No register-size ablation, non-quantum baseline, or FL & Register-size ablation, OS-CIDS and \rev{R2.3}\rc{equal-budget PSO} baselines; FL under four regimes \\
 \midrule
-\textbf{This work} & Context-aware preprocessing + variable-qubit QPSO + LSTM(+VAE); centralized and FL & \rev{R1.6}\rc{97.13\% F1, 0.9924 AUC; 2.98\,ms per window, 541\,MB; federated: 96.66\% F1, worst client 96.4\%} & \rev{R1.6}\rc{No F1 gain over variance ranking or PSO; more false alarms than variance ranking} & \rev{R1.1}\rc{Explicit role of the register size in the search}; unified centralized and federated evaluation with deployment metrics \\
+\textbf{This work} & Context-aware preprocessing + variable-qubit QPSO + LSTM(+VAE); centralized and FL & \rev{R1.6}\rc{97.13\% F1, 0.9924 AUC; 2.98\,ms per window, 541\,MB; federated: 96.66\% F1, worst client 96.4\%} & \rev{R1.6}\rc{F1 on par with variance ranking and PSO; more false alarms than variance ranking} & \rev{R1.1}\rc{Explicit role of the register size in the search}; unified centralized and federated evaluation with deployment metrics \\
 \hline\toprule
 \end{tabular}
 \end{table*}
@@ -1977,8 +1983,8 @@ not to the quantum-inspired search itself, and expose a
 missed-attack versus false-alarm trade-off against variance
 ranking that centralized IDS studies rarely report.}
 \rev{R1.10}\rev{R2.4}\textcolor{red}{Its deployed detector classifies a window in
-2.98\,ms with 541\,MB peak memory on a CPU-only host, independently of
-$Q$, which centralized IDS studies seldom measure.}
+2.98\,ms with 541\,MB peak memory on a CPU-only host, which
+centralized IDS studies seldom measure.}
 Under federated deployment,
 \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{F1/AUC\,$=$\,0.9666/0.9914 under quantity skew, with
 $R_{99}$ of 7.3 rounds, a worst-client F1 of $96.4\%$, and an
@@ -1998,7 +2004,7 @@ replaces random splitting of pooled data with a blocked temporal,
 training-only protocol, defines the context features and the role
 of $Q$ exactly, and adds federated training. Experimentally and
 analytically,} the journal extension
-advances this in three ways that are not incremental: (i)~a
+advances this in three ways: (i)~a
 variable-qubit analysis over $Q=1$ to 10
 that \rev{R1.1}\textcolor{red}{makes the role of $Q$ explicit and
 characterizes its effect on search dynamics and detection}
@@ -2062,7 +2068,7 @@ mask built from a small proxy set or from client votes. Label skew is the except
 F1 to 86.6\% and leaves one client missing 44.5\% of its attacks,
 which calls for drift-aware aggregation or personalization.}
 
-The unified contribution is the first \rev{R1.1}\textcolor{red}{explicit
+The unified contribution is an \rev{R1.1}\textcolor{red}{explicit
 characterization of how the QPSO register size controls search
 dynamics in IDS feature selection}, integrated with heterogeneity-aware
 federated robustness reporting under mission-relevant
@@ -2141,7 +2147,7 @@ This work was partly supported by IITP Innovative Human Resource Development for
 
 \bibliographystyle{IEEEtran}
 
-\bibliography{newref,Bibliography}
+\bibliography{newref}
 %\bibliography{references} % Replace with your actual bibliography file name
 \end{document}
 
