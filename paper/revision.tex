@@ -865,9 +865,7 @@ FL per-client metrics & Client-matched windows of $\mathcal{D}_{\rm te}$, final 
 
 \rev{R1.2}\textcolor{red}{The register size $Q^{*}$ is the value in
 $Q=1$ to $8$ with the highest mean validation F1 over ten seeds, with
-ties going to the smaller $Q$; this rule selects $Q^{*}=6$. Because
-QPSO is not on the inference path and $k$ is fixed, deployment
-latency and memory do not depend on $Q$. On the test set,
+ties going to the smaller $Q$; this rule selects $Q^{*}=6$. On the test set,
 Table~\ref{tab:qubit_ablation_improved_robust} shows no significant
 effect of $Q$ within this range, so $Q^{*}$ is a
 reproducible default rather than an optimum.}
@@ -939,8 +937,6 @@ with patience 6 and restores the best weights, and the learning rate
 is halved after 3 epochs without improvement, down to $10^{-6}$.}
 At deployment, no QPSO computation occurs, and inference reduces to
 $\hat{\mathbf{y}}=f_\theta(\mathbf{m}^{*}\odot\mathbf{Z}_n)$.
-\rev{R1.10}\textcolor{red}{This is why the inference latency does
-not depend on $Q$, as stated in Eq.~\eqref{eq:infer_invariance}.}
 
 
 
@@ -967,9 +963,7 @@ for every classified window. The per-window latency is}
 \rev{R1.10}\textcolor{red}{where $\mathcal{L}_{\rm ctx}$ is the
 incremental context-feature update for a newly arrived flow,
 including normalization and masking, and $\mathcal{L}_{\rm clf}$ is
-one forward pass of the classifier. QPSO does not appear
-in Eq.~\eqref{eq:latency_decomp}, and because $k$ is fixed,
-$\mathcal{L}_{\rm infer}$ does not depend on $Q$.}
+one forward pass of the classifier.}
 
 \rev{R2.4}\textcolor{red}{All timings use \texttt{time.perf\_counter}
 on the host of Table~\ref{tab:impl_setup}, with a fixed TensorFlow
@@ -1707,10 +1701,9 @@ normalizing, and masking a newly arrived flow adds 16\,$\mu$s, and the
 11{,}544 test windows are classified in 3.23\,s. The inference process
 peaks at 541\,MB, within the 1\,GB budget. These costs are practically
 the same for every pipeline, at 2.9--3.5\,ms per window and
-541--658\,MB, and for $Q=1$, 6, and 8 and $k=10$, 20, and 40. QPSO is
-not executed at deployment, and the classifier hardly changes with
-the input width, from 758k to 789k parameters, which confirms
-empirically that the inference cost does not depend on $Q$. QPSO is a
+541--658\,MB, and for $Q=1$, 6, and 8 and $k=10$, 20, and 40, since
+the classifier hardly changes with the input width, from 758k to 789k
+parameters. This confirms Eq.~\eqref{eq:infer_invariance} empirically. QPSO is a
 training-time cost of 1.8\,min per run on the shared host, or
 0.4\,min at $k=10$, incurred once before training; the consensus mask
 requires ten such runs.}
