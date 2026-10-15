@@ -1308,8 +1308,7 @@ strategy.
 This section evaluates CONQUEST in centralized and federated
 settings. It reports centralized detection performance, deployment
 cost, federated robustness under heterogeneous data, and a comparison
-with representative prior work\textcolor{red}{, and closes with the
-limitations of the study}.
+with representative prior work.
 
 \subsection{Centralized Cyberworm Detection Performance}
 \label{subsec:obj1_cyberworm_perf}
@@ -2017,68 +2016,6 @@ extensions transform a centralized feasibility demonstration
 into a deployment-oriented framework with quantified
 robustness bounds.
 
-%% ----------------------------------------------------------
-\subsection{Limitations}
-\label{subsec:limitations}
-%% ----------------------------------------------------------
-
-\textcolor{red}{The results above hold under specific conditions,
-and six limitations bound the claims that can be drawn from them.}
-
-\textcolor{red}{\textbf{One dataset.} All experiments use ACI-IoT.
-Its attacks are clustered in time, so a purely chronological split
-would leave the test set entirely benign, and the blocked temporal
-split is a compromise between temporal ordering and class coverage.
-The test set contains six of the ten attack types, and the class
-balance of the 80{,}000-flow subsample, 50\% attacks, is far from the
-base rate of an operational network. The absolute F1 values, and the
-finding that detection is insensitive to $Q$, therefore need to be
-confirmed on other IoT traffic datasets and on longer, naturally
-ordered captures before they are generalized.}
-
-\textcolor{red}{\textbf{Static rather than adaptive attackers.} The
-paper is motivated by AI-aided cyberworms that adapt their
-propagation and mimic legitimate traffic, but ACI-IoT contains fixed
-attack implementations. Robustness to an attacker who knows the
-selected features and shapes traffic to evade them, for example by
-throttling the per-source rates that the context features measure,
-is not evaluated.}
-
-\textcolor{red}{\textbf{False alarms.} CONQUEST misses the fewest
-attacks, 3.33\%, but raises more false alarms than variance ranking
-without context features, 2.24\% versus 1.43\%. On predominantly
-benign operational traffic, a false-alarm rate of 2.24\% can still
-mean many alerts per hour for an operator. CONQUEST is therefore the
-better choice where an undetected worm is the costlier error, and the
-decision threshold would have to be calibrated to the alert budget of
-the deployment.}
-
-\textcolor{red}{\textbf{No quantum advantage.} QPSO is a classical,
-quantum-inspired algorithm, and classical PSO at the same budget of
-620 fitness evaluations yields statistically indistinguishable
-detectors. The detection gain comes from combining context features
-with label-aware selection, not from the quantum-inspired search.
-The register-size analysis characterizes how $Q$ shapes the search,
-not a performance benefit over classical search.}
-
-\textcolor{red}{\textbf{Label skew and privacy.} Under label skew,
-client drift lowers the global F1 to 86.59\% and one client misses
-44.5\% of its attacks; drift-aware aggregation and personalization
-were not evaluated. Client-level differential privacy reduces the
-global F1 to chance level at $K=5$, so the practical protection for
-small mission federations is secure aggregation, which was analyzed
-but not implemented. Larger federations, where client-level
-differential privacy becomes usable, were tested only up to $K=20$
-and without it.}
-
-\textcolor{red}{\textbf{Simulated deployment.} Latency and memory
-were measured on one CPU-only desktop host, and federated training
-was simulated in a single process on that host, without network
-delay, client dropout, or partial participation. Measurements on
-embedded edge hardware and a networked federation are needed to
-confirm the 2.98\,ms per-window latency, the 541\,MB memory, and the
-169\,s per round in a fielded system.}
-
 
 
 
@@ -2128,12 +2065,8 @@ characterization of how the QPSO register size controls search
 dynamics in IDS feature selection}, integrated with heterogeneity-aware
 federated robustness reporting under mission-relevant
 metrics that the existing FL-IDS literature does not provide.
-Future work will address \textcolor{red}{the limitations in
-Section~\ref{subsec:limitations}: validation on further IoT traffic
-datasets and against adaptive attackers that shape traffic to evade
-the selected features, drift-aware aggregation for label-skewed
-federations, measurement on embedded edge hardware,} post-hoc
-explainability of the QPSO feature mask, \rev{R2.1}\textcolor{red}{differential privacy at
+Future work will address post-hoc explainability of the
+QPSO feature mask, \rev{R2.1}\textcolor{red}{differential privacy at
 larger client populations, where the DP noise per client shrinks,} communication-efficient aggregation to
 reduce the observed federated
 training overhead, and lightweight edge adaptation below
