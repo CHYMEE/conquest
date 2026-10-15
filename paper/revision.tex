@@ -167,59 +167,6 @@ Privacy & Not analyzed & Threat model and privacy scope in Table~\ref{tab:privac
 \end{tabular}
 \end{table}
 
-\begin{table*}[!htbp]
-\centering
-\scriptsize
-\caption{Positioning of CONQUEST against representative related work.}
-\label{tab:rw_qualitative}
-\setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{>{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.4cm}}
-\hline\toprule
-\textbf{Ref.} & \textbf{Problem focus} & \textbf{Method and key contribution} & \textbf{Limitation} & \textbf{Gap addressed by CONQUEST} \\
-\hline\toprule
-\cite{phalaagaehybrid} & IoT IDS under resource constraints & CNN--LSTM + attention + PSO feature selection; high centralized accuracy on WIoTSN & Centralized only; no stability or FL analysis & Multi-seed stability analysis; FL with worst-client metrics \\
-
-\midrule
-
-\cite{yuadaptive} & IIoT IDS with class imbalance and temporal variation & Multi-scale windows + attention transformer + adaptive focal loss & High complexity; centralized only; no cost analysis & \rev{R1.10}\textcolor{red}{Measured deployment cost (2.98\,ms/window, 541\,MB)}; FL evaluation \\
-
-\midrule
-
-\cite{donkoloptimization} & Communication-network IDS with optimized features & LPPSO + ELSTM-RNN on NSL-KDD and UNSW-NB15 & Centralized only; no stability reporting & QPSO capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
-
-\midrule
-
-\cite{shrivashybrid} & Network attack classification with selected features & Voting ensemble + GA-PSO feature selection & No temporal modeling; no FL & Temporal context modeling; non-IID FL evaluation \\
-
-\midrule
-
-\cite{FRIHA202217} & Privacy-preserving IDS for agricultural IoT & Federated DNN/CNN/RNN with server aggregation & Global metrics only; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
-
-\midrule
-
-\cite{herlambangfederated} & Aggregation robustness for federated IoT IDS & FedAvg vs.\ FedProx under IID and non-IID data & Two clients; no worst-client metric & \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$}; $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
-
-\midrule
-
-\cite{abdelmoniemcomprehensive} & Heterogeneity impact on FL quality and fairness & Large-scale empirical study (${\sim}$1.5K configurations) & Not IDS-specific; no deployment analysis & Heterogeneity analysis for cyberworm IDS with deployment cost \\
-
-\midrule
-
-\cite{gefedamkd} & Quantity-skew heterogeneity in FL & FedAMKD adaptive mutual knowledge distillation (MNIST, CIFAR) & Not IDS-specific & Quantity-skew study for IDS with tail-aware metrics \\
-
-\midrule
-
-\cite{ajakweconquest} & Context-aware cyberworm IDS (conference version) & QPSO + LSTM-VAE on ACI-IoT; 97.5\% detection rate, 0.8\% FPR & Centralized only; single run; random split & Leakage-free protocol; $Q$ ablation \rev{R1.2}\textcolor{red}{with statistical tests}; FL evaluation \\
-
-\midrule
-
-\textbf{This work} & Mission-critical cyberworm IDS, centralized and federated & Context features + variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation}) + LSTM(+VAE) & One-off QPSO training cost; label skew remains challenging & -- \\
-
-\hline\toprule
-\end{tabular}
-\end{table*}
-
 
 %The key contributions are as follows:
 %\begin{itemize}
@@ -280,6 +227,59 @@ heterogeneous operating conditions. Prior work has advanced these
 aspects largely in isolation. This section reviews each line of work,
 and Table~\ref{tab:rw_qualitative} positions CONQUEST against
 representative studies.
+
+\begin{table*}[!htbp]
+\centering
+\scriptsize
+\caption{Positioning of CONQUEST against representative related work.}
+\label{tab:rw_qualitative}
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.4cm}}
+\hline\toprule
+\textbf{Ref.} & \textbf{Problem focus} & \textbf{Method and key contribution} & \textbf{Limitation} & \textbf{Gap addressed by CONQUEST} \\
+\hline\toprule
+\cite{phalaagaehybrid} & IoT IDS under resource constraints & CNN--LSTM + attention + PSO feature selection; high centralized accuracy on WIoTSN & Centralized only; no stability or FL analysis & Multi-seed stability analysis; FL with worst-client metrics \\
+
+\midrule
+
+\cite{yuadaptive} & IIoT IDS with class imbalance and temporal variation & Multi-scale windows + attention transformer + adaptive focal loss & High complexity; centralized only; no cost analysis & \rev{R1.10}\textcolor{red}{Measured deployment cost (2.98\,ms/window, 541\,MB)}; FL evaluation \\
+
+\midrule
+
+\cite{donkoloptimization} & Communication-network IDS with optimized features & LPPSO + ELSTM-RNN on NSL-KDD and UNSW-NB15 & Centralized only; no stability reporting & QPSO capacity ablation over \rev{R1.2}\textcolor{red}{$Q\in\{1,\dots,10\}$}; FL evaluation \\
+
+\midrule
+
+\cite{shrivashybrid} & Network attack classification with selected features & Voting ensemble + GA-PSO feature selection & No temporal modeling; no FL & Temporal context modeling; non-IID FL evaluation \\
+
+\midrule
+
+\cite{FRIHA202217} & Privacy-preserving IDS for agricultural IoT & Federated DNN/CNN/RNN with server aggregation & Global metrics only; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
+
+\midrule
+
+\cite{herlambangfederated} & Aggregation robustness for federated IoT IDS & FedAvg vs.\ FedProx under IID and non-IID data & Two clients; no worst-client metric & \rev{R2.2}\textcolor{red}{$K\in\{5,10,20\}$}; $R_{99}$, $\min_k\mathrm{F1}_k$, $\sigma(\mathrm{F1})$ \\
+
+\midrule
+
+\cite{abdelmoniemcomprehensive} & Heterogeneity impact on FL quality and fairness & Large-scale empirical study (${\sim}$1.5K configurations) & Not IDS-specific; no deployment analysis & Heterogeneity analysis for cyberworm IDS with deployment cost \\
+
+\midrule
+
+\cite{gefedamkd} & Quantity-skew heterogeneity in FL & FedAMKD adaptive mutual knowledge distillation (MNIST, CIFAR) & Not IDS-specific & Quantity-skew study for IDS with tail-aware metrics \\
+
+\midrule
+
+\cite{ajakweconquest} & Context-aware cyberworm IDS (conference version) & QPSO + LSTM-VAE on ACI-IoT; 97.5\% detection rate, 0.8\% FPR & Centralized only; single run; random split & Leakage-free protocol; $Q$ ablation \rev{R1.2}\textcolor{red}{with statistical tests}; FL evaluation \\
+
+\midrule
+
+\textbf{This work} & Mission-critical cyberworm IDS, centralized and federated & Context features + variable-qubit QPSO (\rev{R1.2}\textcolor{red}{$Q^{*}{=}6$ by validation}) + LSTM(+VAE) & One-off QPSO training cost; label skew remains challenging & -- \\
+
+\hline\toprule
+\end{tabular}
+\end{table*}
 
 \subsection{Deep Temporal Intrusion Detection}
 
@@ -388,6 +388,13 @@ multiple seeds. Table~\ref{tab:acronyms_notations} lists the
 notation, and Fig.~\ref{fig:conquest_architecture} shows the
 architecture.
 
+\begin{figure*}[!htbp]
+    \centering
+\includegraphics[width=0.8\linewidth]{images/CON-PICTURE2_rev.png}
+    \caption{CONQUEST architecture: context-aware features, variable-qubit QPSO feature selection, and LSTM(+VAE) detection, trained centrally or by federated learning.}
+\label{fig:conquest_architecture}
+\end{figure*}
+
 \begin{table}[!t]
 \centering
 \scriptsize
@@ -458,13 +465,6 @@ a per-window inference latency within the budget
 $\mathcal{B}_{\rm lat}$, a peak memory $\mathcal{M}\le1$\,GB,} and a
 bounded inter-client dispersion $\sigma(\mathrm{F1})$ under non-IID
 data, in both training regimes.
-
-\begin{figure*}[!htbp]
-    \centering
-\includegraphics[width=0.8\linewidth]{images/CON-PICTURE2_rev.png}
-    \caption{CONQUEST architecture: context-aware features, variable-qubit QPSO feature selection, and LSTM(+VAE) detection, trained centrally or by federated learning.}
-\label{fig:conquest_architecture}
-\end{figure*}
 
 
 %% ----------------------------------------------------------
@@ -690,6 +690,33 @@ the summed fitness of the runs that selected them. All ten runs use
 $\mathcal{D}_{\rm tr}$ only, so the consensus uses no validation or
 test data.}
 
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.1}\textcolor{red}{Search constants set by the
+register size for the 86 input features.}}
+\label{tab:q_constants}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
+\color{red}
+\begin{tabular}{cccccc}
+\hline\toprule
+$Q$ & \makecell{Initial\\perturbation} & \makecell{Max.\ rotation\\(deg)} & \makecell{Reset\\probability} & \makecell{Resets per particle\\and iteration} & Regime \\
+\hline\toprule
+1  & 0.71 & 90.0 & 0.500  & 43.0 & near-random \\
+2  & 0.40 & 45.0 & 0.250  & 21.5 & exploratory \\
+3  & 0.28 & 30.0 & 0.125  & 10.8 & exploratory \\
+4  & 0.24 & 22.5 & 0.063  & 5.38 & balanced \\
+5  & 0.22 & 18.0 & 0.031  & 2.69 & balanced \\
+6  & 0.22 & 15.0 & 0.016  & 1.34 & balanced \\
+7  & 0.23 & 12.9 & 0.008  & 0.67 & exploitative \\
+8  & 0.25 & 11.3 & 0.004  & 0.34 & exploitative \\
+9  & 0.29 & 10.0 & 0.002  & 0.17 & near-frozen \\
+10 & 0.32 & 9.0  & 0.001  & 0.08 & near-frozen \\
+\hline\toprule
+\end{tabular}
+\end{table}
+
 \begin{algorithm}[!t]
 \caption{\rev{R1.1}\textcolor{red}{Variable-qubit QPSO feature
 selection. Steps commented with Q are the only ones that depend on
@@ -723,33 +750,6 @@ the register size.}}
 \State \Return $\mathbf{m}^{*}$ \Comment{$P(I+1)$ fitness evaluations}
 \end{algorithmic}
 \end{algorithm}
-
-\begin{table}[!t]
-\centering
-\scriptsize
-\caption{\rev{R1.1}\textcolor{red}{Search constants set by the
-register size for the 86 input features.}}
-\label{tab:q_constants}
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.05}
-\color{red}
-\begin{tabular}{cccccc}
-\hline\toprule
-$Q$ & \makecell{Initial\\perturbation} & \makecell{Max.\ rotation\\(deg)} & \makecell{Reset\\probability} & \makecell{Resets per particle\\and iteration} & Regime \\
-\hline\toprule
-1  & 0.71 & 90.0 & 0.500  & 43.0 & near-random \\
-2  & 0.40 & 45.0 & 0.250  & 21.5 & exploratory \\
-3  & 0.28 & 30.0 & 0.125  & 10.8 & exploratory \\
-4  & 0.24 & 22.5 & 0.063  & 5.38 & balanced \\
-5  & 0.22 & 18.0 & 0.031  & 2.69 & balanced \\
-6  & 0.22 & 15.0 & 0.016  & 1.34 & balanced \\
-7  & 0.23 & 12.9 & 0.008  & 0.67 & exploitative \\
-8  & 0.25 & 11.3 & 0.004  & 0.34 & exploitative \\
-9  & 0.29 & 10.0 & 0.002  & 0.17 & near-frozen \\
-10 & 0.32 & 9.0  & 0.001  & 0.08 & near-frozen \\
-\hline\toprule
-\end{tabular}
-\end{table}
 
 \rev{R1.1}\rev{R1.2}\textcolor{red}{Table~\ref{tab:q_constants} shows
 how $Q$ shapes the search. With a single qubit, the rotation bound is
@@ -818,6 +818,47 @@ filter criterion that needs no classifier training, so one run with
 host of Table~\ref{tab:impl_setup}, and 5.0\,min at the largest
 trained budget of 40 particles and 60 iterations.}
 
+\begin{table*}[!htbp]
+\centering
+\caption{Experimental environment and implementation settings.}
+\label{tab:impl_setup}
+\def\rc#1{\textcolor{red}{#1}}
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{l l l l}
+\hline\toprule
+\textbf{Block} & \textbf{Item} & \textbf{Setting} & \textbf{Scope} \\
+\hline\toprule
+Environment & Platform & Windows 10, CPU only & All runs \\
+ & Framework & TensorFlow 2.20.0, Python 3.13.5 & Training and inference \\
+ & Determinism & \texttt{TF\_DETERMINISTIC\_OPS=1} & Seed-controlled \\
+\midrule
+Data & \rev{R1.5}\rc{Subsample} & \rc{80k flows, class-balanced} & \rc{Fixed seed 42} \\
+ & \rev{R1.5}\rc{Split} & \rc{Blocked temporal, 70/15/15} & \rc{500-flow blocks} \\
+ & Window length & $T=10$ flows & All regimes \\
+ & \rev{R1.11}\rc{Batch size} & \rc{32 centralized, 64 federated} & \rc{All regimes} \\
+\midrule
+Training & \rev{R1.11}\rc{Optimizer} & \rc{SGD, Nesterov momentum 0.9} & \rc{Centralized and federated} \\
+ & Learning rate & $10^{-3}$ & Centralized and federated \\
+ & \rev{R1.5}\rc{Stopping} & \rc{At most 35 epochs, patience 6} & \rc{Validation loss} \\
+ & \rev{R1.11}\rc{KL weight} & \rc{$\gamma=10^{-3}$} & \rc{Eq.~\eqref{eq:total_loss}} \\
+\midrule
+Model & \rev{R1.11}\rc{Encoder} & \rc{LSTM 256, 2-head attention, LSTM 128} & \rc{Dropout 0.2} \\
+ & \rev{R1.11}\rc{Latent size} & \rc{64} & \rc{LSTM(+VAE) variants} \\
+\midrule
+QPSO & Particles, iterations & $P=20$, $I=30$ & Default budget \\
+ & \rev{R1.3}\rc{Budget sensitivity} & \rc{$P=20$ or 40, $I=30$ or 60} & \rc{Five seeds} \\
+ & \rev{R1.5}\rc{Selected features} & \rc{$k=40$, fitness on $\mathcal{D}_{\rm tr}$} & \rc{All selectors} \\
+ & \rev{R1.2}\rc{Register size} & \rc{$Q=1$ to 8} & \rc{Ten seeds each} \\
+\midrule
+Federated & \rev{R2.2}\rc{Clients} & \rc{$K=5$; 10 and 20 for sensitivity} & \rc{Full participation} \\
+ & \rev{R1.9}\rc{Rounds, local epochs} & \rc{$R=30$, $E=2$} & \rc{All FL experiments} \\
+ & \rev{R1.8}\rc{Mask construction} & \rc{Proxy (default), vote, central} & \rc{Shared by all clients} \\
+ & Aggregators & FedAvg, SCAFFOLD, FLAME & Same partitions \\
+\hline\toprule
+\end{tabular}
+\end{table*}
+
 \rev{R1.5}\textcolor{red}{Table~\ref{tab:data_usage} lists the data
 used by every step that fits, selects, or stops. The
 QPSO fitness in Eq.~\eqref{eq:qpsobj} is a label-based filter criterion
@@ -865,9 +906,8 @@ FL per-client metrics & Client-matched windows of $\mathcal{D}_{\rm te}$, final 
 
 \rev{R1.2}\textcolor{red}{The register size $Q^{*}$ is the value in
 $Q=1$ to $8$ with the highest mean validation F1 over ten seeds, with
-ties going to the smaller $Q$; this rule selects $Q^{*}=6$. On the test set,
-Table~\ref{tab:qubit_ablation_improved_robust} shows no significant
-effect of $Q$ within this range, so $Q^{*}$ is a
+ties going to the smaller $Q$; this rule selects $Q^{*}=6$. As Section~\ref{subsec:obj1_cyberworm_perf}
+shows, $Q$ has no significant effect on test F1 within this range, so $Q^{*}$ is a
 reproducible default rather than an optimum.}
 
 \rev{R1.3}\textcolor{red}{Two experiments test whether the default
@@ -995,47 +1035,6 @@ constrained~\cite{amadi2026lightweight}.
 %% -----------------------------------------------------
 Centralized training establishes the upper-bound detection
 performance under full data visibility. 
-\begin{table*}[!htbp]
-\centering
-\caption{Experimental environment and implementation settings.}
-\label{tab:impl_setup}
-\def\rc#1{\textcolor{red}{#1}}
-\setlength{\tabcolsep}{8pt}
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{l l l l}
-\hline\toprule
-\textbf{Block} & \textbf{Item} & \textbf{Setting} & \textbf{Scope} \\
-\hline\toprule
-Environment & Platform & Windows 10, CPU only & All runs \\
- & Framework & TensorFlow 2.20.0, Python 3.13.5 & Training and inference \\
- & Determinism & \texttt{TF\_DETERMINISTIC\_OPS=1} & Seed-controlled \\
-\midrule
-Data & \rev{R1.5}\rc{Subsample} & \rc{80k flows, class-balanced} & \rc{Fixed seed 42} \\
- & \rev{R1.5}\rc{Split} & \rc{Blocked temporal, 70/15/15} & \rc{500-flow blocks} \\
- & Window length & $T=10$ flows & All regimes \\
- & \rev{R1.11}\rc{Batch size} & \rc{32 centralized, 64 federated} & \rc{All regimes} \\
-\midrule
-Training & \rev{R1.11}\rc{Optimizer} & \rc{SGD, Nesterov momentum 0.9} & \rc{Centralized and federated} \\
- & Learning rate & $10^{-3}$ & Centralized and federated \\
- & \rev{R1.5}\rc{Stopping} & \rc{At most 35 epochs, patience 6} & \rc{Validation loss} \\
- & \rev{R1.11}\rc{KL weight} & \rc{$\gamma=10^{-3}$} & \rc{Eq.~\eqref{eq:total_loss}} \\
-\midrule
-Model & \rev{R1.11}\rc{Encoder} & \rc{LSTM 256, 2-head attention, LSTM 128} & \rc{Dropout 0.2} \\
- & \rev{R1.11}\rc{Latent size} & \rc{64} & \rc{LSTM(+VAE) variants} \\
-\midrule
-QPSO & Particles, iterations & $P=20$, $I=30$ & Default budget \\
- & \rev{R1.3}\rc{Budget sensitivity} & \rc{$P=20$ or 40, $I=30$ or 60} & \rc{Five seeds} \\
- & \rev{R1.5}\rc{Selected features} & \rc{$k=40$, fitness on $\mathcal{D}_{\rm tr}$} & \rc{All selectors} \\
- & \rev{R1.2}\rc{Register size} & \rc{$Q=1$ to 8} & \rc{Ten seeds each} \\
-\midrule
-Federated & \rev{R2.2}\rc{Clients} & \rc{$K=5$; 10 and 20 for sensitivity} & \rc{Full participation} \\
- & \rev{R1.9}\rc{Rounds, local epochs} & \rc{$R=30$, $E=2$} & \rc{All FL experiments} \\
- & \rev{R1.8}\rc{Mask construction} & \rc{Proxy (default), vote, central} & \rc{Shared by all clients} \\
- & Aggregators & FedAvg, SCAFFOLD, FLAME & Same partitions \\
-\hline\toprule
-\end{tabular}
-\end{table*}
-
 Three configurations are evaluated with the same optimizer and
 stopping rule: S-CIDS, the conference baseline~\cite{ajakweconquest};
 OS-CIDS, a static IDS with variance-based feature selection; and
@@ -1156,28 +1155,6 @@ FedAvg:
 \,\theta_k^{(r+1)}.
 \label{eq:fedavg}
 \end{equation}
-
-\begin{table*}[!t]
-\centering
-\caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{Centralized detection over ten seeds, with Wilcoxon p-values against CONQUEST. \textsuperscript{\textdagger}Conference result~\cite{ajakweconquest}, not directly comparable.}}
-\label{tab:cyberworm_high_impact}
-\color{red}
-\setlength{\tabcolsep}{3pt}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{lccccccccc}
-\hline\toprule
-\textbf{Pipeline} & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & $p$ (F1) & $p$ (MD) & Selection (s) \\
-\hline\toprule
-S-CIDS~\cite{ajakweconquest}\textsuperscript{\textdagger} & 85.14 & 80.62 & -- & -- & -- & -- & -- & -- & -- \\
-\midrule
-OS-CIDS & 96.95$\pm$0.39 & 96.96$\pm$0.39 & 0.9944$\pm$0.0011 & 0.0245$\pm$0.0025 & 1.43$\pm$0.26 & 4.21$\pm$0.76 & 0.322 & 0.004 & 0.0 \\
-Var.+context & 96.44$\pm$0.11 & 96.45$\pm$0.11 & 0.9925$\pm$0.0007 & 0.0291$\pm$0.0015 & 1.06$\pm$0.20 & 5.36$\pm$0.30 & 0.002 & 0.002 & 0.1 \\
-QPSO, no context & 95.90$\pm$0.83 & 95.90$\pm$0.83 & 0.9879$\pm$0.0030 & 0.0329$\pm$0.0060 & 4.95$\pm$1.80 & 3.49$\pm$1.00 & 0.004 & 0.824 & 68.0 \\
-PSO+context & 96.98$\pm$0.40 & 96.99$\pm$0.39 & 0.9918$\pm$0.0018 & 0.0254$\pm$0.0031 & 2.23$\pm$0.37 & 3.58$\pm$0.73 & 0.232 & 0.492 & 75.6 \\
-\textbf{CONQUEST (QCIDS)} & \textbf{97.13$\pm$0.31} & \textbf{97.13$\pm$0.31} & \textbf{0.9924$\pm$0.0016} & \textbf{0.0246$\pm$0.0028} & \textbf{2.24$\pm$0.58} & \textbf{3.33$\pm$0.44} & -- & -- & 105.9 \\
-\hline\toprule
-\end{tabular}}
-\end{table*}
 
 
 Only model parameters are transmitted; no raw traffic, labels,
@@ -1345,13 +1322,28 @@ and 58.2\% attack windows, and averaged over ten seeds; accuracy and
 weighted F1 nearly coincide because both classes are well
 represented.}
 
-\begin{figure}[!t]
-    \centering
-    \includegraphics[width=\linewidth]{images/cm_conquest_vs_os.png}
-    \caption{\rev{R1.6}\textcolor{red}{Row-normalized confusion matrices of
-    OS-CIDS and CONQUEST on the test set, averaged over ten seeds.}}
-    \label{fig:baseline_cm}
-\end{figure}
+\begin{table*}[!t]
+\centering
+\caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{Centralized detection over ten seeds, with Wilcoxon p-values against CONQUEST. \textsuperscript{\textdagger}Conference result~\cite{ajakweconquest}, not directly comparable.}}
+\label{tab:cyberworm_high_impact}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lccccccccc}
+\hline\toprule
+\textbf{Pipeline} & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & $p$ (F1) & $p$ (MD) & Selection (s) \\
+\hline\toprule
+S-CIDS~\cite{ajakweconquest}\textsuperscript{\textdagger} & 85.14 & 80.62 & -- & -- & -- & -- & -- & -- & -- \\
+\midrule
+OS-CIDS & 96.95$\pm$0.39 & 96.96$\pm$0.39 & 0.9944$\pm$0.0011 & 0.0245$\pm$0.0025 & 1.43$\pm$0.26 & 4.21$\pm$0.76 & 0.322 & 0.004 & 0.0 \\
+Var.+context & 96.44$\pm$0.11 & 96.45$\pm$0.11 & 0.9925$\pm$0.0007 & 0.0291$\pm$0.0015 & 1.06$\pm$0.20 & 5.36$\pm$0.30 & 0.002 & 0.002 & 0.1 \\
+QPSO, no context & 95.90$\pm$0.83 & 95.90$\pm$0.83 & 0.9879$\pm$0.0030 & 0.0329$\pm$0.0060 & 4.95$\pm$1.80 & 3.49$\pm$1.00 & 0.004 & 0.824 & 68.0 \\
+PSO+context & 96.98$\pm$0.40 & 96.99$\pm$0.39 & 0.9918$\pm$0.0018 & 0.0254$\pm$0.0031 & 2.23$\pm$0.37 & 3.58$\pm$0.73 & 0.232 & 0.492 & 75.6 \\
+\textbf{CONQUEST (QCIDS)} & \textbf{97.13$\pm$0.31} & \textbf{97.13$\pm$0.31} & \textbf{0.9924$\pm$0.0016} & \textbf{0.0246$\pm$0.0028} & \textbf{2.24$\pm$0.58} & \textbf{3.33$\pm$0.44} & -- & -- & 105.9 \\
+\hline\toprule
+\end{tabular}}
+\end{table*}
+
 \textbf{S-CIDS}, the conference baseline~\cite{ajakweconquest},
 achieves 85.14\% accuracy and 80.62\% F1, and the 4.5-point gap
 between its recall and F1 indicates unstable class separation. In
@@ -1363,38 +1355,6 @@ obtained with a random split of pooled data and is quoted for
 reference only; it is not comparable with the leakage-free results
 below.}
 
-\begin{figure}[!t]
-    \centering
-    \includegraphics[width=\linewidth]{images/tradeoff_far_md.png}
-    \caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{False-alarm rate versus
-    missed-attack rate of the five centralized pipelines. Dots:
-    individual seeds; diamonds: means.}}
-    \label{fig:radar_centralized}
-\end{figure}
-
-\begin{table*}[!t]
-\centering
-\caption{\rev{R1.2}\textcolor{red}{Detection versus QPSO register size over ten seeds; last column: Holm-adjusted p-value against Q = 6.}}
-\label{tab:qubit_ablation_improved_robust}
-\color{red}
-\setlength{\tabcolsep}{3.5pt}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{ccccccccc}
-\hline\toprule
-$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p$ vs.\ $Q{=}6$ \\
-\hline\toprule
-1 & 97.20$\pm$0.23 & 97.20$\pm$0.22 & 0.9926$\pm$0.0009 & 0.0243$\pm$0.0024 & 1.90$\pm$0.29 & 3.45$\pm$0.53 & 95.27$\pm$0.74 & 1.00 \\
-2 & 97.08$\pm$0.17 & 97.09$\pm$0.17 & 0.9918$\pm$0.0011 & 0.0253$\pm$0.0019 & 2.19$\pm$0.58 & 3.44$\pm$0.55 & 95.00$\pm$1.58 & 1.00 \\
-3 & 96.96$\pm$0.37 & 96.96$\pm$0.37 & 0.9916$\pm$0.0016 & 0.0263$\pm$0.0026 & 2.10$\pm$0.52 & 3.72$\pm$0.85 & 95.56$\pm$1.18 & 0.59 \\
-4 & 96.94$\pm$0.49 & 96.95$\pm$0.49 & 0.9917$\pm$0.0021 & 0.0268$\pm$0.0039 & 1.93$\pm$0.29 & 3.87$\pm$0.81 & 95.38$\pm$1.58 & 1.00 \\
-5 & 97.05$\pm$0.42 & 97.06$\pm$0.41 & 0.9925$\pm$0.0012 & 0.0249$\pm$0.0026 & 1.92$\pm$0.34 & 3.69$\pm$0.86 & 95.70$\pm$1.24 & 1.00 \\
-\textbf{6}$^{*}$ & \textbf{97.13$\pm$0.31} & \textbf{97.13$\pm$0.31} & \textbf{0.9924$\pm$0.0016} & \textbf{0.0246$\pm$0.0028} & \textbf{2.24$\pm$0.58} & \textbf{3.33$\pm$0.44} & \textbf{96.00$\pm$1.04} & -- \\
-7 & 97.17$\pm$0.32 & 97.17$\pm$0.32 & 0.9919$\pm$0.0012 & 0.0248$\pm$0.0024 & 2.05$\pm$0.33 & 3.39$\pm$0.69 & 95.75$\pm$0.84 & 1.00 \\
-8 & 97.07$\pm$0.26 & 97.08$\pm$0.26 & 0.9918$\pm$0.0008 & 0.0249$\pm$0.0013 & 2.03$\pm$0.34 & 3.57$\pm$0.52 & 95.59$\pm$0.95 & 1.00 \\
-\hline\toprule
-\end{tabular}}
-\end{table*}
-
 
 
 \rev{R1.6}\rev{R2.3}\textcolor{red}{\textbf{Overall comparison.}
@@ -1405,11 +1365,29 @@ classical PSO with context features, 96.99\% with $p=0.23$. The
 pipelines differ instead in the type of error they make. CONQUEST
 misses significantly fewer attacks than OS-CIDS, 3.33\% versus 4.21\%
 with $p=0.004$, but raises significantly more false alarms, 2.24\%
-versus 1.43\% with $p=0.002$. All pipelines except QPSO without
+versus 1.43\% with $p=0.002$, as the confusion matrices in
+Fig.~\ref{fig:baseline_cm} show. All pipelines except QPSO without
 context features have nearly identical AUC, 0.992--0.994, and thus
 rank attacks above benign traffic equally well.
 Fig.~\ref{fig:radar_centralized} shows the resulting trade-off between
 false alarms and missed attacks.}
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=\linewidth]{images/cm_conquest_vs_os.png}
+    \caption{\rev{R1.6}\textcolor{red}{Row-normalized confusion matrices of
+    OS-CIDS and CONQUEST on the test set, averaged over ten seeds.}}
+    \label{fig:baseline_cm}
+\end{figure}
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=\linewidth]{images/tradeoff_far_md.png}
+    \caption{\rev{R1.6}\rev{R2.3}\textcolor{red}{False-alarm rate versus
+    missed-attack rate of the five centralized pipelines. Dots:
+    individual seeds; diamonds: means.}}
+    \label{fig:radar_centralized}
+\end{figure}
 
 \rev{R1.6}\textcolor{red}{\textbf{Context features versus QPSO.} The
 factorial ablation in Table~\ref{tab:centralized_compare} separates
@@ -1426,6 +1404,63 @@ context (both $p\le0.004$), and their interaction, $+1.74$\,pp
 comes from combining context-aware representation with label-aware
 selection, which keeps eight context features alongside complementary
 static features, as listed in Table~\ref{tab:selected_features}.}
+
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.6}\textcolor{red}{Factorial ablation of context features and QPSO over ten seeds.}}
+\label{tab:centralized_compare}
+\color{red}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcc}
+\hline\toprule
+F1 / FAR / MD (\%) & \textbf{Variance ranking} & \textbf{QPSO ($Q^{*}{=}6$)} \\
+\hline\toprule
+Static features only & 96.96 / 1.43 / 4.21 & 95.90 / 4.95 / 3.49 \\
+Static + context & 96.45 / 1.06 / 5.36 & \textbf{97.13} / 2.24 / \textbf{3.33} \\
+\midrule
+Effect of context & -0.51\,pp ($p{=}0.014$) & +1.23\,pp ($p{=}0.004$) \\
+Effect of QPSO & \multicolumn{2}{l}{static: -1.07\,pp ($p{=}0.002$);\ \ with context: +0.68\,pp ($p{=}0.002$)} \\
+Interaction & \multicolumn{2}{l}{+1.74\,pp ($p{=}0.002$)} \\
+\hline\toprule
+\end{tabular}
+\end{table}
+
+\begin{table}[!t]
+\centering
+\scriptsize
+\caption{\rev{R1.4}\textcolor{red}{Deployed consensus mask at Q = 6; context features in italics.}}
+\label{tab:selected_features}
+\color{red}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular}{p{2.75cm}c p{2.75cm}c}
+\hline\toprule
+Feature & Freq. & Feature & Freq. \\
+\hline\toprule
+\textit{syn\_frac\_src\_60} & 1.0 & Fwd URG Flags & 0.6 \\
+Fwd Packets/\allowbreak s & 0.9 & Packet Length Std & 0.6 \\
+\textit{bytes\_rate\_src\_60} & 0.9 & SYN Flag Count & 0.6 \\
+Fwd Packet Length Min & 0.8 & RST Flag Count & 0.6 \\
+Fwd Header Length & 0.8 & PSH Flag Count & 0.6 \\
+Average Packet Size & 0.8 & ACK Flag Count & 0.6 \\
+Protocol & 0.7 & URG Flag Count & 0.6 \\
+Fwd Packet Length Std & 0.7 & Fwd Segment Size Avg & 0.6 \\
+Bwd Packet Length Min & 0.7 & Bwd Packet/\allowbreak Bulk Avg & 0.6 \\
+Flow IAT Max & 0.7 & Bwd Bulk Rate Avg & 0.6 \\
+Bwd IAT Max & 0.7 & Subflow Bwd Bytes & 0.6 \\
+Bwd IAT Min & 0.7 & \textit{n\_flows\_src\_10} & 0.6 \\
+Bwd Segment Size Avg & 0.7 & \textit{pkt\_rate\_src\_10} & 0.6 \\
+\textit{n\_flows\_src\_60} & 0.7 & \textit{bytes\_rate\_src\_10} & 0.6 \\
+\textit{n\_distinct\_dport\_10} & 0.7 & \textit{n\_proto\_switch\_60} & 0.6 \\
+Total Length of Fwd Packet & 0.6 & Total Length of Bwd Packet & 0.5 \\
+Bwd Packet Length Max & 0.6 & Fwd IAT Mean & 0.5 \\
+Flow Packets/\allowbreak s & 0.6 & CWR Flag Count & 0.5 \\
+Flow IAT Std & 0.6 & ECE Flag Count & 0.5 \\
+Fwd IAT Std & 0.6 & Active Max & 0.5 \\
+\hline\toprule
+\end{tabular}
+\end{table}
 
 \rev{R2.3}\textcolor{red}{\textbf{Quantum-inspired versus classical
 search.} At an equal budget of 620 fitness evaluations, classical
@@ -1510,6 +1545,29 @@ default selected on validation data, not a stability optimum. The two settings b
 tested range, evaluated with five seeds each, fall in the same band,
 with test F1 of 97.30\% at $Q=9$ and 97.25\% at $Q=10$.}
 
+\begin{table*}[!t]
+\centering
+\caption{\rev{R1.2}\textcolor{red}{Detection versus QPSO register size over ten seeds; last column: Holm-adjusted p-value against Q = 6.}}
+\label{tab:qubit_ablation_improved_robust}
+\color{red}
+\setlength{\tabcolsep}{3.5pt}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{ccccccccc}
+\hline\toprule
+$Q$ & Acc (\%) & F1 (\%) & AUC & MSE & FAR (\%) & MD (\%) & Val.\ F1 (\%) & $p$ vs.\ $Q{=}6$ \\
+\hline\toprule
+1 & 97.20$\pm$0.23 & 97.20$\pm$0.22 & 0.9926$\pm$0.0009 & 0.0243$\pm$0.0024 & 1.90$\pm$0.29 & 3.45$\pm$0.53 & 95.27$\pm$0.74 & 1.00 \\
+2 & 97.08$\pm$0.17 & 97.09$\pm$0.17 & 0.9918$\pm$0.0011 & 0.0253$\pm$0.0019 & 2.19$\pm$0.58 & 3.44$\pm$0.55 & 95.00$\pm$1.58 & 1.00 \\
+3 & 96.96$\pm$0.37 & 96.96$\pm$0.37 & 0.9916$\pm$0.0016 & 0.0263$\pm$0.0026 & 2.10$\pm$0.52 & 3.72$\pm$0.85 & 95.56$\pm$1.18 & 0.59 \\
+4 & 96.94$\pm$0.49 & 96.95$\pm$0.49 & 0.9917$\pm$0.0021 & 0.0268$\pm$0.0039 & 1.93$\pm$0.29 & 3.87$\pm$0.81 & 95.38$\pm$1.58 & 1.00 \\
+5 & 97.05$\pm$0.42 & 97.06$\pm$0.41 & 0.9925$\pm$0.0012 & 0.0249$\pm$0.0026 & 1.92$\pm$0.34 & 3.69$\pm$0.86 & 95.70$\pm$1.24 & 1.00 \\
+\textbf{6}$^{*}$ & \textbf{97.13$\pm$0.31} & \textbf{97.13$\pm$0.31} & \textbf{0.9924$\pm$0.0016} & \textbf{0.0246$\pm$0.0028} & \textbf{2.24$\pm$0.58} & \textbf{3.33$\pm$0.44} & \textbf{96.00$\pm$1.04} & -- \\
+7 & 97.17$\pm$0.32 & 97.17$\pm$0.32 & 0.9919$\pm$0.0012 & 0.0248$\pm$0.0024 & 2.05$\pm$0.33 & 3.39$\pm$0.69 & 95.75$\pm$0.84 & 1.00 \\
+8 & 97.07$\pm$0.26 & 97.08$\pm$0.26 & 0.9918$\pm$0.0008 & 0.0249$\pm$0.0013 & 2.03$\pm$0.34 & 3.57$\pm$0.52 & 95.59$\pm$0.95 & 1.00 \\
+\hline\toprule
+\end{tabular}}
+\end{table*}
+
 \rev{R1.2}\textcolor{red}{Together with Fig.~\ref{fig:qpso_dynamics},
 these results give a consistent picture. $Q$ strongly changes how the
 swarm searches, but with 40 of 86 features, including 17 informative
@@ -1551,6 +1609,13 @@ $40\times60$ with five seeds confirms this: test F1 ranges from
 default budget of $20\times30$ is retained because it is sufficient
 for detection at the lowest cost.}
 
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.9\linewidth]{images/budget_sensitivity.png}
+\caption{\rev{R1.3}\textcolor{red}{Search-budget sensitivity: (a)~best fitness of the search alone; (b)~test F1 of trained detectors.}}
+\label{fig:budget}
+\end{figure*}
+
 \begin{table}[!t]
 \centering
 \scriptsize
@@ -1590,13 +1655,6 @@ $Q$ & $P{\times}I$ & Evals & Fitness & Test F1 (\%) & Val.\ F1 (\%) \\
 \end{tabular}
 \end{table}
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.9\linewidth]{images/budget_sensitivity.png}
-\caption{\rev{R1.3}\textcolor{red}{Search-budget sensitivity: (a)~best fitness of the search alone; (b)~test F1 of trained detectors.}}
-\label{fig:budget}
-\end{figure*}
-
 \rev{R1.4}\textcolor{red}{\textbf{Selected features and stability.}
 Every mask contains exactly 40 of the 86 features, or 47\%, because $k$
 is fixed for all selectors; QPSO determines which features are kept,
@@ -1617,6 +1675,13 @@ Seed-to-seed variation in the mask therefore does not translate into
 variation in detection, which stays at $97.13\pm0.31\%$ F1 at
 $Q^{*}=6$.}
 
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\linewidth]{images/feature_selection_heatmap.png}
+\caption{\rev{R1.4}\textcolor{red}{Selection frequency of each feature for every register size; dots mark the consensus mask.}}
+\label{fig:feature_heatmap}
+\end{figure*}
+
 \rev{R1.4}\textcolor{red}{Table~\ref{tab:selected_features} lists the
 deployed consensus mask at $Q^{*}=6$. Every feature in it is selected
 in at least half of the ten runs, 8 of the 40 are context features,
@@ -1631,49 +1696,6 @@ point does exist: with $k=20$, or 23\% of the features, QPSO reaches
 $96.51\pm0.67\%$ F1 over ten seeds, 0.62\,pp below $k=40$, whereas
 $k=10$ drops to $93.82\pm1.05\%$. $k=40$ is kept as the default, and
 $k=20$ is reported for deployments that require fewer features.}
-
-\begin{table}[!t]
-\centering
-\scriptsize
-\caption{\rev{R1.4}\textcolor{red}{Deployed consensus mask at Q = 6; context features in italics.}}
-\label{tab:selected_features}
-\color{red}
-\setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.02}
-\begin{tabular}{p{2.75cm}c p{2.75cm}c}
-\hline\toprule
-Feature & Freq. & Feature & Freq. \\
-\hline\toprule
-\textit{syn\_frac\_src\_60} & 1.0 & Fwd URG Flags & 0.6 \\
-Fwd Packets/\allowbreak s & 0.9 & Packet Length Std & 0.6 \\
-\textit{bytes\_rate\_src\_60} & 0.9 & SYN Flag Count & 0.6 \\
-Fwd Packet Length Min & 0.8 & RST Flag Count & 0.6 \\
-Fwd Header Length & 0.8 & PSH Flag Count & 0.6 \\
-Average Packet Size & 0.8 & ACK Flag Count & 0.6 \\
-Protocol & 0.7 & URG Flag Count & 0.6 \\
-Fwd Packet Length Std & 0.7 & Fwd Segment Size Avg & 0.6 \\
-Bwd Packet Length Min & 0.7 & Bwd Packet/\allowbreak Bulk Avg & 0.6 \\
-Flow IAT Max & 0.7 & Bwd Bulk Rate Avg & 0.6 \\
-Bwd IAT Max & 0.7 & Subflow Bwd Bytes & 0.6 \\
-Bwd IAT Min & 0.7 & \textit{n\_flows\_src\_10} & 0.6 \\
-Bwd Segment Size Avg & 0.7 & \textit{pkt\_rate\_src\_10} & 0.6 \\
-\textit{n\_flows\_src\_60} & 0.7 & \textit{bytes\_rate\_src\_10} & 0.6 \\
-\textit{n\_distinct\_dport\_10} & 0.7 & \textit{n\_proto\_switch\_60} & 0.6 \\
-Total Length of Fwd Packet & 0.6 & Total Length of Bwd Packet & 0.5 \\
-Bwd Packet Length Max & 0.6 & Fwd IAT Mean & 0.5 \\
-Flow Packets/\allowbreak s & 0.6 & CWR Flag Count & 0.5 \\
-Flow IAT Std & 0.6 & ECE Flag Count & 0.5 \\
-Fwd IAT Std & 0.6 & Active Max & 0.5 \\
-\hline\toprule
-\end{tabular}
-\end{table}
-
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=\linewidth]{images/feature_selection_heatmap.png}
-\caption{\rev{R1.4}\textcolor{red}{Selection frequency of each feature for every register size; dots mark the consensus mask.}}
-\label{fig:feature_heatmap}
-\end{figure*}
 
 % (Old single-run confusion-matrix and radar paragraph removed; see the overall comparison above.)
 
@@ -1707,6 +1729,13 @@ training-time cost of 1.8\,min per run on the shared host, or
 0.4\,min at $k=10$, incurred once before training; the consensus mask
 requires ten such runs.}
 
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{images/deployment_cost.png}
+\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost: (a)~latency per window, (b)~batched throughput, and (c)~peak inference memory.}}
+\label{fig:deploy_cost}
+\end{figure*}
+
 \begin{table*}[!t]
 \centering
 \caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost measured in isolation; medians over seeds, with the number of seeds in parentheses.}}
@@ -1731,35 +1760,7 @@ CONQUEST, $k{=}10$ (3) & 3.09 & 4.33 & 0.257 & 3.37 & 16.5 & 645 & 758k & 22.8 \
 \end{tabular}
 \end{table*}
 
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.95\linewidth]{images/deployment_cost.png}
-\caption{\rev{R1.10}\rev{R2.4}\textcolor{red}{Deployment cost: (a)~latency per window, (b)~batched throughput, and (c)~peak inference memory.}}
-\label{fig:deploy_cost}
-\end{figure*}
-
 % (Old Fig. 'Picture Latency' with 3-seed metrics vs Q removed; superseded by Fig.~\ref{fig:q_boxplot}.)
-
-\begin{table}[!t]
-\centering
-\scriptsize
-\caption{\rev{R1.6}\textcolor{red}{Factorial ablation of context features and QPSO over ten seeds.}}
-\label{tab:centralized_compare}
-\color{red}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{lcc}
-\hline\toprule
-F1 / FAR / MD (\%) & \textbf{Variance ranking} & \textbf{QPSO ($Q^{*}{=}6$)} \\
-\hline\toprule
-Static features only & 96.96 / 1.43 / 4.21 & 95.90 / 4.95 / 3.49 \\
-Static + context & 96.45 / 1.06 / 5.36 & \textbf{97.13} / 2.24 / \textbf{3.33} \\
-\midrule
-Effect of context & -0.51\,pp ($p{=}0.014$) & +1.23\,pp ($p{=}0.004$) \\
-Effect of QPSO & \multicolumn{2}{l}{static: -1.07\,pp ($p{=}0.002$);\ \ with context: +0.68\,pp ($p{=}0.002$)} \\
-Interaction & \multicolumn{2}{l}{+1.74\,pp ($p{=}0.002$)} \\
-\hline\toprule
-\end{tabular}
-\end{table}
 
 %% ----------------------------------------------------------
 \subsection{Federated Robustness Under Heterogeneous Mission Deployments}
@@ -1769,6 +1770,58 @@ Fig.~\ref{fig:hfl-multianalysis} and
 Table~\ref{tab:fl_performance_extended} report whether CONQUEST
 remains viable when training data are distributed across
 heterogeneous clients.
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/fl_results.png}
+    \caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST: (a)~global F1 per round, (b)~per-client F1, (c)~number of clients, and (d)~mask construction.}}
+    \label{fig:hfl-multianalysis}
+\end{figure*}
+
+\begin{table*}[!t]
+\centering
+\caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST under one configuration, averaged over three seeds.}}
+\label{tab:fl_performance_extended}
+\color{red}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{lcccccc}
+\hline\toprule
+\textbf{Setting} & \textbf{Global F1 (\%)} & \textbf{AUC} & \textbf{Min-F1 (\%)} & \textbf{Dispersion (pp)} & \textbf{Max MD (\%)} & \textbf{$R_{99}$} \\
+\hline\toprule
+\multicolumn{7}{l}{\textit{Heterogeneity (FedAvg, proxy mask, $K{=}5$)}} \\
+IID & 96.77$\pm$0.10 & 0.9905 & 96.61 & 0.59 & 4.73 & 11.3 \\
+Label skew & 86.59$\pm$6.95 & 0.9863 & 83.50 & 6.37 & 44.52 & 5.0 \\
+Quantity skew & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+Dirichlet $\alpha{=}0.1$ & 96.68$\pm$0.37 & 0.9906 & 97.63 & 0.54 & 7.55 & 7.7 \\
+Dirichlet $\alpha{=}0.3$ & 96.34$\pm$0.60 & 0.9905 & 97.22 & 0.72 & 6.87 & 9.0 \\
+Dirichlet $\alpha{=}0.5$ & 96.49$\pm$0.38 & 0.9900 & 96.61 & 0.84 & 4.74 & 7.7 \\
+Dirichlet $\alpha{=}1.0$ & 96.94$\pm$0.13 & 0.9907 & 96.56 & 0.82 & 5.00 & 10.0 \\
+\midrule
+\multicolumn{7}{l}{\textit{Aggregator (quantity skew, $K{=}5$)}} \\
+FedAvg & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+SCAFFOLD & 96.56$\pm$0.45 & 0.9887 & 96.28 & 0.71 & 5.27 & 13.7 \\
+FLAME & 96.77$\pm$0.10 & 0.9893 & 96.48 & 0.64 & 4.69 & 16.3 \\
+\midrule
+\multicolumn{7}{l}{\textit{Number of clients (quantity skew, FedAvg)}} \\
+$K{=}5$ & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+$K{=}10$ & 96.71$\pm$0.06 & 0.9903 & 97.10 & 0.60 & 3.73 & 10.7 \\
+$K{=}20$ & 96.25$\pm$0.05 & 0.9889 & 94.65 & 1.03 & 8.03 & 16.0 \\
+\midrule
+\multicolumn{7}{l}{\textit{Mask construction (quantity skew)}} \\
+Proxy & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
+Vote & 97.17$\pm$0.21 & 0.9917 & 96.82 & 0.56 & 3.82 & 7.3 \\
+Central (oracle) & 97.17$\pm$0.18 & 0.9921 & 97.07 & 0.50 & 3.62 & 8.0 \\
+\midrule
+\multicolumn{7}{l}{\textit{Mask construction (Dirichlet $\alpha{=}0.1$)}} \\
+Proxy & 96.68$\pm$0.37 & 0.9906 & 97.63 & 0.54 & 7.55 & 7.7 \\
+Vote & 96.60$\pm$0.32 & 0.9908 & 96.24 & 0.84 & 3.74 & 7.0 \\
+Central (oracle) & 97.06$\pm$0.61 & 0.9922 & 97.51 & 0.59 & 6.72 & 8.0 \\
+\midrule
+Centralized CONQUEST & 97.13 & 0.9924 & -- & -- & -- & -- \\
+\hline\toprule
+\end{tabular}
+\end{table*}
 
 \rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{All federated experiments
 use one configuration: 30 rounds, two local epochs, batch size 64,
@@ -1833,60 +1886,34 @@ training takes 169\,s per round on the shared CPU host, or 85\,min for
 the deployed detector is identical to the centralized one and has the
 same per-window latency.}
 
-\begin{figure*}[!t]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/fl_results.png}
-    \caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST: (a)~global F1 per round, (b)~per-client F1, (c)~number of clients, and (d)~mask construction.}}
-    \label{fig:hfl-multianalysis}
-\end{figure*}
-
-\begin{table*}[!t]
-\centering
-\caption{\rev{R1.8}\rev{R1.9}\rev{R2.2}\textcolor{red}{Federated CONQUEST under one configuration, averaged over three seeds.}}
-\label{tab:fl_performance_extended}
-\color{red}
-\setlength{\tabcolsep}{4pt}
-\renewcommand{\arraystretch}{1.05}
-\begin{tabular}{lcccccc}
-\hline\toprule
-\textbf{Setting} & \textbf{Global F1 (\%)} & \textbf{AUC} & \textbf{Min-F1 (\%)} & \textbf{Dispersion (pp)} & \textbf{Max MD (\%)} & \textbf{$R_{99}$} \\
-\hline\toprule
-\multicolumn{7}{l}{\textit{Heterogeneity (FedAvg, proxy mask, $K{=}5$)}} \\
-IID & 96.77$\pm$0.10 & 0.9905 & 96.61 & 0.59 & 4.73 & 11.3 \\
-Label skew & 86.59$\pm$6.95 & 0.9863 & 83.50 & 6.37 & 44.52 & 5.0 \\
-Quantity skew & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
-Dirichlet $\alpha{=}0.1$ & 96.68$\pm$0.37 & 0.9906 & 97.63 & 0.54 & 7.55 & 7.7 \\
-Dirichlet $\alpha{=}0.3$ & 96.34$\pm$0.60 & 0.9905 & 97.22 & 0.72 & 6.87 & 9.0 \\
-Dirichlet $\alpha{=}0.5$ & 96.49$\pm$0.38 & 0.9900 & 96.61 & 0.84 & 4.74 & 7.7 \\
-Dirichlet $\alpha{=}1.0$ & 96.94$\pm$0.13 & 0.9907 & 96.56 & 0.82 & 5.00 & 10.0 \\
-\midrule
-\multicolumn{7}{l}{\textit{Aggregator (quantity skew, $K{=}5$)}} \\
-FedAvg & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
-SCAFFOLD & 96.56$\pm$0.45 & 0.9887 & 96.28 & 0.71 & 5.27 & 13.7 \\
-FLAME & 96.77$\pm$0.10 & 0.9893 & 96.48 & 0.64 & 4.69 & 16.3 \\
-\midrule
-\multicolumn{7}{l}{\textit{Number of clients (quantity skew, FedAvg)}} \\
-$K{=}5$ & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
-$K{=}10$ & 96.71$\pm$0.06 & 0.9903 & 97.10 & 0.60 & 3.73 & 10.7 \\
-$K{=}20$ & 96.25$\pm$0.05 & 0.9889 & 94.65 & 1.03 & 8.03 & 16.0 \\
-\midrule
-\multicolumn{7}{l}{\textit{Mask construction (quantity skew)}} \\
-Proxy & 96.66$\pm$0.38 & 0.9914 & 96.37 & 0.66 & 4.35 & 7.3 \\
-Vote & 97.17$\pm$0.21 & 0.9917 & 96.82 & 0.56 & 3.82 & 7.3 \\
-Central (oracle) & 97.17$\pm$0.18 & 0.9921 & 97.07 & 0.50 & 3.62 & 8.0 \\
-\midrule
-\multicolumn{7}{l}{\textit{Mask construction (Dirichlet $\alpha{=}0.1$)}} \\
-Proxy & 96.68$\pm$0.37 & 0.9906 & 97.63 & 0.54 & 7.55 & 7.7 \\
-Vote & 96.60$\pm$0.32 & 0.9908 & 96.24 & 0.84 & 3.74 & 7.0 \\
-Central (oracle) & 97.06$\pm$0.61 & 0.9922 & 97.51 & 0.59 & 6.72 & 8.0 \\
-\midrule
-Centralized CONQUEST & 97.13 & 0.9924 & -- & -- & -- & -- \\
-\hline\toprule
-\end{tabular}
-\end{table*}
 
 
 
+%% ----------------------------------------------------------
+\subsection{Comparative Analysis with State-of-the-Art}
+\label{subsec:comparative_analysis}
+%% ----------------------------------------------------------
+
+Table~\ref{tab:comparative_analysis} positions CONQUEST against
+representative IDS and FL approaches. Because these methods are
+evaluated on different datasets, a direct accuracy comparison is not
+valid; the analysis instead contrasts deployment-oriented
+capabilities: feature-selection stability, federated robustness,
+worst-client reliability, and latency and memory compliance.
+Hybrid deep-learning detectors report high accuracy on their
+respective benchmarks: CNN--LSTM with
+attention~\cite{phalaagaehybrid} achieves up to 99.87\% on
+WIoTSN, and a transformer-based IIoT
+detector~\cite{yuadaptive} reaches 99.6\%/99.2\% Acc/F1 at
+10.8\,ms inference with 37.2M parameters.
+Optimization-enhanced pipelines~\cite{donkoloptimization,shrivashybrid}
+exceed 99\% on NSL-KDD and UNSW-NB15. These results are
+obtained under centralized assumptions with no evaluation of
+optimizer-capacity stability, heterogeneous client behavior,
+or deployment constraints. They establish performance
+ceilings on well-studied benchmarks but do not address the
+reproducibility, bounded overhead, or mission-edge feasibility
+requirements central to this work.
 
 \begin{table*}[!t]
 \centering
@@ -1922,32 +1949,6 @@ Centralized CONQUEST & 97.13 & 0.9924 & -- & -- & -- & -- \\
 \hline\toprule
 \end{tabular}
 \end{table*}
-
-%% ----------------------------------------------------------
-\subsection{Comparative Analysis with State-of-the-Art}
-\label{subsec:comparative_analysis}
-%% ----------------------------------------------------------
-
-Table~\ref{tab:comparative_analysis} positions CONQUEST against
-representative IDS and FL approaches. Because these methods are
-evaluated on different datasets, a direct accuracy comparison is not
-valid; the analysis instead contrasts deployment-oriented
-capabilities: feature-selection stability, federated robustness,
-worst-client reliability, and latency and memory compliance.
-Hybrid deep-learning detectors report high accuracy on their
-respective benchmarks: CNN--LSTM with
-attention~\cite{phalaagaehybrid} achieves up to 99.87\% on
-WIoTSN, and a transformer-based IIoT
-detector~\cite{yuadaptive} reaches 99.6\%/99.2\% Acc/F1 at
-10.8\,ms inference with 37.2M parameters.
-Optimization-enhanced pipelines~\cite{donkoloptimization,shrivashybrid}
-exceed 99\% on NSL-KDD and UNSW-NB15. These results are
-obtained under centralized assumptions with no evaluation of
-optimizer-capacity stability, heterogeneous client behavior,
-or deployment constraints. They establish performance
-ceilings on well-studied benchmarks but do not address the
-reproducibility, bounded overhead, or mission-edge feasibility
-requirements central to this work.
 
 FL-based systems~\cite{FRIHA202217,herlambangfederated}
 demonstrate that \rev{R2.1}\textcolor{red}{collaborative} detection is feasible
