@@ -452,7 +452,7 @@ inference latency does not depend on $Q$:
 \end{equation}
 Training is centralized or federated. In federated mode, $K$ clients
 with local datasets $\{\mathcal{D}_k\}_{k=1}^{K}$ train
-collaboratively with FedAvg:
+collaboratively with FedAvg~\cite{mcmahan2017fedavg}:
 \begin{equation}
 \theta^{(r+1)} = \sum_{k=1}^{K}
 \frac{|\mathcal{D}_k|}{\sum_{j=1}^{K}|\mathcal{D}_j|}
@@ -1246,8 +1246,8 @@ attacks makes them small and often single-class. Client-count
 sensitivity repeats the quantity-skew experiment with $K=5$, 10, and
 20.}
 
-\rev{R1.9}\textcolor{red}{SCAFFOLD follows option~II of its original
-formulation. Server and client control variates $\mathbf{c}$ and
+\rev{R1.9}\textcolor{red}{SCAFFOLD~\cite{karimireddy2020scaffold} follows
+option~II of its original formulation. Server and client control variates $\mathbf{c}$ and
 $\mathbf{c}_k$, initialized to zero, correct every local gradient by
 $\mathbf{c}-\mathbf{c}_k$, and after local training
 $\mathbf{c}_k^{+}=\mathbf{c}_k-\mathbf{c}+(\theta^{(r)}-
@@ -1255,8 +1255,9 @@ $\mathbf{c}_k^{+}=\mathbf{c}_k-\mathbf{c}+(\theta^{(r)}-
 of local steps. Because local updates use momentum $\mu=0.9$, the
 effective step size $\eta_{\rm eff}=\eta/(1-\mu)$ is used; with the
 raw $\eta$, the control variates are overestimated tenfold and
-training diverges. FLAME clusters the client updates with HDBSCAN on
-pairwise cosine distances, with minimum cluster size
+training diverges. FLAME~\cite{nguyen2022flame} clusters the client
+updates with HDBSCAN, a density-based hierarchical clustering
+method~\cite{campello2013hdbscan}, on pairwise cosine distances, with minimum cluster size
 $\lfloor K/2\rfloor+1$, and admits the largest cluster. It clips the
 admitted updates to the median $\ell_2$ norm of all updates, averages
 them, and adds Gaussian noise with standard deviation $10^{-3}$ times
