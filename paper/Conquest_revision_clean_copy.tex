@@ -834,7 +834,7 @@ Data & Subsample & 80k flows, class-balanced & Fixed seed 42 \\
 Training & Optimizer & SGD, Nesterov momentum 0.9 & Centralized and federated \\
  & Learning rate & $10^{-3}$ & Centralized and federated \\
  & Stopping & At most 35 epochs, patience 6 & Validation loss \\
- & KL weight & $\gamma=10^{-3}$ & Eq.~\eqref{eq:total_loss} \\
+ & KL weight & $\gamma=10^{-3}$ & \\
 \midrule
 Model & Encoder & LSTM 256, 2-head attention, LSTM 128 & Dropout 0.2 \\
  & Latent size & 64 & LSTM(+VAE) variants \\
