@@ -19,10 +19,10 @@
 \providecommand{\IEEEPARstart}[2]{#1#2}
 
 \renewcommand{\thetable}{\Roman{table}}
-\newenvironment{excerpt}{\begin{quote}\small\sloppy}{\end{quote}}
+\newenvironment{excerpt}{\begin{quote}\sloppy}{\end{quote}}
 \newcommand{\review}[2]{\par\bigskip\noindent\textbf{\textit{Review #1}}\ \ \textit{``#2''}\par\smallskip\hrule\medskip}
 \newcommand{\reply}{\noindent\textbf{Reply}: }
-\newcommand{\mshead}[2]{\par\noindent\textbf{#1.\ #2}\par\smallskip}
+\newcommand{\mshead}[2]{\subsection*{\textbf{#1. #2}}}
 \newcommand{\loc}[1]{\par\medskip\noindent\textbf{#1}\par}
 \setlength{\parskip}{4pt}
 
@@ -63,7 +63,7 @@ and the revised manuscript.
 \toprule
 Paper changes & Previous manuscript & Revised manuscript \\
 \midrule
-Number of pages & 16 & 20 \\
+Number of pages & 16 & 21 \\
 Number of figures & 7 & 10 \\
 Number of tables & 9 & 17 \\
 Number of algorithms & 0 & 1 \\
@@ -134,7 +134,7 @@ $Q\ge9$ barely moves the particles. The notation table (Table~III) now
 defines $Q$, $d$, $k$, $P$, and $I$, and the manuscript states that the
 method is quantum-inspired and simulates no quantum state.
 
-\loc{(a) Section III-B, pages 6--7: Particle representation, role of $Q$, and mask measurement}
+\loc{(a) Pages 5--7: Added the particle representation, the role of $Q$, and the mask measurement to Section III-B}
 \begin{excerpt}
 \mshead{III-B}{Variable-Qubit QPSO Feature Selection}
 
@@ -229,7 +229,7 @@ $Q$ & \makecell{Initial\\perturb.} & \makecell{Max.\ rot.\\(deg)} & \makecell{Re
 \end{adjustbox}
 \end{table}
 
-\loc{(b) Section III-B, pages 6--7: Effect of $Q$ on the search}
+\loc{(b) Pages 7--8: Added the analysis of the effect of $Q$ on the search to Section III-B}
 \begin{excerpt}
 \mshead{III-B}{Variable-Qubit QPSO Feature Selection}
 
@@ -433,7 +433,7 @@ The range was nevertheless extended: $Q=9$ and 10 give 97.30\% and 97.25\%
 F1, and training all $Q$ from 1 to 10 at the largest search budget gives no
 effect of $Q$ either (Friedman $p=0.46$).
 
-\loc{(a) Section III-B, page 7: Pre-declared selection rule for $Q^{*}$}
+\loc{(a) Page 8: Added the pre-declared selection rule for $Q^{*}$ to Section III-B}
 \begin{excerpt}
 \mshead{III-B}{Variable-Qubit QPSO Feature Selection}
 
@@ -741,7 +741,7 @@ shows, $Q$ has no significant effect on test F1 within this range, so $Q^{*}$ is
 reproducible default rather than an optimum.}
 \end{excerpt}
 
-\loc{(b) Section IV-A, pages 13--14: Ten-seed register-size ablation}
+\loc{(b) Pages 14--15: Revised the register-size ablation in Section IV-A with ten seeds and statistical tests}
 \begin{excerpt}
 \mshead{IV-A}{Centralized Cyberworm Detection Performance}
 
@@ -1043,7 +1043,7 @@ single QPSO run per $Q$ and is not reproduced with ten seeds. The default
 budget of 20 particles and 30 iterations is therefore sufficient for
 detection and is retained at the lowest cost.
 
-\loc{(a) Section III-B, page 7: Design of the budget experiments}
+\loc{(a) Page 8: Added the design of the search-budget experiments to Section III-B}
 \begin{excerpt}
 \mshead{III-B}{Variable-Qubit QPSO Feature Selection}
 
@@ -1362,7 +1362,7 @@ Friedman and Wilcoxon signed-rank tests, blocked by register size
 and seed.}
 \end{excerpt}
 
-\loc{(b) Section IV-A, pages 14--15: Search-budget sensitivity}
+\loc{(b) Pages 14--16: Added the search-budget sensitivity study to Section IV-A}
 \begin{excerpt}
 \mshead{IV-A}{Centralized Cyberworm Detection Performance}
 
@@ -1739,7 +1739,7 @@ with a comparison of selectors at $k=40$, 20, and 10 (Table~XII). Six
 CICFlowMeter fields that are constant on the training data are now removed
 before selection, so they can no longer occupy mask slots.
 
-\loc{(a) Section III-B, page 7: Consensus mask}
+\loc{(a) Page 7: Added the consensus mask to Section III-B}
 \begin{excerpt}
 \mshead{III-B}{Variable-Qubit QPSO Feature Selection}
 
@@ -1812,7 +1812,7 @@ $\mathcal{D}_{\rm tr}$ only, so the consensus uses no validation or
 test data.}
 \end{excerpt}
 
-\loc{(b) Section IV-A, page 14: Selected features and stability}
+\loc{(b) Pages 13--15: Added the selected features and their stability to Section IV-A}
 \begin{excerpt}
 \mshead{IV-A}{Centralized Cyberworm Detection Performance}
 
@@ -2215,7 +2215,7 @@ $k=10$ drops to $93.82\pm1.05\%$. $k=40$ is kept as the default, and
 $k=20$ is reported for deployments that require fewer features.}
 \end{excerpt}
 
-\loc{(c) Section III-A, page 4: Zero-variance filter}
+\loc{(c) Page 5: Added the zero-variance filter to Section III-A}
 \begin{excerpt}
 \mshead{III-A}{Data Processing and Context-Aware Feature Representation}
 
@@ -2349,7 +2349,7 @@ experiments. The data split itself is now a blocked temporal split with a
 purge gap, so no window spans two splits. Table~VII lists the data used by
 every fitting, selection, and stopping step.
 
-\loc{(a) Section III-A, page 5: Leakage-free blocked temporal split}
+\loc{(a) Page 5: Added the leakage-free blocked temporal split to Section III-A}
 \begin{excerpt}
 \mshead{III-A}{Data Processing and Context-Aware Feature Representation}
 
@@ -2494,7 +2494,7 @@ $\mathcal{D}_{\rm va}$ and $\mathcal{D}_{\rm te}$, with values
 outside $[0,1]$ clipped.}
 \end{excerpt}
 
-\loc{(b) Section III-B, page 7: Data used by each step}
+\loc{(b) Pages 8--9: Added the data used by each fitting, selection, and stopping step to Section III-B}
 \begin{excerpt}
 \mshead{III-B}{Variable-Qubit QPSO Feature Selection}
 
@@ -2817,7 +2817,7 @@ CONQUEST misses significantly fewer attacks than OS-CIDS (3.33\% versus
 The abstract, contributions, and conclusion have been revised to state this
 result accurately.
 
-\loc{(a) Section III-E, page 9: Factorial design and PSO control}
+\loc{(a) Page 10: Added the factorial design and the classical PSO control to Section III-E}
 \begin{excerpt}
 \mshead{III-E}{Centralized Training and Evaluation Protocol}
 
@@ -2842,7 +2842,7 @@ top-$k$ decoding, the same trace-ratio fitness of Eq.~(12), and the
 same budget of 620 fitness evaluations.}
 \end{excerpt}
 
-\loc{(b) Section IV-A, pages 12--13: Overall comparison and factorial ablation}
+\loc{(b) Pages 12--13: Revised the overall comparison and added the factorial ablation to Section IV-A}
 \begin{excerpt}
 \mshead{IV-A}{Centralized Cyberworm Detection Performance}
 
@@ -2981,7 +2981,7 @@ traffic of the same source and uses no labels. The 75 static CICFlowMeter
 descriptors and the fields excluded to prevent identity shortcuts are also
 listed, and a streaming implementation is verified to give identical values.
 
-\loc{(a) Section III-A, pages 4--5: Static descriptors and context features}
+\loc{(a) Pages 4--6: Added the static descriptors and the exact context-feature definitions to Section III-A}
 \begin{excerpt}
 \mshead{III-A}{Data Processing and Context-Aware Feature Representation}
 
@@ -3099,7 +3099,7 @@ client is not systematically worse off, with a worst-client F1 of
 96.2--97.6\% in all six settings. Table~VIII summarizes what each mode
 reveals to the server.
 
-\loc{(a) Section III-G, page 10: Proxy set and mask-construction modes}
+\loc{(a) Page 10: Added the proxy set and the mask-construction modes to Section III-G}
 \begin{excerpt}
 \mshead{III-G}{Federated Learning Protocol and Convergence Monitoring}
 
@@ -3123,7 +3123,7 @@ keeps the $k$ most frequently selected features. The
 it violates data locality and serves only as an oracle reference.}
 \end{excerpt}
 
-\loc{(b) Section IV-C, page 17: Global mask for non-IID clients}
+\loc{(b) Page 16: Added the evaluation of one global mask for non-IID clients to Section IV-C}
 \begin{excerpt}
 \mshead{IV-C}{Federated Robustness Under Heterogeneous Mission Deployments}
 
@@ -3265,7 +3265,7 @@ re-implemented following their published algorithms, and convergence is now
 measured by $R_{99}$, because a 90\% threshold is reached in the first round
 in every regime.
 
-\loc{(a) Section III-G, page 11: One configuration for all federated experiments}
+\loc{(a) Pages 11--12: Added one configuration for all federated experiments to Section III-G}
 \begin{excerpt}
 \mshead{III-G}{Federated Learning Protocol and Convergence Monitoring}
 
@@ -3426,7 +3426,7 @@ them, and adds Gaussian noise with standard deviation $10^{-3}$ times
 the median norm.}
 \end{excerpt}
 
-\loc{(b) Section IV-C, pages 15--17: Federated results}
+\loc{(b) Pages 16--17: Revised the federated results in Section IV-C}
 \begin{excerpt}
 \mshead{IV-C}{Federated Robustness Under Heterogeneous Mission Deployments}
 
@@ -3536,7 +3536,7 @@ the inference process peaks at 541\,MB. These costs are practically the same
 for $Q=1$, 6, and 8, which confirms that the inference cost does not depend
 on $Q$ (Eq.~(1)).
 
-\loc{(a) Section III-D, page 9: Offline and online costs}
+\loc{(a) Page 9: Added the separation of offline and online costs to Section III-D}
 \begin{excerpt}
 \mshead{III-D}{Latency-Aware Design and Resource Constraints}
 
@@ -3562,7 +3562,7 @@ including normalization and masking, and $\mathcal{L}_{\rm clf}$ is
 one forward pass of the classifier.}
 \end{excerpt}
 
-\loc{(b) Section IV-B, page 15: Measured deployment cost}
+\loc{(b) Pages 15--17: Revised the measured deployment cost in Section IV-B}
 \begin{excerpt}
 \mshead{IV-B}{Latency-Aware Performance Under Quantum-Inspired Optimization}
 
@@ -3638,7 +3638,7 @@ version, which retained SGD. The implementation table (Table~VI) has been
 corrected, and Section~III-C now specifies the full architecture, the loss,
 and the stopping rule.
 
-\loc{(a) Section III-C, pages 8--9: Architecture, loss, and optimizer}
+\loc{(a) Pages 8--9: Revised the architecture, loss, and optimizer in Section III-C}
 \begin{excerpt}
 \mshead{III-C}{LSTM(+VAE) Temporal Classifier}
 
@@ -3721,7 +3721,7 @@ with a handful of sites, secure aggregation is therefore the practical
 protection of individual updates against inference attacks, and the
 manuscript states this scope explicitly.
 
-\loc{(a) Section I, page 1: Data locality versus formal privacy}
+\loc{(a) Page 1: Revised the Introduction to separate data locality from formal privacy}
 \begin{excerpt}
 \mshead{I}{Introduction}
 
@@ -3761,7 +3761,7 @@ updates can leak information unless secure aggregation or
 differential privacy is added}
 \end{excerpt}
 
-\loc{(b) Section III-G, pages 10--11: Threat model, secure aggregation, and differential privacy}
+\loc{(b) Page 11: Added the threat model, secure aggregation, and differential privacy to Section III-G}
 \begin{excerpt}
 \mshead{III-G}{Federated Learning Protocol and Convergence Monitoring}
 
@@ -3892,7 +3892,7 @@ client reaches 94.65\% F1. These results are reported in Table~XVI and
 Fig.~10(c), together with the per-client metrics that matter in distributed
 mission deployments.
 
-\loc{(a) Section IV-C, page 17: Number of clients}
+\loc{(a) Pages 16--18: Added the sensitivity analysis to the number of clients to Section IV-C}
 \begin{excerpt}
 \mshead{IV-C}{Federated Robustness Under Heterogeneous Mission Deployments}
 
@@ -4015,7 +4015,7 @@ as one interchangeable instance of label-aware swarm selection whose merit is
 a single interpretable control parameter. The comparison is extended to
 feature budgets of 20 and 10 in Table~XII.
 
-\loc{(a) Section I, page 1: Revised motivation}
+\loc{(a) Page 1: Revised the motivation in the Introduction}
 \begin{excerpt}
 \mshead{I}{Introduction}
 
@@ -4050,7 +4050,7 @@ configuration on its search is rarely analyzed, stability is seldom quantified, 
 evaluation budget are missing}
 \end{excerpt}
 
-\loc{(b) Section III-B, page 6: Quantum-inspired, classical execution}
+\loc{(b) Page 7: Added that QPSO is quantum-inspired and runs on classical hardware to Section III-B}
 \begin{excerpt}
 \mshead{III-B}{Variable-Qubit QPSO Feature Selection}
 
@@ -4211,7 +4211,7 @@ the exploration schedule of the swarm, not a measure of model
 capacity.}
 \end{excerpt}
 
-\loc{(c) Section III-E, page 9: Classical PSO at an equal budget}
+\loc{(c) Page 10: Added the classical PSO baseline at an equal search budget to Section III-E}
 \begin{excerpt}
 \mshead{III-E}{Centralized Training and Evaluation Protocol}
 
@@ -4236,7 +4236,7 @@ top-$k$ decoding, the same trace-ratio fitness of Eq.~(12), and the
 same budget of 620 fitness evaluations.}
 \end{excerpt}
 
-\loc{(d) Section IV-A, page 12: Quantum-inspired versus classical search}
+\loc{(d) Page 13: Added the comparison of quantum-inspired and classical search to Section IV-A}
 \begin{excerpt}
 \mshead{IV-A}{Centralized Cyberworm Detection Performance}
 
@@ -4425,7 +4425,7 @@ with a fixed thread count, 1{,}000 test windows after 50 warm-up calls,
 measurements taken in isolation with no other workload, and medians over
 seeds. Table~XV and Fig.~9 report all metrics for every pipeline.
 
-\loc{(a) Section III-D, pages 9--10: Measurement procedure}
+\loc{(a) Pages 9--10: Added the measurement procedure to Section III-D}
 \begin{excerpt}
 \mshead{III-D}{Latency-Aware Design and Resource Constraints}
 
@@ -4493,7 +4493,7 @@ tail-aware federated metrics, measured deployment cost, and a privacy
 analysis. Section~IV-D summarizes these differences again in the light of the
 results.
 
-\loc{(a) Section I, page 2: Distinction from the conference version}
+\loc{(a) Pages 1--2: Added the distinction from the conference version to the Introduction}
 \begin{excerpt}
 \mshead{I}{Introduction}
 
@@ -4588,7 +4588,7 @@ Privacy & Not analyzed & Threat model and privacy scope in Table~VIII \\
 \end{adjustbox}
 \end{table}
 
-\loc{(b) Section IV-D, page 18: Advances over the conference version}
+\loc{(b) Page 19: Added the advances over the conference version to Section IV-D}
 \begin{excerpt}
 \mshead{IV-D}{Comparison with the State of the Art and Discussion}
 
