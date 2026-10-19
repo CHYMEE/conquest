@@ -4410,21 +4410,56 @@ parameter and robustness to that parameter, not superior accuracy.}
 %% ---------------------------------------------------------------------
 \review{2.4}{It was mentioned that 61.2\,ms end-to-end latency was also reported, with an inference time of about 3.60\,s. The authors must specify the latency unit, whether it is per sample, per batch, or for the complete test set. The authors address the detailed reproducible measurement procedure for each metric.}
 
-\reply We thank the reviewer. The 3.60\,s figure was the time to classify the
-complete test set, not a per-sample latency, and the 61.2\,ms figure wrongly
-included the QPSO search, which does not run at deployment (see also our
-reply to Review~1.10). Every deployment metric now states its unit: the
-latency is per window of ten flows at batch size 1 (median and 95th
-percentile, in ms); the batched cost is per window at batch size 64; the
-test-set time is the total for all 11{,}544 test windows (s); the
-context-feature update is per flow ($\mu$s); and the memory is the peak
-resident set size of the inference process (MB). Section~III-D describes the
-measurement procedure: \texttt{time.perf\_counter} on the host of Table~VI
-with a fixed thread count, 1{,}000 test windows after 50 warm-up calls,
-measurements taken in isolation with no other workload, and medians over
-seeds. Table~XV and Fig.~9 report all metrics for every pipeline.
+\reply We thank the reviewer for this comment and agree that the units of the
+reported costs were not stated. We have re-measured every deployment cost,
+stated the unit of each metric, and described how each one is measured.
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+  \item \textit{The 3.60\,s figure} was the total time to classify the
+        complete test set of about 12{,}000 windows in batches, not a
+        per-sample latency; it corresponds to about 0.3\,ms per window.
+  \item \textit{The 61.2\,ms figure} came from an end-to-end decomposition
+        that wrongly placed the QPSO feature-selection search on the
+        inference path. QPSO runs once, offline, before the classifier is
+        trained, and never during detection, so this figure did not describe
+        a detection latency and has been removed.
+  \item \textit{Two cost categories.} Section~III-D now separates the
+        \textit{offline training cost}, the QPSO search time and the
+        classifier training time, both wall-clock and incurred once per
+        model, from the \textit{online deployment cost}, the per-window
+        latency of Eq.~(15): the context-feature update for a newly arrived
+        flow plus one forward pass of the classifier. QPSO does not appear in
+        the deployment cost.
+\end{itemize}
+Every deployment metric now states its unit, and the re-measured values of
+CONQUEST are as follows (Table~XV and Fig.~9):
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+  \item \textit{Latency}, per window of ten flows at batch size 1, in ms:
+        median 2.98\,ms, 95th percentile 4.55\,ms;
+  \item \textit{batched cost}, per window at batch size 64, in ms: 0.25\,ms,
+        or 4{,}004 windows per second;
+  \item \textit{test-set time}, the total for all 11{,}544 test windows at
+        batch size 64, in s: 3.23\,s, the quantity that the former 3.60\,s
+        figure reported;
+  \item \textit{context-feature update}, per newly arrived flow including
+        normalization and masking, in $\mu$s: 16\,$\mu$s;
+  \item \textit{memory}, the peak resident set size of the inference process,
+        in MB: 541\,MB, within the 1\,GB target of Eq.~(16);
+  \item \textit{offline QPSO search}, per run, in min: 1.8\,min, incurred once
+        before training.
+\end{itemize}
+\textit{Measurement procedure.} All timings use \texttt{time.perf\_counter}
+on the host of Table~VI with a fixed TensorFlow thread count per process.
+The classifier latency is measured at batch size 1 over 1{,}000 test windows
+after 50 warm-up calls and reported as the median and 95th percentile; the
+batched cost is measured at batch size 64; the context-feature update is
+averaged over the test stream; and the memory is read as the peak resident
+set size of the inference process. All costs are measured in isolation on
+the CPU-only host and reported as medians over seeds, with the number of
+seeds given in Table~XV. The costs are practically the same for every
+pipeline, 2.9--3.5\,ms per window and 541--658\,MB, and for $Q=1$, 6, and 8,
+which confirms that the deployment cost does not depend on $Q$ (Eq.~(1)).
 
-\loc{(a) Page 9: Added the measurement procedure to Section III-D}
+\loc{(a) Page 9: Added the cost categories, the units, and the measurement procedure to Section III-D}
 \begin{excerpt}
 \mshead{III-D}{Latency-Aware Design and Resource Constraints}
 
@@ -4432,22 +4467,22 @@ seeds. Table~XV and Fig.~9 report all metrics for every pipeline.
 \textcolor{red}{CONQUEST distinguishes two cost
 categories, which are measured and reported separately.}
 
-\textcolor{black}{\textit{Offline training cost} is incurred
+\textcolor{black}{\textcolor{red}{\textit{Offline training cost} is incurred
 once per model and never on the detection path. It consists of the
 QPSO search time $T_{\rm QPSO}(Q)$ and the classifier training time
-$T_{\rm train}$, both measured as wall-clock time.}
+$T_{\rm train}$, both measured as wall-clock time.}}
 
-\textcolor{black}{\textit{Online deployment cost} is incurred
-for every classified window. The per-window latency is}
+\textcolor{black}{\textcolor{red}{\textit{Online deployment cost} is incurred
+for every classified window. The per-window latency is}}
 \begin{equation}
-\textcolor{black}{\mathcal{L}_{\rm infer} =
-\mathcal{L}_{\rm ctx} + \mathcal{L}_{\rm clf},}
+\textcolor{black}{\textcolor{red}{\mathcal{L}_{\rm infer} =
+\mathcal{L}_{\rm ctx} + \mathcal{L}_{\rm clf},}}
 \tag{15}
 \end{equation}
-\textcolor{black}{where $\mathcal{L}_{\rm ctx}$ is the
+\textcolor{black}{\textcolor{red}{where $\mathcal{L}_{\rm ctx}$ is the
 incremental context-feature update for a newly arrived flow,
 including normalization and masking, and $\mathcal{L}_{\rm clf}$ is
-one forward pass of the classifier.}
+one forward pass of the classifier.}}
 
 \textcolor{red}{All timings use \texttt{time.perf\_counter}
 on the host of Table~VI, with a fixed TensorFlow
@@ -4473,6 +4508,70 @@ mission-edge gateways that co-host safety services}, where
 computation, memory, and energy are tightly
 constrained~{[38]}.
 \end{excerpt}
+
+\loc{(b) Pages 15--16: Added the re-measured deployment cost with units to Section IV-B}
+\begin{excerpt}
+\mshead{IV-B}{Latency-Aware Performance Under Quantum-Inspired Optimization}
+
+
+\textcolor{black}{Because detection is insensitive to $Q$,
+this subsection examines whether $Q$ affects deployment cost and
+whether the selected operating point meets mission-edge
+constraints.}
+
+\textcolor{red}{Table~XV
+and Fig.~9 report the deployment cost, measured in
+isolation on the CPU-only host, for the pipelines of
+Section~IV-A and for five variants of
+CONQUEST: the consensus mask, register sizes $Q=1$ and 8 instead of
+$Q^{*}=6$, and feature budgets $k=20$ and 10 instead of 40. Classifying one window of ten flows
+takes CONQUEST a median of 2.98\,ms at batch size 1, with a 95th
+percentile of 4.55\,ms. In batches of 64, a window costs 0.25\,ms, or
+4{,}004 windows per second. Updating the context features,
+normalizing, and masking a newly arrived flow adds 16\,$\mu$s, and the
+11{,}544 test windows are classified in 3.23\,s. The inference process
+peaks at 541\,MB, within the 1\,GB budget. These costs are practically
+the same for every pipeline, at 2.9--3.5\,ms per window and
+541--658\,MB, and for $Q=1$, 6, and 8 and $k=10$, 20, and 40, since
+the classifier hardly changes with the input width, from 758k to 789k
+parameters. This confirms Eq.~(1) empirically. QPSO is a
+training-time cost of 1.8\,min per run on the shared host, or
+0.4\,min at $k=10$, incurred once before training; the consensus mask
+requires ten such runs.}
+\end{excerpt}
+\setcounter{table}{14}
+\begin{table}[H]
+\centering
+\caption{\textcolor{red}{Deployment cost measured in isolation; medians over seeds, with the number of seeds in parentheses.}}
+
+\color{red}
+\setlength{\tabcolsep}{4pt}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lcccccccc}
+\hline\toprule
+\textbf{Pipeline} & \multicolumn{2}{c}{Latency (ms/window)} & Batched & Test set & Context update & Memory & Params & Selection \\
+ & median & p95 & (ms/window) & (s) & ($\mu$s/flow) & (MB) & & (s) \\
+\hline\toprule
+OS-CIDS (3) & 2.96 & 3.69 & 0.233 & 3.30 & 5.1 & 629 & 789k & 0.0 \\
+Var.+context (3) & 2.94 & 3.62 & 0.244 & 3.21 & 15.9 & 638 & 789k & 0.1 \\
+PSO+context (3) & 3.02 & 3.77 & 0.244 & 3.31 & 15.9 & 658 & 789k & 76.2 \\
+\textbf{CONQUEST ($Q^{*}{=}6$)} (3) & \textbf{2.98} & \textbf{4.55} & \textbf{0.250} & \textbf{3.23} & \textbf{16.2} & \textbf{541} & \textbf{789k} & \textbf{106.8} \\
+CONQUEST, consensus mask (3) & 2.93 & 3.70 & 0.238 & 3.15 & 15.8 & 600 & 789k & 0.2 \\
+CONQUEST, $Q{=}1$ (1) & 2.93 & 3.65 & 0.250 & 3.47 & 16.5 & 652 & 789k & 96.5 \\
+CONQUEST, $Q{=}8$ (1) & 3.47 & 4.31 & 0.250 & 3.29 & 16.3 & 657 & 789k & 109.9 \\
+CONQUEST, $k{=}20$ (3) & 3.19 & 4.87 & 0.260 & 3.49 & 16.4 & 650 & 768k & 43.8 \\
+CONQUEST, $k{=}10$ (3) & 3.09 & 4.33 & 0.257 & 3.37 & 16.5 & 645 & 758k & 22.8 \\
+\hline\toprule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+\setcounter{figure}{8}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{images/deployment_cost.png}
+\caption{\textcolor{red}{Deployment cost: (a)~latency per window, (b)~batched throughput, and (c)~peak inference memory.}}
+
+\end{figure}
 
 %% ---------------------------------------------------------------------
 \review{2.5}{The manuscript explicitly extends the previously published CONQUEST conference work. The authors must clearly distinguish these two in terms of methodological, experimental, and analytical advancement.}
