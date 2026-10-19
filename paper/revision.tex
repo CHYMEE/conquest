@@ -68,7 +68,8 @@ CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberw
 \maketitle
 
 \begin{abstract}
-AI-aided cyberworms that adapt their propagation and mimic legitimate traffic threaten mission-critical IoT/IoV/IoD networks, where detectors must remain accurate, lightweight, and robust across distributed sites. This paper proposes CONQUEST, a context-aware, quantum-inspired intrusion detection framework that integrates causal context features, variable-qubit quantum-inspired particle swarm optimization (QPSO) for feature selection, and an LSTM(+VAE) temporal classifier, trained centrally or by horizontal federated learning. \textcolor{red}{Under a leakage-free temporal evaluation on ACI-IoT, CONQUEST achieves 97.13\% accuracy and F1-score, 0.9924 AUC, and the lowest missed-attack rate (3.33\%) among the evaluated pipelines.} \textcolor{red}{Multi-seed ablations show that detection is robust to the QPSO register size $Q\in\{1,\dots,10\}$ (Friedman $p\geq0.46$) and that context features and label-aware selection are complementary.} \textcolor{red}{The deployed detector classifies a traffic window in 2.98\,ms with 541\,MB peak memory.} \textcolor{red}{Under IID, quantity-skew, and Dirichlet partitions, federated CONQUEST stays within 0.8\,pp of centralized F1, with a worst-client F1 of 96.37\% under quantity skew.} These results establish CONQUEST as a reproducible, deployable cyberworm detector for mission-critical networks.
+AI-aided cyberworms that adapt their propagation and mimic legitimate traffic threaten mission-critical IoT/IoV/IoD networks, where detectors must remain accurate, lightweight, and robust across distributed sites. This paper proposes CONQUEST, a context-aware, quantum-inspired intrusion detection framework that integrates causal context features, variable-qubit quantum-inspired particle swarm optimization (QPSO) for feature selection, and an LSTM(+VAE) temporal classifier, trained centrally or by horizontal federated learning. \textcolor{red}{Under a leakage-free temporal evaluation on ACI-IoT, CONQUEST achieves 97.13\% accuracy and F1-score, 0.9924 AUC, and the lowest missed-attack rate (3.33\%) among the evaluated pipelines.} \textcolor{red}{Multi-seed ablations show that detection is robust to the QPSO register size $Q\in\{1,\dots,10\}$ (Friedman $p\geq0.46$) and that context features and label-aware selection are complementary.} \textcolor{red}{The deployed detector classifies a traffic window in 2.98\,ms with 541\,MB peak memory.} \textcolor{red}{Under independent and identically distributed (IID) client
+partitions, quantity-skew, and Dirichlet partitions, federated CONQUEST stays within 0.8\,pp of centralized F1, with a worst-client F1 of 96.37\% under quantity skew.} These results establish CONQUEST as a reproducible, deployable cyberworm detector for mission-critical networks.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -842,7 +843,7 @@ Data & \rc{Subsample} & \rc{80k flows, class-balanced} & \rc{Fixed seed 42} \\
 Training & \rc{Optimizer} & \rc{SGD, Nesterov momentum 0.9} & \rc{Centralized and federated} \\
  & Learning rate & $10^{-3}$ & Centralized and federated \\
  & \rc{Stopping} & \rc{At most 35 epochs, patience 6} & \rc{Validation loss} \\
- & \rc{KL weight} & \rc{$\gamma=10^{-3}$} & \\
+ & \rc{KL weight} & \rc{$\gamma=10^{-3}$} & \rc{Eq.~\eqref{eq:total_loss}} \\
 \midrule
 Model & \rc{Encoder} & \rc{LSTM 256, 2-head attention, LSTM 128} & \rc{Dropout 0.2} \\
  & \rc{Latent size} & \rc{64} & \rc{LSTM(+VAE) variants} \\
