@@ -35,6 +35,8 @@
 \vspace{0.6cm}
 {\large (Manuscript Number: IoT-64147-2026)\par}
 \vspace{0.6cm}
+{\large Response to the Associate Editor and Reviewers\par}
+\vspace{0.6cm}
 {October 2026\par}
 \vspace*{\fill}
 \end{titlepage}
@@ -47,8 +49,14 @@ your letter, our paper (IoT-64147-2026) requires mandatory minor revisions
 based on the comments of Reviewers 1 and 2. We have revised the manuscript
 accordingly. Below, the reviewers' remarks are given in italics, followed by
 our reply in regular style. In the revised manuscript, every modification is
-highlighted in red. Page,
-section, table, figure, and equation numbers refer to the revised manuscript. Table~A summarizes the major differences between the previous and the revised manuscript.
+highlighted in red; the highlighting remains visible when the file is
+printed. Excerpts of the revised manuscript are reproduced below each reply,
+starting from the heading of the section or subsection that contains the
+change, so that each revision is shown in its context. Within each excerpt,
+only the text that answers the comment is shown in red; the surrounding text,
+including revisions made for other comments, is shown in black. Page,
+section, table, figure, and equation numbers refer to the revised manuscript. Table~A summarizes the major differences between the previous
+and the revised manuscript.
 
 \begin{table}[H]
 \centering
@@ -66,7 +74,30 @@ Number of references & 35 & 42 \\
 \end{tabular}
 \end{table}
 
-
+To answer the comments, all experiments were repeated under a single,
+leakage-free protocol: a blocked temporal split in which every fitting,
+selection, and stopping step uses the training or validation data only, ten
+seeds per centralized configuration with QPSO re-executed in every run, and
+one common configuration for all federated experiments. The main changes are:
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+  \item an exact definition of how the register size $Q$ enters QPSO
+        (Eqs.~(7)--(11), Algorithm~1, Table~V) and an analysis of the search
+        dynamics versus $Q$ (Fig.~3);
+  \item a ten-seed register-size ablation with Friedman and Holm-corrected
+        Wilcoxon tests, a search-budget sensitivity study, and the selected
+        feature subset with its stability across seeds;
+  \item a $2\times2$ factorial ablation of context features and QPSO, and a
+        classical PSO baseline at an equal search budget;
+  \item exact definitions of the 17 context features and a table of the data
+        used by every fitting, selection, and stopping step;
+  \item a federated evaluation under one configuration with $K=5$, 10, and
+        20 clients, three aggregators, three mask-construction modes, a threat
+        model, secure aggregation, and differential privacy;
+  \item a redefined, separately measured deployment cost with explicit units
+        and measurement procedure;
+  \item a table that distinguishes the journal extension from the conference
+        version.
+\end{itemize}
 
 %% =====================================================================
 \clearpage
@@ -2299,8 +2330,8 @@ and are removed by a zero-variance filter fitted on
 $\mathcal{D}_{\rm tr}$ only. Without this filter, such columns could
 be selected at no cost: they leave both sums of the trace-ratio
 fitness in Eq.~(12) unchanged and only occupy mask slots.}
-\textcolor{black}{The fused representation therefore has
-$d=86$ features (69 static and 17 context).}
+\textcolor{black}{\textcolor{red}{The fused representation therefore has
+$d=86$ features (69 static and 17 context).}}
 \end{excerpt}
 
 %% ---------------------------------------------------------------------
@@ -3656,10 +3687,10 @@ SGD with Nesterov momentum 0.9, learning rate $10^{-3}$, and batch
 size 32. The same optimizer is used in every reported experiment:
 all centralized configurations, the $Q$ ablation, the budget and
 selector comparisons, and the local updates of all federated clients,
-which use batch size 64.} \textcolor{black}{Training runs
+which use batch size 64.} \textcolor{black}{\textcolor{red}{Training runs
 for at most 35 epochs. Early stopping monitors the validation loss
 with patience 6 and restores the best weights, and the learning rate
-is halved after 3 epochs without improvement, down to $10^{-6}$.}
+is halved after 3 epochs without improvement, down to $10^{-6}$.}}
 \end{excerpt}
 
 %% =====================================================================
@@ -4172,14 +4203,14 @@ so the search stays close to its initialization. The trained-detector
 ablation therefore covers $Q=1$ to $8$, and the budget analysis
 extends the range to $Q=10$ to confirm this behavior.}
 
-\textcolor{black}{CONQUEST is quantum-\emph{inspired} and runs
+\textcolor{black}{\textcolor{red}{CONQUEST is quantum-\emph{inspired} and runs
 on classical hardware: no $2^{Q}$-dimensional state vector is
 simulated, and the particle dimension is $d$ for every $Q$. The term
 ``qubit'' refers to the register whose uniform amplitude $2^{-Q/2}$
 and collapse probability $2^{-Q}$ motivate the three constants
 above. $Q$ is thus a single interpretable hyperparameter that sets
 the exploration schedule of the swarm, not a measure of model
-capacity.}
+capacity.}}
 \end{excerpt}
 
 \loc{(c) Page 9: Added the classical PSO baseline at an equal search budget to Section III-E}
@@ -4199,12 +4230,12 @@ OS-CIDS and QCIDS therefore differ in two factors at once.
 \textcolor{black}{To separate them, a $2\times2$ factorial
 ablation crosses context features (off, on) with the selector
 (variance, QPSO), all with $k=40$ and the same classifier, so that the
-effect of each factor and their interaction can be estimated. A
+effect of each factor and their interaction can be estimated. \textcolor{red}{A
 classical binary PSO selector provides a controlled comparison of
 quantum-inspired and classical updates. It uses inertia 0.7,
 acceleration coefficients $c_1=c_2=1.5$, a sigmoid position mapping,
 top-$k$ decoding, the same trace-ratio fitness of Eq.~(12), and the
-same budget of 620 fitness evaluations.}
+same budget of 620 fitness evaluations.}}
 \end{excerpt}
 
 \loc{(d) Page 12: Added the comparison of quantum-inspired and classical search to Section IV-A}
