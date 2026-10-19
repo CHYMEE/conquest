@@ -4410,54 +4410,15 @@ parameter and robustness to that parameter, not superior accuracy.}
 %% ---------------------------------------------------------------------
 \review{2.4}{It was mentioned that 61.2\,ms end-to-end latency was also reported, with an inference time of about 3.60\,s. The authors must specify the latency unit, whether it is per sample, per batch, or for the complete test set. The authors address the detailed reproducible measurement procedure for each metric.}
 
-\reply We thank the reviewer for this comment and agree that the units of the
-reported costs were not stated. We have re-measured every deployment cost,
-stated the unit of each metric, and described how each one is measured.
-\begin{itemize}[leftmargin=*,itemsep=1pt]
-  \item \textit{The 3.60\,s figure} was the total time to classify the
-        complete test set of about 12{,}000 windows in batches, not a
-        per-sample latency; it corresponds to about 0.3\,ms per window.
-  \item \textit{The 61.2\,ms figure} came from an end-to-end decomposition
-        that wrongly placed the QPSO feature-selection search on the
-        inference path. QPSO runs once, offline, before the classifier is
-        trained, and never during detection, so this figure did not describe
-        a detection latency and has been removed.
-  \item \textit{Two cost categories.} Section~III-D now separates the
-        \textit{offline training cost}, the QPSO search time and the
-        classifier training time, both wall-clock and incurred once per
-        model, from the \textit{online deployment cost}, the per-window
-        latency of Eq.~(15): the context-feature update for a newly arrived
-        flow plus one forward pass of the classifier. QPSO does not appear in
-        the deployment cost.
-\end{itemize}
-Every deployment metric now states its unit, and the re-measured values of
-CONQUEST are as follows (Table~XV and Fig.~9):
-\begin{itemize}[leftmargin=*,itemsep=1pt]
-  \item \textit{Latency}, per window of ten flows at batch size 1, in ms:
-        median 2.98\,ms, 95th percentile 4.55\,ms;
-  \item \textit{batched cost}, per window at batch size 64, in ms: 0.25\,ms,
-        or 4{,}004 windows per second;
-  \item \textit{test-set time}, the total for all 11{,}544 test windows at
-        batch size 64, in s: 3.23\,s, the quantity that the former 3.60\,s
-        figure reported;
-  \item \textit{context-feature update}, per newly arrived flow including
-        normalization and masking, in $\mu$s: 16\,$\mu$s;
-  \item \textit{memory}, the peak resident set size of the inference process,
-        in MB: 541\,MB, within the 1\,GB target of Eq.~(16);
-  \item \textit{offline QPSO search}, per run, in min: 1.8\,min, incurred once
-        before training.
-\end{itemize}
-\textit{Measurement procedure.} All timings use \texttt{time.perf\_counter}
-on the host of Table~VI with a fixed TensorFlow thread count per process.
-The classifier latency is measured at batch size 1 over 1{,}000 test windows
-after 50 warm-up calls and reported as the median and 95th percentile; the
-batched cost is measured at batch size 64; the context-feature update is
-averaged over the test stream; and the memory is read as the peak resident
-set size of the inference process. All costs are measured in isolation on
-the CPU-only host and reported as medians over seeds, with the number of
-seeds given in Table~XV. The costs are practically the same for every
-pipeline, 2.9--3.5\,ms per window and 541--658\,MB, and for $Q=1$, 6, and 8,
-which confirms that the deployment cost does not depend on $Q$ (Eq.~(1)).
+\reply We thank the reviewer and agree that the units were not stated. The
+3.60\,s figure was the total time to classify the complete test set, not a
+per-sample latency, and the 61.2\,ms figure wrongly included the QPSO search,
+which runs once offline and never during detection. Section~III-D now
+separates the offline training cost from the per-window deployment cost and
+states the unit and measurement procedure of every metric. All deployment
+costs were re-measured in isolation (Section~IV-B, Table~XV, Fig.~9):
+CONQUEST classifies one window of ten flows in a median of 2.98\,ms at batch
+size 1, and the complete test set of 11{,}544 windows in 3.23\,s.
 
 \loc{(a) Page 9: Added the cost categories, the units, and the measurement procedure to Section III-D}
 \begin{excerpt}
