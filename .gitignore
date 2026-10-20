@@ -16,3 +16,6 @@ paper/Conquest_by_Sandra*.pdf
 *.log
 *.out
 *.synctex.gz
+
+# Manuscript sources are kept out of this branch
+paper/
