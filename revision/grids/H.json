@@ -1,0 +1,46 @@
+{
+ "blocks": [
+  {
+   "out_dir": "outputs/central",
+   "base": {
+    "selector": "variance",
+    "context": "on"
+   },
+   "grid": {
+    "k": [
+     10,
+     20
+    ],
+    "seed": [
+     42,
+     43,
+     44,
+     45,
+     46
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/central",
+   "base": {
+    "selector": "pso",
+    "particles": 20,
+    "iterations": 30,
+    "context": "on"
+   },
+   "grid": {
+    "k": [
+     10,
+     20
+    ],
+    "seed": [
+     42,
+     43,
+     44,
+     45,
+     46
+    ]
+   }
+  }
+ ]
+}

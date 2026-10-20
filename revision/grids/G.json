@@ -1,0 +1,35 @@
+{
+ "blocks": [
+  {
+   "out_dir": "outputs/federated",
+   "base": {
+    "selector": "qpso",
+    "Q": "auto:outputs/central",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on",
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "K": 5,
+    "aggregator": "fedavg",
+    "partition": "quantity_skew",
+    "mask_mode": "proxy",
+    "dp_clip": 0.215
+   },
+   "grid": {
+    "dp_noise": [
+     1.0,
+     3.0,
+     8.0
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  }
+ ]
+}

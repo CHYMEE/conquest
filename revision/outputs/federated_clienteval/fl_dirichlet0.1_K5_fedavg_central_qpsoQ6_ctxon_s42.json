@@ -1,0 +1,82 @@
+{
+ "run_name": "fl_dirichlet0.1_K5_fedavg_central_qpsoQ6_ctxon_s42",
+ "global": {
+  "n": 11544,
+  "attack_frac": 0.5816008316008316,
+  "f1": 0.9717031615766998,
+  "acc": 0.9716735966735967,
+  "far": 0.02608695652173913,
+  "md": 0.02993744414655943
+ },
+ "clients": [
+  {
+   "n": 2000,
+   "attack_frac": 0.279,
+   "f1": 0.9776928895820531,
+   "acc": 0.9775,
+   "far": 0.027045769764216365,
+   "md": 0.010752688172043012,
+   "client": 0,
+   "train_windows": 25036,
+   "train_attack_frac": 0.31195079086115995,
+   "type_coverage": 0.9542259146828567
+  },
+  {
+   "n": 2000,
+   "attack_frac": 0.0,
+   "f1": 0.985544002028912,
+   "acc": 0.9715,
+   "far": 0.0285,
+   "md": null,
+   "client": 1,
+   "train_windows": 231,
+   "train_attack_frac": 0.0,
+   "type_coverage": 1.0
+  },
+  {
+   "n": 2000,
+   "attack_frac": 0.7885,
+   "f1": 0.9964892746407629,
+   "acc": 0.9965,
+   "far": 0.016548463356973995,
+   "md": 0.0,
+   "client": 2,
+   "train_windows": 241,
+   "train_attack_frac": 0.7883817427385892,
+   "type_coverage": 1.0
+  },
+  {
+   "n": 2001,
+   "attack_frac": 0.8170914542728636,
+   "f1": 0.9880561219050772,
+   "acc": 0.9880059970014993,
+   "far": 0.02185792349726776,
+   "md": 0.009785932721712538,
+   "client": 3,
+   "train_windows": 2330,
+   "train_attack_frac": 0.8171673819742489,
+   "type_coverage": 1.0
+  },
+  {
+   "n": 2001,
+   "attack_frac": 0.8595702148925537,
+   "f1": 0.9871739466327619,
+   "acc": 0.9870064967516242,
+   "far": 0.014234875444839857,
+   "md": 0.012790697674418604,
+   "client": 4,
+   "train_windows": 14371,
+   "train_attack_frac": 0.8597174866049684,
+   "type_coverage": 1.0
+  }
+ ],
+ "client_f1_min": 0.9776928895820531,
+ "client_f1_mean": 0.9869912469579134,
+ "client_f1_std_pop": 0.005998897156347937,
+ "client_md_max": 0.012790697674418604,
+ "client_far_max": 0.0285,
+ "min_type_coverage": 0.9542259146828567,
+ "R99": 7,
+ "R_half_pp": 11,
+ "final_test_f1_logged": 0.9717031615766998
+}

@@ -1,0 +1,35 @@
+\begin{table}[t]
+\centering
+\caption{Leakage-free results (mean $\pm$ std over seeds).}
+\label{tab:rev_summary}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llllllcccccccc}
+\hline
+selector & context & Q & particles & iterations & k & test\_acc & test\_prec & test\_rec & test\_f1 & test\_auc & far\_benign & md\_attack & val\_f1 \\ \hline
+all & off & -1 & -1 & -1 & 75 & 90.12 $\pm$ 0.00 & 91.17 $\pm$ 0.00 & 90.12 $\pm$ 0.00 & 90.21 $\pm$ 0.00 & 0.97 $\pm$ 0.00 & 0.04 $\pm$ 0.00 & 0.04 $\pm$ 0.00 & 86.64 $\pm$ 0.00 \\
+pso & on & -1 & 3 & 2 & 40 & 89.44 $\pm$ 1.19 & 89.98 $\pm$ 0.74 & 89.44 $\pm$ 1.19 & 89.50 $\pm$ 1.16 & 0.97 $\pm$ 0.00 & 0.08 $\pm$ 0.02 & 0.08 $\pm$ 0.02 & 86.52 $\pm$ 0.32 \\
+qpso & on & 1 & 3 & 2 & 40 & 89.51 $\pm$ 0.71 & 89.58 $\pm$ 0.60 & 89.51 $\pm$ 0.71 & 89.46 $\pm$ 0.80 & 0.97 $\pm$ 0.01 & 0.15 $\pm$ 0.05 & 0.15 $\pm$ 0.05 & 86.28 $\pm$ 1.53 \\
+qpso & on & 6 & 3 & 2 & 40 & 88.00 $\pm$ 2.28 & 88.93 $\pm$ 1.44 & 88.00 $\pm$ 2.28 & 88.01 $\pm$ 2.23 & 0.96 $\pm$ 0.01 & 0.11 $\pm$ 0.08 & 0.11 $\pm$ 0.08 & 84.31 $\pm$ 2.51 \\
+variance & off & -1 & -1 & -1 & 40 & 90.47 $\pm$ 0.72 & 90.78 $\pm$ 1.00 & 90.47 $\pm$ 0.72 & 90.51 $\pm$ 0.74 & 0.96 $\pm$ 0.01 & 0.08 $\pm$ 0.03 & 0.08 $\pm$ 0.03 & 85.92 $\pm$ 0.66 \\
+variance & on & -1 & -1 & -1 & 40 & 90.05 $\pm$ 0.24 & 90.65 $\pm$ 0.43 & 90.05 $\pm$ 0.24 & 90.12 $\pm$ 0.22 & 0.97 $\pm$ 0.00 & 0.07 $\pm$ 0.03 & 0.07 $\pm$ 0.03 & 86.47 $\pm$ 0.61 \\
+\hline
+\end{tabular}}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Deployment cost (mean $\pm$ std over seeds).}
+\label{tab:rev_deploy}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llllllccccccc}
+\hline
+selector & context & Q & particles & iterations & k & selection\_time\_s & train\_time\_s & latency\_b1\_median\_ms & latency\_b1\_p95\_ms & throughput\_b64\_sps & L\_C\_median\_ms & rss\_infer\_mb \\ \hline
+all & off & -1 & -1 & -1 & 75 & 0.00 $\pm$ 0.00 & 9.69 $\pm$ 0.00 & 3.02 $\pm$ 0.00 & 3.42 $\pm$ 0.00 & 4097.78 $\pm$ 0.00 & 0.01 $\pm$ 0.00 & 570.89 $\pm$ 0.00 \\
+pso & on & -1 & 3 & 2 & 40 & 0.01 $\pm$ 0.00 & 13.54 $\pm$ 0.36 & 4.02 $\pm$ 0.44 & 6.07 $\pm$ 0.25 & 3370.30 $\pm$ 467.77 & 0.02 $\pm$ 0.00 & 566.68 $\pm$ 0.99 \\
+qpso & on & 1 & 3 & 2 & 40 & 0.02 $\pm$ 0.00 & 14.25 $\pm$ 0.02 & 3.77 $\pm$ 0.01 & 4.08 $\pm$ 0.09 & 3530.04 $\pm$ 115.88 & 0.02 $\pm$ 0.00 & 569.47 $\pm$ 2.29 \\
+qpso & on & 6 & 3 & 2 & 40 & 0.02 $\pm$ 0.00 & 14.65 $\pm$ 2.56 & 4.35 $\pm$ 0.78 & 6.52 $\pm$ 0.94 & 3061.50 $\pm$ 676.70 & 0.02 $\pm$ 0.00 & 569.64 $\pm$ 0.56 \\
+variance & off & -1 & -1 & -1 & 40 & 0.00 $\pm$ 0.00 & 13.51 $\pm$ 0.38 & 3.98 $\pm$ 0.44 & 5.62 $\pm$ 0.29 & 3496.75 $\pm$ 392.41 & 0.00 $\pm$ 0.00 & 567.64 $\pm$ 1.52 \\
+variance & on & -1 & -1 & -1 & 40 & 0.00 $\pm$ 0.00 & 13.48 $\pm$ 0.42 & 3.83 $\pm$ 0.43 & 5.10 $\pm$ 1.17 & 3483.28 $\pm$ 294.87 & 0.02 $\pm$ 0.00 & 568.42 $\pm$ 1.17 \\
+\hline
+\end{tabular}}
+\end{table}

@@ -1,0 +1,548 @@
+{
+  "run_name": "qpso_ctxon_Q2_P20_I30_k40_s51",
+  "config": {
+    "cmd": "run",
+    "context": "on",
+    "selector": "qpso",
+    "Q": 2,
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "seed": 51,
+    "data_seed": 42,
+    "epochs": 35,
+    "patience": 6,
+    "batch_size": 32,
+    "lr": 0.001,
+    "kl_weight": 0.001,
+    "n_sub": 80000,
+    "time_steps": 10,
+    "block_size": null,
+    "max_train_windows": 0,
+    "latency_n": 1000,
+    "latency_warmup": 50,
+    "lc_n": 5000,
+    "skip_lc": false,
+    "threads": 2,
+    "inter_threads": 1,
+    "out_dir": "D:\\conquest-milcom\\revision\\outputs/central",
+    "tag": "",
+    "force": false,
+    "verbose": 2,
+    "no_save_model": false
+  },
+  "seeds": {
+    "run_seed": 51,
+    "data_seed": 42
+  },
+  "data": {
+    "mode": "blocked",
+    "counts": {
+      "train": {
+        "n_rows": 54890,
+        "n_segments": 112,
+        "benign": 28818,
+        "attack": 26072,
+        "attack_frac": 0.4749863363089816,
+        "attack_types": {
+          "Benign": 28818,
+          "DNS Flood": 1595,
+          "Dictionary Attack": 252,
+          "ICMP Flood": 7594,
+          "OS Scan": 1009,
+          "Ping Sweep": 2187,
+          "Port Scan": 11507,
+          "SYN Flood": 599,
+          "Slowloris": 476,
+          "UDP Flood": 44,
+          "Vulnerability Scan": 809
+        }
+      },
+      "val": {
+        "n_rows": 11760,
+        "n_segments": 24,
+        "benign": 5453,
+        "attack": 6307,
+        "attack_frac": 0.5363095238095238,
+        "attack_types": {
+          "Benign": 5453,
+          "DNS Flood": 398,
+          "Dictionary Attack": 31,
+          "ICMP Flood": 929,
+          "OS Scan": 288,
+          "Ping Sweep": 500,
+          "Port Scan": 3676,
+          "Vulnerability Scan": 485
+        }
+      },
+      "test": {
+        "n_rows": 11760,
+        "n_segments": 24,
+        "benign": 4917,
+        "attack": 6843,
+        "attack_frac": 0.5818877551020408,
+        "attack_types": {
+          "Benign": 4917,
+          "ICMP Flood": 1408,
+          "OS Scan": 378,
+          "Ping Sweep": 409,
+          "Port Scan": 3892,
+          "Slowloris": 325,
+          "Vulnerability Scan": 431
+        }
+      }
+    },
+    "chronological_counts": {
+      "train": {
+        "n_rows": 56000,
+        "n_segments": 1,
+        "benign": 19948,
+        "attack": 36052,
+        "attack_frac": 0.6437857142857143,
+        "attack_types": {
+          "Benign": 19948,
+          "ICMP Flood": 9973,
+          "OS Scan": 1706,
+          "Ping Sweep": 3163,
+          "Port Scan": 19455,
+          "Vulnerability Scan": 1755
+        }
+      },
+      "val": {
+        "n_rows": 12000,
+        "n_segments": 1,
+        "benign": 8052,
+        "attack": 3948,
+        "attack_frac": 0.329,
+        "attack_types": {
+          "Benign": 8052,
+          "DNS Flood": 2031,
+          "Dictionary Attack": 286,
+          "ICMP Flood": 166,
+          "SYN Flood": 604,
+          "Slowloris": 817,
+          "UDP Flood": 44
+        }
+      },
+      "test": {
+        "n_rows": 12000,
+        "n_segments": 1,
+        "benign": 12000,
+        "attack": 0,
+        "attack_frac": 0.0,
+        "attack_types": {
+          "Benign": 12000
+        }
+      }
+    },
+    "chronological_min_class_frac": 0.0,
+    "time_range": {
+      "train": [
+        "2023-10-30T09:00:59",
+        "2023-11-03T14:51:02"
+      ],
+      "val": [
+        "2023-10-30T09:12:10",
+        "2023-11-03T13:38:20"
+      ],
+      "test": [
+        "2023-10-30T09:15:34",
+        "2023-11-03T11:34:47"
+      ]
+    },
+    "n_features_total": 92,
+    "n_windows": {
+      "train": 53882,
+      "val": 11544,
+      "test": 11544
+    }
+  },
+  "selection": {
+    "selector": "qpso",
+    "k": 40,
+    "indices": [
+      2,
+      3,
+      4,
+      6,
+      10,
+      11,
+      15,
+      16,
+      17,
+      21,
+      23,
+      24,
+      27,
+      29,
+      33,
+      36,
+      38,
+      39,
+      40,
+      43,
+      44,
+      45,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      54,
+      57,
+      60,
+      61,
+      62,
+      65,
+      73,
+      74,
+      80,
+      86,
+      89,
+      90
+    ],
+    "names": [
+      "Protocol",
+      "Flow Duration",
+      "Total Fwd Packet",
+      "Total Length of Fwd Packet",
+      "Fwd Packet Length Mean",
+      "Fwd Packet Length Std",
+      "Bwd Packet Length Std",
+      "Flow Bytes/s",
+      "Flow Packets/s",
+      "Flow IAT Min",
+      "Fwd IAT Mean",
+      "Fwd IAT Std",
+      "Bwd IAT Total",
+      "Bwd IAT Std",
+      "Bwd PSH Flags",
+      "Fwd Header Length",
+      "Fwd Packets/s",
+      "Bwd Packets/s",
+      "Packet Length Min",
+      "Packet Length Std",
+      "Packet Length Variance",
+      "FIN Flag Count",
+      "RST Flag Count",
+      "PSH Flag Count",
+      "ACK Flag Count",
+      "URG Flag Count",
+      "CWR Flag Count",
+      "ECE Flag Count",
+      "Average Packet Size",
+      "Fwd Bytes/Bulk Avg",
+      "Bwd Bytes/Bulk Avg",
+      "Bwd Packet/Bulk Avg",
+      "Bwd Bulk Rate Avg",
+      "Subflow Bwd Packets",
+      "Active Max",
+      "Active Min",
+      "bytes_rate_src_60",
+      "n_distinct_dst_60",
+      "n_proto_switch_60",
+      "syn_frac_src_60"
+    ],
+    "n_context_selected": 4,
+    "wall_time_s": 78.22759829999995,
+    "n_fitness_evals": 620,
+    "best_fitness": 5183.127186013479,
+    "fitness_history": [
+      3895.2971098661524,
+      4330.449962746097,
+      4330.449962746097,
+      4330.449962746097,
+      4330.449962746097,
+      4330.449962746097,
+      4330.449962746097,
+      4330.449962746097,
+      4428.822362344993,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479,
+      5183.127186013479
+    ],
+    "final_mask_fitness": 5183.127186013478,
+    "extra": {
+      "Q": 2,
+      "particles": 20,
+      "iterations": 30,
+      "qpso_internal_time_s": 78.22752380371094,
+      "qpso_tracemalloc_peak_mb": 34.49248218536377,
+      "random_draw_fitness": 4232.328934256559,
+      "note": "final subset = best evaluated subset (v2); random_draw_fitness = original final-measurement behaviour"
+    }
+  },
+  "model": {
+    "params": {
+      "trainable": 788514,
+      "non_trainable": 0,
+      "total": 788514
+    },
+    "optimizer": {
+      "name": "SGD",
+      "learning_rate": 0.0002500000118743628,
+      "momentum": 0.9,
+      "nesterov": true,
+      "weight_decay": null,
+      "clipnorm": null,
+      "clipvalue": null,
+      "global_clipnorm": null
+    },
+    "kl_weight": 0.001,
+    "lstm_units": 256,
+    "attention_heads": 2,
+    "dropout": 0.2,
+    "latent_dim": 64
+  },
+  "training": {
+    "train_time_s": 1813.755720200017,
+    "epochs_run": 14,
+    "best_epoch": 8,
+    "epoch_times_s": [
+      127.9066698999959,
+      140.96851779997814,
+      129.95430569999735,
+      141.48271929999464,
+      119.49263240001164,
+      120.86598460000823,
+      141.655746799981,
+      122.93604729999788,
+      110.85876499998267,
+      151.89066529998672,
+      131.1565040999849,
+      112.48916130000725,
+      117.77810789999785,
+      144.13438619999215
+    ],
+    "mean_epoch_time_s": 129.54072954285115,
+    "history": {
+      "accuracy": [
+        0.8844512104988098,
+        0.9178018569946289,
+        0.9261163473129272,
+        0.9310901761054993,
+        0.9338740110397339,
+        0.9364537596702576,
+        0.9392375946044922,
+        0.9387179613113403,
+        0.940054178237915,
+        0.9414089918136597,
+        0.9428566098213196,
+        0.9441186189651489,
+        0.9455476999282837,
+        0.9448238611221313
+      ],
+      "loss": [
+        0.3536777198314667,
+        0.27072396874427795,
+        0.245020791888237,
+        0.2332947701215744,
+        0.22376973927021027,
+        0.2171158641576767,
+        0.20774739980697632,
+        0.20944078266620636,
+        0.20239941775798798,
+        0.1986267864704132,
+        0.1962391436100006,
+        0.19127291440963745,
+        0.1879890114068985,
+        0.18782171607017517
+      ],
+      "val_accuracy": [
+        0.9360706806182861,
+        0.9382362961769104,
+        0.9391025900840759,
+        0.9458593130111694,
+        0.9241164326667786,
+        0.9479383230209351,
+        0.9238565564155579,
+        0.9529625773429871,
+        0.9342515468597412,
+        0.9554747343063354,
+        0.9609320759773254,
+        0.9426541924476624,
+        0.9436936974525452,
+        0.9474185705184937
+      ],
+      "val_loss": [
+        0.23052215576171875,
+        0.2017563134431839,
+        0.19291210174560547,
+        0.17854024469852448,
+        0.20737512409687042,
+        0.16088159382343292,
+        0.20043618977069855,
+        0.15023693442344666,
+        0.19011366367340088,
+        0.1539347618818283,
+        0.1681196540594101,
+        0.21277549862861633,
+        0.1783638298511505,
+        0.19819897413253784
+      ],
+      "learning_rate": [
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0010000000474974513,
+        0.0005000000237487257,
+        0.0005000000237487257,
+        0.0005000000237487257
+      ]
+    }
+  },
+  "val_metrics": {
+    "accuracy": 0.952962577962578,
+    "precision_weighted": 0.9530688350889044,
+    "recall_weighted": 0.952962577962578,
+    "f1_weighted": 0.9529236551772093,
+    "f1_macro": 0.9526288064668065,
+    "f1_attack": 0.9566051306641093,
+    "precision_attack": 0.9480437193093616,
+    "recall_attack": 0.9653225806451613,
+    "auc_attack": 0.9904056403322388,
+    "loss_best": 0.15023693442344666
+  },
+  "test_metrics": {
+    "accuracy": 0.9706340956340956,
+    "precision_weighted": 0.9710398298328099,
+    "recall_weighted": 0.9706340956340956,
+    "f1_weighted": 0.9706895151280298,
+    "f1_macro": 0.9699490163580149,
+    "f1_attack": 0.9744863400316098,
+    "precision_attack": 0.9849383842994066,
+    "recall_attack": 0.9642537980339589,
+    "auc_attack": 0.9916853692818257,
+    "mse": 0.02551097422838211,
+    "far_per_class": {
+      "Benign": 0.03574620196604057,
+      "Attack": 0.020496894409937464
+    },
+    "missed_detections_per_class": {
+      "Benign": {
+        "count": 99,
+        "rate": 0.020496894409937464
+      },
+      "Attack": {
+        "count": 240,
+        "rate": 0.03574620196604057
+      }
+    },
+    "auc_roc_per_class": {
+      "Benign": 0.9916853692818257,
+      "Attack": 0.9916853692818257
+    },
+    "confusion_matrix": [
+      [
+        4731,
+        99
+      ],
+      [
+        240,
+        6474
+      ]
+    ],
+    "per_attack_type": {
+      "Benign": {
+        "n": 4830,
+        "frac_pred_attack": 0.020496894409937887
+      },
+      "ICMP Flood": {
+        "n": 1381,
+        "frac_pred_attack": 0.998551774076756
+      },
+      "OS Scan": {
+        "n": 366,
+        "frac_pred_attack": 0.9726775956284153
+      },
+      "Ping Sweep": {
+        "n": 404,
+        "frac_pred_attack": 1.0
+      },
+      "Port Scan": {
+        "n": 3815,
+        "frac_pred_attack": 0.9811271297509829
+      },
+      "Slowloris": {
+        "n": 317,
+        "frac_pred_attack": 0.5173501577287066
+      },
+      "Vulnerability Scan": {
+        "n": 431,
+        "frac_pred_attack": 0.9930394431554525
+      }
+    },
+    "metrics_calculator_raw": {
+      "accuracy": 0.9706340956340956,
+      "precision": 0.9710398298328099,
+      "recall": 0.9706340956340956,
+      "f1_score": 0.9706895151280298
+    }
+  },
+  "deployment": {
+    "latency_b1": {
+      "n_warmup": 50,
+      "n_timed": 1000,
+      "median_ms": 5.09589999273885,
+      "p95_ms": 10.758599994005635,
+      "mean_ms": 6.045396500179777
+    },
+    "throughput_b64": {
+      "samples_per_s": 2436.593428781002,
+      "ms_per_sample": 0.4104090523219904,
+      "n_samples": 11544,
+      "total_s": 4.737762100005057
+    },
+    "T_infer_te_s": 4.9563636999810115,
+    "peak_rss_inference_mb": 760.13671875,
+    "peak_rss_training_mb": 820.328125,
+    "L_C_per_flow": {
+      "what": "context(17)+minmax+mask per flow",
+      "n_timed": 5000,
+      "n_untimed_warmup": 14368,
+      "median_ms": 0.018699996871873736,
+      "p95_ms": 0.03530000685714185,
+      "mean_ms": 0.023457980004604907,
+      "n_active_src_states": 43
+    },
+    "note": "latency/throughput via tf.function(model(x, training=False)); T_infer_te via model.predict(batch_size=64)"
+  },
+  "timing": {
+    "selection_time_s": 78.22759829999995,
+    "train_time_s": 1813.755720200017,
+    "test_predict_b256_s": 4.010560299997451,
+    "wall_total_s": 1922.1658821105957
+  },
+  "env": {
+    "tf": "2.20.0",
+    "threads_intra": 2,
+    "threads_inter": 1,
+    "python": "3.13.5"
+  }
+}

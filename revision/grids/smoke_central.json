@@ -1,0 +1,85 @@
+{
+ "blocks": [
+  {
+   "out_dir": "outputs/smoke/central",
+   "base": {
+    "n_sub": 4000,
+    "epochs": 2,
+    "latency_n": 100,
+    "lc_n": 500,
+    "selector": "qpso",
+    "particles": 3,
+    "iterations": 2,
+    "context": "on"
+   },
+   "grid": {
+    "Q": [
+     1,
+     6
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/smoke/central",
+   "base": {
+    "n_sub": 4000,
+    "epochs": 2,
+    "latency_n": 100,
+    "lc_n": 500,
+    "selector": "pso",
+    "particles": 3,
+    "iterations": 2,
+    "context": "on"
+   },
+   "grid": {
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/smoke/central",
+   "base": {
+    "n_sub": 4000,
+    "epochs": 2,
+    "latency_n": 100,
+    "lc_n": 500,
+    "selector": "variance"
+   },
+   "grid": {
+    "context": [
+     "on",
+     "off"
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/smoke/central",
+   "base": {
+    "n_sub": 4000,
+    "epochs": 2,
+    "latency_n": 100,
+    "lc_n": 500,
+    "selector": "all",
+    "context": "off"
+   },
+   "grid": {
+    "seed": [
+     42
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,114 @@
+full cache ready (0.0s): 1231411 rows, 79 base cols, t in [2023-10-30T09:00:59, 2023-11-03T14:51:14]
+{
+ "mode": "blocked",
+ "counts": {
+  "train": {
+   "n_rows": 55720,
+   "n_segments": 28,
+   "benign": 27859,
+   "attack": 27861,
+   "attack_frac": 0.5000179468772433,
+   "attack_types": {
+    "Benign": 27859,
+    "DNS Flood": 2024,
+    "Dictionary Attack": 285,
+    "ICMP Flood": 10085,
+    "OS Scan": 1705,
+    "Ping Sweep": 17,
+    "Port Scan": 10535,
+    "SYN Flood": 604,
+    "Slowloris": 817,
+    "UDP Flood": 44,
+    "Vulnerability Scan": 1745
+   },
+   "n_windows": 55468,
+   "window_attack_frac": 0.5001983125405639
+  },
+  "val": {
+   "n_rows": 11950,
+   "n_segments": 6,
+   "benign": 4922,
+   "attack": 7028,
+   "attack_frac": 0.5881171548117154,
+   "attack_types": {
+    "Benign": 4922,
+    "Ping Sweep": 1458,
+    "Port Scan": 5570
+   },
+   "n_windows": 11896,
+   "window_attack_frac": 0.5884330867518494
+  },
+  "test": {
+   "n_rows": 11940,
+   "n_segments": 6,
+   "benign": 7015,
+   "attack": 4925,
+   "attack_frac": 0.41247906197654943,
+   "attack_types": {
+    "Benign": 7015,
+    "Ping Sweep": 1674,
+    "Port Scan": 3251
+   },
+   "n_windows": 11886,
+   "window_attack_frac": 0.4125862359077907
+  }
+ },
+ "chronological_counts": {
+  "train": {
+   "n_rows": 56000,
+   "n_segments": 1,
+   "benign": 19948,
+   "attack": 36052,
+   "attack_frac": 0.6437857142857143,
+   "attack_types": {
+    "Benign": 19948,
+    "ICMP Flood": 9973,
+    "OS Scan": 1706,
+    "Ping Sweep": 3163,
+    "Port Scan": 19455,
+    "Vulnerability Scan": 1755
+   }
+  },
+  "val": {
+   "n_rows": 12000,
+   "n_segments": 1,
+   "benign": 8052,
+   "attack": 3948,
+   "attack_frac": 0.329,
+   "attack_types": {
+    "Benign": 8052,
+    "DNS Flood": 2031,
+    "Dictionary Attack": 286,
+    "ICMP Flood": 166,
+    "SYN Flood": 604,
+    "Slowloris": 817,
+    "UDP Flood": 44
+   }
+  },
+  "test": {
+   "n_rows": 12000,
+   "n_segments": 1,
+   "benign": 12000,
+   "attack": 0,
+   "attack_frac": 0.0,
+   "attack_types": {
+    "Benign": 12000
+   }
+  }
+ },
+ "time_range": {
+  "train": [
+   "2023-10-30T10:06:02",
+   "2023-11-03T14:51:02"
+  ],
+  "val": [
+   "2023-10-30T09:00:59",
+   "2023-11-03T09:28:16"
+  ],
+  "test": [
+   "2023-10-30T09:13:51",
+   "2023-11-03T13:38:20"
+  ]
+ }
+}
+report: D:\conquest-milcom\revision\cache\split_report_n80000_s42_ctxon_bdef.json

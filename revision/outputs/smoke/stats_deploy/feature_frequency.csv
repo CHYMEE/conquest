@@ -1,0 +1,41 @@
+selector,context,Q,particles,iterations,k,feature,count,frequency
+qpso,on,6,3,2,40,Src Port,1,1.0
+qpso,on,6,3,2,40,Flow Duration,1,1.0
+qpso,on,6,3,2,40,Total Bwd packets,1,1.0
+qpso,on,6,3,2,40,Fwd Packet Length Max,1,1.0
+qpso,on,6,3,2,40,Fwd Packet Length Min,1,1.0
+qpso,on,6,3,2,40,Fwd Packet Length Std,1,1.0
+qpso,on,6,3,2,40,Bwd Packet Length Max,1,1.0
+qpso,on,6,3,2,40,Bwd Packet Length Min,1,1.0
+qpso,on,6,3,2,40,Bwd Packet Length Mean,1,1.0
+qpso,on,6,3,2,40,Flow Bytes/s,1,1.0
+qpso,on,6,3,2,40,Flow Packets/s,1,1.0
+qpso,on,6,3,2,40,Fwd IAT Mean,1,1.0
+qpso,on,6,3,2,40,Fwd IAT Std,1,1.0
+qpso,on,6,3,2,40,Bwd IAT Mean,1,1.0
+qpso,on,6,3,2,40,Bwd IAT Min,1,1.0
+qpso,on,6,3,2,40,Bwd URG Flags,1,1.0
+qpso,on,6,3,2,40,Bwd Header Length,1,1.0
+qpso,on,6,3,2,40,Packet Length Mean,1,1.0
+qpso,on,6,3,2,40,FIN Flag Count,1,1.0
+qpso,on,6,3,2,40,ACK Flag Count,1,1.0
+qpso,on,6,3,2,40,URG Flag Count,1,1.0
+qpso,on,6,3,2,40,ECE Flag Count,1,1.0
+qpso,on,6,3,2,40,Down/Up Ratio,1,1.0
+qpso,on,6,3,2,40,Fwd Segment Size Avg,1,1.0
+qpso,on,6,3,2,40,Fwd Packet/Bulk Avg,1,1.0
+qpso,on,6,3,2,40,Bwd Packet/Bulk Avg,1,1.0
+qpso,on,6,3,2,40,Bwd Bulk Rate Avg,1,1.0
+qpso,on,6,3,2,40,Subflow Bwd Bytes,1,1.0
+qpso,on,6,3,2,40,Fwd Seg Size Min,1,1.0
+qpso,on,6,3,2,40,Active Max,1,1.0
+qpso,on,6,3,2,40,Active Min,1,1.0
+qpso,on,6,3,2,40,n_flows_src_10,1,1.0
+qpso,on,6,3,2,40,pkt_rate_src_10,1,1.0
+qpso,on,6,3,2,40,bytes_rate_src_60,1,1.0
+qpso,on,6,3,2,40,dt_prev_src_log,1,1.0
+qpso,on,6,3,2,40,max_gap_src_60,1,1.0
+qpso,on,6,3,2,40,n_distinct_dport_10,1,1.0
+qpso,on,6,3,2,40,n_distinct_dst_60,1,1.0
+qpso,on,6,3,2,40,proto_switch,1,1.0
+qpso,on,6,3,2,40,n_proto_switch_60,1,1.0

@@ -168,14 +168,6 @@ Privacy & Not analyzed & Threat model and privacy scope in Table~\ref{tab:privac
 \end{table}
 
 
-%The key contributions are as follows:
-%\begin{itemize}
-    %\item We propose CONQUEST, a reproducible context-aware quantum-inspired IDS framework for robust detection of AI-aided cyberworms in mission-critical IoT/IoV/IoD environments.
-    %\item We establish, through a controlled variable-qubit ablation, that QPSO-based feature selection exhibits an expressiveness stability trade-off with a stability-optimal operating point at $Q{=}6$, yielding 96.85\% accuracy and F1-score, 0.9947 AUC, and 0.0240 MSE under centralized evaluation on the ACI-IoT dataset, with end-to-end latency of 61.2\,ms and memory of 922\,MB.
-
-    %\item We evaluate CONQUEST under horizontal federated learning across four heterogeneity regimes, quantifying deployability via worst-client reliability ($\min_k\,\mathrm{F1}_k{=}0.893$), inter-client dispersion ($\sigma(\mathrm{F1}){=}0.017$), and convergence stability ($R_{99}{=}25$), demonstrating a centralised to federated performance gap of only 2.9\% in F1-score.
-%\end{itemize}
-
 \subsection{Key Contributions}
 The main contributions of this work are as follows.
 \begin{itemize}
@@ -843,7 +835,7 @@ Data & \rc{Subsample} & \rc{80k flows, class-balanced} & \rc{Fixed seed 42} \\
 Training & \rc{Optimizer} & \rc{SGD, Nesterov momentum 0.9} & \rc{Centralized and federated} \\
  & Learning rate & $10^{-3}$ & Centralized and federated \\
  & \rc{Stopping} & \rc{At most 35 epochs, patience 6} & \rc{Validation loss} \\
- & \rc{KL weight} & \rc{$\gamma=10^{-3}$} & \rc{Eq.~\eqref{eq:total_loss}} \\
+ & \rc{KL weight} & \rc{$\gamma=10^{-3}$} & \\
 \midrule
 Model & \rc{Encoder} & \rc{LSTM 256, 2-head attention, LSTM 128} & \rc{Dropout 0.2} \\
  & \rc{Latent size} & \rc{64} & \rc{LSTM(+VAE) variants} \\
@@ -1055,7 +1047,7 @@ effect of each factor and their interaction can be estimated. A
 classical binary PSO selector provides a controlled comparison of
 quantum-inspired and classical updates. It uses inertia 0.7,
 acceleration coefficients $c_1=c_2=1.5$, a sigmoid position mapping,
-top-$k$ decoding, the same trace-ratio fitness of Eq.~\eqref{eq:qpsobj}, and the
+sampling of $k$ features without replacement as in QPSO, the same trace-ratio fitness of Eq.~\eqref{eq:qpsobj}, and the
 same budget of 620 fitness evaluations.} All configurations share
 the same data split, preprocessing, and normalization. Model
 selection and early stopping use only $\mathcal{D}_{\rm va}$, and all
@@ -1535,9 +1527,7 @@ $k$ & Selector & F1 (\%) & FAR (\%) & MD (\%) & Ctx. & Wins \\
 \end{tabular}
 \end{table}
 
-% (Old per-Q latency/memory figure with original numbers removed; replaced by Fig.~\ref{fig:deploy_cost} in Section~\ref{subsec:obj2_latency}.)
 
-% (Old Qm/Qo/Qh comparison removed; superseded by Table~\ref{tab:cyberworm_high_impact} and the factorial ablation.)
 
 
 
@@ -1708,7 +1698,6 @@ $96.51\pm0.67\%$ F1 over ten seeds, 0.62\,pp below $k=40$, whereas
 $k=10$ drops to $93.82\pm1.05\%$. $k=40$ is kept as the default, and
 $k=20$ is reported for deployments that require fewer features.}
 
-% (Old single-run confusion-matrix and radar paragraph removed; see the overall comparison above.)
 
 
 
@@ -1774,7 +1763,6 @@ CONQUEST, $k{=}10$ (3) & 3.09 & 4.33 & 0.257 & 3.37 & 16.5 & 645 & 758k & 22.8 \
 \end{tabular}
 \end{table*}
 
-% (Old Fig. 'Picture Latency' with 3-seed metrics vs Q removed; superseded by Fig.~\ref{fig:q_boxplot}.)
 
 %% ----------------------------------------------------------
 \subsection{Federated Robustness Under Heterogeneous Mission Deployments}

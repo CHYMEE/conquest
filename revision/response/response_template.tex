@@ -1,0 +1,541 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs,multirow,makecell,array}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage[font=small]{caption}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{subcaption}
+\usepackage{textcomp}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+\providecommand{\balance}{}
+\providecommand{\IEEEPARstart}[2]{#1#2}
+
+\renewcommand{\thetable}{\Roman{table}}
+\newenvironment{excerpt}{\begin{quote}\sloppy}{\end{quote}}
+\newcommand{\review}[2]{\par\bigskip\noindent\textbf{\textit{Review #1}}\ \ \textit{``#2''}\par\smallskip\hrule\medskip}
+\newcommand{\reply}{\noindent\textbf{Reply}: }
+\newcommand{\mshead}[2]{\subsection*{\textbf{#1. #2}}}
+\newcommand{\loc}[1]{\par\medskip\noindent\textbf{#1}\par}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{\fill}
+{\Large CONQUEST: A Federated Context-Aware Quantum-Inspired Framework for Robust Cyberworm Detection in Mission-Critical IoT Networks\par}
+\vspace{0.6cm}
+{\large (Manuscript Number: IoT-64147-2026)\par}
+\vspace{0.6cm}
+{\large Response to the Associate Editor and Reviewers\par}
+\vspace{0.6cm}
+{October 2026\par}
+\vspace*{\fill}
+\end{titlepage}
+
+%% =====================================================================
+\section*{To Associate Editor}
+
+Thank you for handling our manuscript and for your remarks. According to
+your letter, our paper (IoT-64147-2026) requires mandatory minor revisions
+based on the comments of Reviewers 1 and 2. We have revised the manuscript
+accordingly. Below, the reviewers' remarks are given in italics, followed by
+our reply in regular style. In the revised manuscript, every modification is
+highlighted in red; the highlighting remains visible when the file is
+printed. Excerpts of the revised manuscript are reproduced below each reply,
+starting from the heading of the section or subsection that contains the
+change, so that each revision is shown in its context. Within each excerpt,
+only the text that answers the comment is shown in red; the surrounding text,
+including revisions made for other comments, is shown in black. Page,
+section, table, figure, and equation numbers refer to the revised manuscript. Table~A summarizes the major differences between the previous
+and the revised manuscript.
+
+\begin{table}[H]
+\centering
+\caption*{Table A: Summary of major differences between the previous manuscript and the revised version.}
+\begin{tabular}{lcc}
+\toprule
+Paper changes & Previous manuscript & Revised manuscript \\
+\midrule
+Number of pages & 16 & 20 \\
+Number of figures & 7 & 10 \\
+Number of tables & 9 & 17 \\
+Number of algorithms & 0 & 1 \\
+Number of references & 35 & 42 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+To answer the comments, all experiments were repeated under a single,
+leakage-free protocol: a blocked temporal split in which every fitting,
+selection, and stopping step uses the training or validation data only, ten
+seeds per centralized configuration with QPSO re-executed in every run, and
+one common configuration for all federated experiments. The main changes are:
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+  \item an exact definition of how the register size $Q$ enters QPSO
+        (Eqs.~(7)--(11), Algorithm~1, Table~V) and an analysis of the search
+        dynamics versus $Q$ (Fig.~3);
+  \item a ten-seed register-size ablation with Friedman and Holm-corrected
+        Wilcoxon tests, a search-budget sensitivity study, and the selected
+        feature subset with its stability across seeds;
+  \item a $2\times2$ factorial ablation of context features and QPSO, and a
+        classical PSO baseline at an equal search budget;
+  \item exact definitions of the 17 context features and a table of the data
+        used by every fitting, selection, and stopping step;
+  \item a federated evaluation under one configuration with $K=5$, 10, and
+        20 clients, three aggregators, three mask-construction modes, a threat
+        model, secure aggregation, and differential privacy;
+  \item a redefined, separately measured deployment cost with explicit units
+        and measurement procedure;
+  \item a table that distinguishes the journal extension from the conference
+        version.
+\end{itemize}
+
+%% =====================================================================
+\clearpage
+\section*{To Reviewer \#1}
+
+The authors appreciate the reviewer's careful and constructive evaluation.
+The comments identified the points where the definition of the method, the
+statistical support of its claims, and the reporting of its costs were not
+yet sufficient for reproduction. Addressing them has substantially
+strengthened the manuscript.
+
+%% ---------------------------------------------------------------------
+\review{1.1}{In Section III, manuscript pp.~4--6, particularly Table II and Eqs.~(6)--(9), $Q$ is defined as the `number of qubits,' but its actual role in the QPSO algorithm is unclear. The particle is defined as $p_i \in [0,1]^d$ and the mask as $m_i \in \{0,1\}^d$, while $Q$ does not appear in the update equations. The authors should explicitly define how $Q$ changes the particle representation, search process, and mapping to the feature mask.}
+
+\reply We thank the reviewer for this important comment. Section~III-B now
+defines the complete QPSO procedure and states exactly where $Q$ enters it.
+\begin{itemize}[leftmargin=*,itemsep=1pt]
+  \item \textit{Particle representation.} Each particle holds one
+        non-negative, normalized amplitude per feature, so its dimension is
+        $d$ for every $Q$; $Q$ does not change the representation.
+  \item \textit{Search process.} $Q$ enters at three points: the
+        initialization at the uniform amplitude of a $Q$-qubit register
+        (Eq.~(7)), the rotation-angle bound $\pi/(2Q)$ toward the personal and
+        global bests (Eqs.~(8)--(9)), and the collapse probability $2^{-Q}$
+        with which each amplitude is reset (Eq.~(10)). Algorithm~1 marks these
+        steps, and Table~V lists the resulting constants for $Q=1$ to 10.
+  \item \textit{Mapping to the mask.} A mask is obtained by drawing $k$
+        distinct features with probabilities proportional to the squared
+        amplitudes (Eq.~(11)); each run returns the highest-fitness mask
+        evaluated. $k$ is fixed, so $Q$ determines which features are found,
+        not how many.
+\end{itemize}
+Fig.~3 confirms the resulting behavior empirically: $Q=1$ samples almost
+uniformly, $Q=4$ to 7 concentrate the search on a feature subset, and
+$Q\ge9$ barely moves the particles. The notation table (Table~III) now
+defines $Q$, $d$, $k$, $P$, and $I$, and the manuscript states that the
+method is quantum-inspired and simulates no quantum state.
+
+\loc{(a) Page 6: Added the particle representation, the role of $Q$, and the mask measurement to Section III-B}
+%%EXCERPT{\textcolor{red}{Each of the $P$ particles}{lists the constants set by each $Q$.}}
+%%FLOAT{tab:q_constants}
+
+\loc{(b) Pages 6--8: Added the analysis of the effect of $Q$ on the search to Section III-B}
+%%EXCERPT{\textcolor{red}{Table~\ref{tab:q_constants} shows}{rarely reproduce the best subset.}}
+%%FLOAT{fig:qpso_dynamics}
+
+%% ---------------------------------------------------------------------
+\review{1.2}{In Section III-B and Table V, manuscript pp.~6 and 9, $Q=6$ is described as a `stability-optimal' regime based only on $Q=1$--8 and three seeds. This supports only that $Q=6$ is best among the tested settings. The authors should justify the tested range, use more stochastic runs, and provide statistical comparisons, or moderate the claim.}
+
+\reply We agree, and we have done all three. First, the ablation now uses
+ten seeds per register size, and QPSO is re-executed in every run, so the
+reported variance includes the variability of the optimizer itself. Second,
+the comparisons are tested statistically: a Friedman test finds no effect of
+$Q$ on test F1 ($\chi^2_7=6.07$, $p=0.53$), test AUC ($p=0.63$), or
+validation F1 ($p=0.54$), and $Q=6$ is statistically indistinguishable from
+every other setting (Holm-adjusted Wilcoxon $p\ge0.59$). Third, the claim is
+moderated: $Q^{*}=6$ is now selected by a pre-declared rule on validation
+data and described as a reproducible default, not a stability optimum; the
+term ``stability-optimal'' has been removed throughout. The tested range is
+justified by Table~V: beyond $Q=8$, fewer than 0.2 amplitudes per particle
+are reset per iteration, so the search stays close to its initialization.
+The range was nevertheless extended: $Q=9$ and 10 give 97.30\% and 97.25\%
+F1, and training all $Q$ from 1 to 10 at the largest search budget gives no
+effect of $Q$ either (Friedman $p=0.46$).
+
+\loc{(a) Page 7: Added the pre-declared selection rule for $Q^{*}$ to Section III-B}
+%%EXCERPT{\textcolor{red}{The register size $Q^{*}$ is the value in}{reproducible default rather than an optimum.}}
+
+\loc{(b) Pages 13--14: Revised the register-size ablation in Section IV-A with ten seeds and statistical tests}
+%%EXCERPT{\textcolor{red}{Table~\ref{tab:qubit_ablation_improved_robust}}{and 97.25\% at $Q=10$.}}
+%%FLOAT{tab:qubit_ablation_improved_robust}
+%%EXCERPT{\textcolor{red}{Together with Fig.}{and $Q=9$ and 10 fall in the same band.}}
+%%FLOAT{fig:q_boxplot}
+
+%% ---------------------------------------------------------------------
+\review{1.3}{In Section III-B and Table III, manuscript pp.~5--7, the QPSO search uses 20 particles and 30 iterations, but no sensitivity analysis shows that this budget is sufficient. The degradation at $Q=7$--8 may reflect insufficient search rather than excessive qubit expressiveness. The authors should test whether larger particle or iteration budgets change the apparent optimum.}
+
+\reply We thank the reviewer for this insightful comment and have added the
+requested sensitivity analysis. The search alone was repeated for $Q=1$ to 10
+with up to eight times the default number of fitness evaluations, and full
+detectors were trained for $Q=6$ to 10 with 20 or 40 particles and 30 or 60
+iterations, and for all $Q$ from 1 to 10 at the largest budget, with five
+seeds each. A larger budget raises the best fitness found (Friedman
+$p<10^{-4}$), but it does not improve detection: test F1 stays within
+96.9--97.3\% in every cell, with no budget effect (Friedman $p=0.50$), and
+validation F1 even decreases slightly at the largest budget. No degradation
+at $Q=7$ or 8 appears at any budget, and the validation-selected $Q$ changes
+with the budget, as expected when no setting is genuinely better. The
+degradation reported in the previous version came from three seeds with a
+single QPSO run per $Q$ and is not reproduced with ten seeds. The default
+budget of 20 particles and 30 iterations is therefore sufficient for
+detection and is retained at the lowest cost.
+
+\loc{(a) Pages 7--8: Added the design of the search-budget experiments to Section III-B}
+%%EXCERPT{\textcolor{red}{Two experiments test whether the default}{and seed.}}
+
+\loc{(b) Pages 13--15: Added the search-budget sensitivity study to Section IV-A}
+%%EXCERPT{\textcolor{red}{\textbf{Search-budget sensitivity.}}{for detection at the lowest cost.}}
+%%FLOAT{tab:budget_sensitivity}
+%%FLOAT{fig:budget}
+
+%% ---------------------------------------------------------------------
+\review{1.4}{In Section III-B, manuscript pp.~5--6, the final selected feature subset is not reported. The manuscript should provide the selected feature names, the number of retained features $k=\|m^{*}\|_0$, and the consistency of the selected subsets across seeds. Otherwise, the claimed feature compactness and stability cannot be verified.}
+
+\reply We thank the reviewer and now report all three. The number of
+retained features is fixed at $k=\|\mathbf{m}^{*}\|_0=40$ of the 86 input
+features. Because a single run's mask depends on its seed, the deployed
+detector uses a consensus mask, the 40 features selected most often across
+the ten QPSO runs; Table~XI lists their names and selection frequencies, and
+Fig.~8 shows the selection frequency of every feature for every $Q$.
+Consistency is quantified by the mean pairwise Jaccard index, 0.36 at
+$Q^{*}=6$ against 0.30 for random subsets, rising to 0.53 against 0.45 when
+redundant features (absolute Spearman correlation of at least 0.9) are
+grouped. A small core is selected consistently, and the consensus mask
+reaches $97.27\pm0.23\%$ F1, statistically equal to the individual masks.
+Because $k=40$ keeps 47\% of the features, the claim of compactness has been
+withdrawn; a compact operating point at $k=20$ is reported instead, together
+with a comparison of selectors at $k=40$, 20, and 10 (Table~XII). Six
+CICFlowMeter fields that are constant on the training data are now removed
+before selection, so they can no longer occupy mask slots.
+
+\loc{(a) Page 6: Added the consensus mask to Section III-B}
+%%EXCERPT{\textcolor{red}{Because a single run's mask depends on its}{test data.}}
+
+\loc{(b) Pages 13--15: Added the selected features and their stability to Section IV-A}
+%%EXCERPT{\textcolor{red}{\textbf{Selected features and stability.}}{$Q^{*}=6$.}}
+%%EXCERPT{\textcolor{red}{Table~\ref{tab:selected_features} lists the}{that require fewer features.}}
+%%FLOAT{tab:selected_features}
+%%FLOAT{fig:feature_heatmap}
+
+\loc{(c) Pages 4--5: Added the zero-variance filter to Section III-A}
+%%EXCERPT{\textcolor{red}{Six CICFlowMeter fields}{features (69 static and 17 context).}}
+
+%% ---------------------------------------------------------------------
+\review{1.5}{In Section III-B and III-E, manuscript p.~6, the QPSO fitness repeatedly evaluates candidate masks using F1, AUC, MSE, and error-balance terms. The manuscript should explicitly state which data split is used for each selection step and confirm that the test set is never used for QPSO fitness, Q selection, weight tuning, or early stopping.}
+
+\reply We thank the reviewer for this essential comment. The revised
+manuscript states the split used by every step and confirms that the test
+set is used only for reporting. The QPSO fitness is now the Fisher trace
+ratio of the selected features (Eq.~(12)), a label-based filter criterion
+computed on the training split only; it contains no F1, AUC, MSE, or
+error-balance terms and therefore has no weights to tune. $Q^{*}$ is
+selected on the validation split, early stopping and the learning-rate
+schedule monitor the validation loss, the zero-variance filter and the
+min--max normalization are fitted on the training split, and the search
+budget, $k$, and the classifier hyperparameters were fixed before the
+experiments. The data split itself is now a blocked temporal split with a
+purge gap, so no window spans two splits. Table~VII lists the data used by
+every fitting, selection, and stopping step.
+
+\loc{(a) Pages 5--6: Added the leakage-free blocked temporal split to Section III-A}
+%%EXCERPT{\textcolor{red}{A class-balanced subsample of 80}{six.}}
+%%EXCERPT{\textcolor{red}{The min--max parameters are computed on}{clipped.}}
+
+\loc{(b) Pages 7--9: Added the data used by each fitting, selection, and stopping step to Section III-B}
+%%EXCERPT{\textcolor{red}{Table~\ref{tab:data_usage} lists the data}{a model, or a setting.}}
+%%FLOAT{tab:data_usage}
+
+%% ---------------------------------------------------------------------
+\review{1.6}{In Section III-E and Section IV-A, manuscript pp.~6 and 8--9, the +2.21 pp F1 improvement of QCIDS over OS-CIDS cannot be attributed specifically to QPSO because QCIDS changes both context-aware representation and feature selection. A proper ablation should isolate these two components.}
+
+\reply We agree and have added the requested ablation. A $2\times2$ factorial
+design crosses context features (off, on) with the selector (variance
+ranking, QPSO), all with the same classifier, data protocol, and $k=40$, over
+ten seeds (Table~X); a classical PSO selector at an equal search budget is
+added as a further control. The ablation shows that neither component helps
+on its own: context features lower the F1 of variance ranking by 0.51\,pp,
+and QPSO on static features alone lowers F1 by 1.07\,pp. Combined, they raise
+F1 by 1.23\,pp over QPSO alone and by 0.68\,pp over variance ranking with
+context, and their interaction, $+1.74$\,pp ($p=0.002$), is the dominant
+effect. The gain therefore comes from combining context features with
+label-aware selection, not from QPSO alone. Under the leakage-free protocol,
+CONQUEST has the highest mean F1, 97.13\%, but its F1 is not significantly
+higher than that of OS-CIDS ($p=0.32$); the +2.21\,pp gain of the previous
+version does not hold. The pipelines differ instead in the type of error:
+CONQUEST misses significantly fewer attacks than OS-CIDS (3.33\% versus
+4.21\%, $p=0.004$) at the cost of more false alarms (2.24\% versus 1.43\%).
+The abstract, contributions, and conclusion have been revised to state this
+result accurately.
+
+\loc{(a) Page 9: Added the factorial design and the classical PSO control to Section III-E}
+%%EXCERPT{OS-CIDS and QCIDS therefore differ in two factors at once.}{same budget of 620 fitness evaluations.}}
+
+\loc{(b) Pages 12--13: Revised the overall comparison and added the factorial ablation to Section IV-A}
+%%EXCERPT{\textcolor{red}{\textbf{Overall comparison.}}{false alarms and missed attacks.}}
+%%FLOAT{tab:cyberworm_high_impact}
+%%EXCERPT{\textcolor{red}{\textbf{Context features versus QPSO.}}{as listed in Table~\ref{tab:selected_features}.}}
+%%FLOAT{tab:centralized_compare}
+
+%% ---------------------------------------------------------------------
+\review{1.7}{In Section III-A and Fig.~2, manuscript pp.~4--7, the context-aware features are not defined in sufficient detail. The manuscript should report the exact burst, dormant-interval, sliding-window, and transition features, including their dimensions and construction parameters.}
+
+\reply We thank the reviewer for this comment. Section~III-A now defines all
+17 context features exactly. Each feature is computed from the history set of
+Eq.~(4), the earlier flows of the same source IP within a look-back window
+$W$; two windows are used, $W=10$\,s for short bursts and $W=60$\,s for slower
+propagation and dormancy, both fixed before the experiments. Table~IV gives,
+for every feature, its group (burst, dormant interval, diversity, or
+transition), its formula, its window, its default value when the source has
+no earlier flow, and its dimension: six burst, three dormant-interval, four
+diversity, and four transition features. Every feature depends only on past
+traffic of the same source and uses no labels. The 75 static CICFlowMeter
+descriptors and the fields excluded to prevent identity shortcuts are also
+listed, and a streaming implementation is verified to give identical values.
+
+\loc{(a) Pages 4--5: Added the static descriptors and the exact context-feature definitions to Section III-A}
+%%EXCERPT{\textcolor{red}{$\mathbf{F}_s$ contains the 75}{would leak capture time.}}
+%%EXCERPT{\textcolor{red}{Table~\ref{tab:context_features} defines}{density.}}
+%%FLOAT{tab:context_features}
+
+%% ---------------------------------------------------------------------
+\review{1.8}{In Section III-G, manuscript p.~8, QPSO feature selection is performed on a server-held proxy dataset before federated training. The authors should explain the origin and representativeness of this dataset and clarify how this centralized step is compatible with the stated data-sovereignty motivation. The effect of using one global mask for non-IID clients should also be evaluated.}
+
+\reply We thank the reviewer for raising this point. \textit{Origin and
+representativeness:} the proxy set is a labelled 5\% subset of the training
+split (2{,}750 flows), made of evenly spaced contiguous chunks so that it spans
+the capture period; it contains 54\% attacks of five types and is withheld
+from all clients. It models the small reference capture that a mission
+operator typically owns, for example from its own test range or a public
+benchmark. \textit{Compatibility with data sovereignty:} the proxy set never
+contains client traffic, and only the resulting feature indices are
+broadcast. As an alternative that needs no server-held data, a vote mode was
+added, in which each client runs QPSO locally and sends only its selected
+indices. \textit{Effect of one global mask:} the proxy and vote masks were
+compared with an oracle mask built on all pooled training data under
+quantity skew and Dirichlet $\alpha=0.1$. A mask built without pooling data
+costs at most 0.51\,pp of global F1 relative to the oracle, and the worst
+client is not systematically worse off, with a worst-client F1 of
+96.2--97.6\% in all six settings. Table~VIII summarizes what each mode
+reveals to the server.
+
+\loc{(a) Page 10: Added the proxy set and the mask-construction modes to Section III-G}
+%%EXCERPT{\textcolor{red}{The proxy set is a labelled}{serves only as an oracle reference.}}
+
+\loc{(b) Page 17: Added the evaluation of one global mask for non-IID clients to Section IV-C}
+%%EXCERPT{\textcolor{red}{\textbf{Global mask for non-IID clients.}}{when no suitable proxy data exist.}}
+
+%% ---------------------------------------------------------------------
+\review{1.9}{In Section IV-C and Table VIII, manuscript pp.~11--13, FedAvg under quantity-skew reports F1=0.910 in one block and F1=0.869 in another. The reason for this discrepancy is unclear. The authors should specify whether the partitions, seeds, initialization, and training settings differ across these experiments.}
+
+\reply We thank the reviewer for noticing this discrepancy. Its cause was a
+difference in training settings: the aggregator comparison used 8 rounds
+with one local epoch, the heterogeneity sweep 15 rounds, and the extended run
+60 rounds, which led to two different FedAvg results for the same quantity-skew
+partition. All federated experiments have been re-run with one configuration:
+30 rounds, two local epochs, batch size 64, full participation, the proxy mask
+unless stated otherwise, and three seeds. Partitions are built from
+contiguous 250-flow chunks of the training split with fixed seeds, so every
+row of Table~XVI uses identical partitions, seeds, and initialization and is
+directly comparable; FedAvg under quantity skew now reaches
+$96.66\pm0.38\%$ F1 in every comparison. SCAFFOLD and FLAME were
+re-implemented following their published algorithms, and convergence is now
+measured by $R_{99}$, because a 90\% threshold is reached in the first round
+in every regime.
+
+\loc{(a) Page 11: Added one configuration for all federated experiments to Section III-G}
+%%EXCERPT{\textcolor{red}{All federated experiments use one}{are computed on $\mathcal{D}_{\rm te}$.}}
+%%EXCERPT{\textcolor{red}{Two aggregators are compared}{the median norm.}}
+
+\loc{(b) Pages 15--17: Revised the federated results in Section IV-C}
+%%FLOAT{tab:fl_performance_extended}
+%%EXCERPT{\textcolor{red}{\textbf{Heterogeneity.}}{and 11.3 rounds.}}
+
+%% ---------------------------------------------------------------------
+\review{1.10}{In Sections III-C--III-D and IV-B, manuscript pp.~6 and 10--11, the latency definitions are inconsistent. The paper reports approximately 3.60\,s inference time but 61.2\,ms end-to-end latency for $Q=6$, while Eq.~(15) includes QPSO even though QPSO is said to be excluded from deployment inference. These quantities should be clearly separated and defined.}
+
+\reply We thank the reviewer and agree that these quantities were not
+separated. The 3.60\,s inference time was the total time to classify the
+whole test set of about 12{,}000 windows, not a per-detection latency; it
+corresponds to about 0.3\,ms per window. The 61.2\,ms end-to-end latency, the
+latency-budget share, and the per-$Q$ memory values came from a decomposition
+that wrongly placed QPSO on the inference path. Section~III-D now separates
+two cost categories. The \textit{offline training cost}, which includes the
+QPSO search, is incurred once per model and never on the detection path. The
+\textit{online deployment cost} is the per-window latency of Eq.~(15), the
+incremental context-feature update plus one forward pass of the classifier;
+QPSO does not appear in it. All deployment costs were re-measured in
+isolation: CONQUEST classifies one window in a median of 2.98\,ms (95th
+percentile 4.55\,ms), batched classification costs 0.25\,ms per window, the
+context update adds 16\,$\mu$s per flow, the whole test set takes 3.23\,s, and
+the inference process peaks at 541\,MB. These costs are practically the same
+for $Q=1$, 6, and 8, which confirms that the inference cost does not depend
+on $Q$ (Eq.~(1)).
+
+\loc{(a) Page 9: Added the separation of offline and online costs to Section III-D}
+%%EXCERPT{\textcolor{red}{CONQUEST distinguishes two cost}{one forward pass of the classifier.}}
+
+\loc{(b) Pages 15--16: Revised the measured deployment cost in Section IV-B}
+%%EXCERPT{\textcolor{red}{Table~\ref{tab:latency_profile_qcids}}{requires ten such runs.}}
+%%FLOAT{tab:latency_profile_qcids}
+%%FLOAT{fig:deploy_cost}
+
+%% ---------------------------------------------------------------------
+\review{1.11}{In Section III-C and Table III, manuscript pp.~6--7, the optimizer description is inconsistent: the text states SGD, whereas Table III lists Adam. The manuscript should clearly identify which optimizer was used for each reported result.}
+
+\reply We thank the reviewer and apologize for this inconsistency. Every
+reported result uses SGD with Nesterov momentum 0.9 and learning rate
+$10^{-3}$, with batch size 32 for centralized training and 64 for the local
+updates of federated clients. Adam is not used; the Adam entry in the former
+Table~III was carried over from the optimizer comparison of the conference
+version, which retained SGD. The implementation table (Table~VI) has been
+corrected, and Section~III-C now specifies the full architecture, the loss,
+and the stopping rule.
+
+\loc{(a) Page 9: Revised the architecture, loss, and optimizer in Section III-C}
+%%EXCERPT{\textcolor{red}{where $\boldsymbol{\mu}$ and}{predictions are deterministic.}}
+%%EXCERPT{\textcolor{red}{The parameters $\theta$ are optimized with}{down to $10^{-6}$.}}
+
+%% =====================================================================
+\clearpage
+\section*{To Reviewer \#2}
+
+The authors thank the reviewer for the positive assessment of the framework
+and for the constructive concerns, which have helped us make the privacy
+scope, the scalability, the role of the quantum-inspired search, and the
+cost reporting of CONQUEST precise.
+
+%% ---------------------------------------------------------------------
+\review{2.1}{The manuscript repeatedly describes CONQUEST as privacy-preserving because raw traffic is retained locally. However, the explicit privacy mechanisms, such as differential privacy, secure aggregation, or protection against inference attacks on model updates, must be addressed to achieve privacy in its true sense.}
+
+\reply We agree with the reviewer. Keeping raw traffic local provides data
+locality, not formal privacy, and the manuscript no longer describes
+CONQUEST as privacy-preserving on that basis. We have added a threat model,
+an honest-but-curious server with honest clients, and Table~VIII lists what
+each party can observe and how it is protected. Two mechanisms are then
+addressed explicitly. \textit{Secure aggregation} with additive pairwise
+masking lets the server learn only the sum of the client updates; because the
+masks cancel, the aggregated model, and therefore every reported detection
+result, is identical to plain FedAvg. \textit{Client-level differential
+privacy} (DP-FedAvg) was implemented and evaluated with noise multipliers
+$z=1$, 3, and 8, corresponding to $\varepsilon=41.3$, 10.4, and 3.5 at
+$\delta=10^{-5}$. With five clients, the noise is of the same order as the
+averaged update, and the F1 falls to 36.7--47.2\%; client-level DP becomes
+usable only for federations with many more clients. For mission federations
+with a handful of sites, secure aggregation is therefore the practical
+protection of individual updates against inference attacks, and the
+manuscript states this scope explicitly.
+
+\loc{(a) Page 1: Revised the Introduction to separate data locality from formal privacy}
+%%EXCERPT{\textcolor{red}{on its}{differential privacy is added}}
+
+\loc{(b) Pages 10--11: Added the threat model, secure aggregation, and differential privacy to Section III-G}
+%%EXCERPT{\textcolor{red}{We assume}{non-private FedAvg runs.}}
+%%EXCERPT{\textcolor{red}{Client-level DP is not usable}{record-level DP-SGD within each site.}}
+%%FLOAT{tab:privacy_scope}
+
+%% ---------------------------------------------------------------------
+\review{2.2}{The authors have used only five clients and created IID, label-skew, quantity-skew, and Dirichlet partitions from the ACI-IoT dataset. However, the paper discussed critical distributed IoT environments. The authors must address sensitivity analysis with different numbers of clients.}
+
+\reply We thank the reviewer for this suggestion. The quantity-skew
+experiment was repeated with $K=5$, 10, and 20 clients on the same training
+data and under the same configuration. The global F1 is 96.66\%, 96.71\%, and
+96.25\%, so CONQUEST scales to at least 20 clients at a cost of 0.41\,pp.
+Larger federations of smaller clients converge more slowly, with $R_{99}$ of
+7.3, 10.7, and 16.0 rounds, and widen the tail: with 20 clients, the worst
+client reaches 94.65\% F1. These results are reported in Table~XVI and
+Fig.~10(c), together with the per-client metrics that matter in distributed
+mission deployments.
+
+\loc{(a) Page 17: Added the sensitivity analysis to the number of clients to Section IV-C}
+%%EXCERPT{\textcolor{red}{\textbf{Number of clients.}}{tail-aware reporting adopted here.}}
+%%FLOAT{fig:hfl-multianalysis}
+
+%% ---------------------------------------------------------------------
+\review{2.3}{It was mentioned that the proposed framework is quantum-inspired and is executed on a conventional CPU-based platform. The phrases `such mechanisms' and `advantage' may be misleading unless the authors provide a controlled comparison against classic updates with equivalent search budgets.}
+
+\reply We agree and have added the requested controlled comparison. A
+classical binary PSO selector uses the same fitness, the same feature budget
+$k=40$, the same sampling of $k$ features without replacement, and the same budget of 620 fitness
+evaluations as QPSO. Classical PSO reaches a higher fitness than QPSO (4919
+versus 4401) in less time (76\,s versus 106\,s), while the resulting detectors
+are statistically indistinguishable ($p=0.23$ for F1 and $p=0.49$ for missed
+attacks). No quantum advantage is therefore claimed: the phrases in question
+have been removed and the comparison is extended to
+feature budgets of 20 and 10 in Table~XII.
+
+\loc{(a) Page 1: Revised the motivation in the Introduction}
+%%EXCERPT{\textcolor{red}{that have been reported}{evaluation budget are missing}}
+
+\loc{(b) Pages 6--7: Added that QPSO is quantum-inspired and runs on classical hardware to Section III-B}
+%%EXCERPT{\textcolor{red}{CONQUEST is quantum-\emph{inspired}}{capacity.}}
+
+\loc{(c) Page 9: Added the classical PSO baseline at an equal search budget to Section III-E}
+%%EXCERPT{classical binary PSO selector provides a controlled comparison}{same budget of 620 fitness evaluations.}}
+
+\loc{(d) Page 12: Added the comparison of quantum-inspired and classical search to Section IV-A}
+%%EXCERPT{\textcolor{red}{\textbf{Quantum-inspired versus classical}{not superior accuracy.}}
+
+%% ---------------------------------------------------------------------
+\review{2.4}{It was mentioned that 61.2\,ms end-to-end latency was also reported, with an inference time of about 3.60\,s. The authors must specify the latency unit, whether it is per sample, per batch, or for the complete test set. The authors address the detailed reproducible measurement procedure for each metric.}
+
+\reply We thank the reviewer and agree that the units were not stated. The
+3.60\,s figure was the total time to classify the complete test set, not a
+per-sample latency, and the 61.2\,ms figure wrongly included the QPSO search,
+which runs once offline and never during detection. Section~III-D now
+separates the offline training cost from the per-window deployment cost and
+states the unit and measurement procedure of every metric. All deployment
+costs were re-measured in isolation (Section~IV-B, Table~XV, Fig.~9):
+CONQUEST classifies one window of ten flows in a median of 2.98\,ms at batch
+size 1, and the complete test set of 11{,}544 windows in 3.23\,s.
+
+\loc{(a) Page 9: Added the cost categories, the units, and the measurement procedure to Section III-D}
+%%EXCERPT{\textcolor{red}{All timings use}{constrained~\cite{amadi2026lightweight}.}
+
+\loc{(b) Pages 15--16: Added the re-measured deployment cost with units to Section IV-B}
+%%EXCERPT{\textcolor{red}{Table~\ref{tab:latency_profile_qcids}}{requires ten such runs.}}
+%%FLOAT{tab:latency_profile_qcids}
+%%FLOAT{fig:deploy_cost}
+
+%% ---------------------------------------------------------------------
+\review{2.5}{The manuscript explicitly extends the previously published CONQUEST conference work. The authors must clearly distinguish these two in terms of methodological, experimental, and analytical advancement.}
+
+\reply We thank the reviewer for this comment. Table~I in the Introduction
+now itemizes the differences between the conference version and the journal
+extension along the three requested dimensions. Methodologically, the
+extension replaces random splitting of pooled data with a blocked temporal,
+training-only protocol, defines the context features and the role of $Q$
+exactly, and adds federated training with three mask-construction modes.
+Experimentally, it adds a ten-seed register-size ablation, a search-budget
+study, a factorial ablation, an equal-budget classical PSO baseline,
+feature-subset and stability analysis, and a federated evaluation under four
+heterogeneity regimes, three aggregators, and up to 20 clients. Analytically,
+it adds statistical testing, an analysis of the QPSO search dynamics,
+tail-aware federated metrics, measured deployment cost, and a privacy
+analysis. Section~IV-D summarizes these differences again in the light of the
+results.
+
+\loc{(a) Pages 1--2: Added the distinction from the conference version to the Introduction}
+%%EXCERPT{This journal version extends the conference}{analytical differences.}}
+%%FLOAT{tab:conf_vs_journal}
+
+\loc{(b) Page 18: Added the advances over the conference version to Section IV-D}
+%%EXCERPT{\textcolor{red}{The}{robustness bounds.}
+
+\bigskip
+\noindent\textbf{Overall, the authors wish to thank the editor and all the
+reviewers for their insightful review comments and constructive criticisms,
+which have helped the authors improve the quality of the revised manuscript
+in terms of content and clarity.}
+
+\end{document}

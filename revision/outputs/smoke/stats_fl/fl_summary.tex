@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\caption{Federated results (mean $\pm$ std over seeds), $R=30$, $E=2$.}
+\label{tab:rev_fl}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lllllccccc}
+\hline
+partition & alpha & K & aggregator & mask\_mode & final\_f1 & final\_auc & client\_f1\_min & client\_f1\_sigma & R90 \\ \hline
+dirichlet & 0.1 & 5 & fedavg & vote & 86.54 $\pm$ 0.00 & 0.97 $\pm$ 0.00 & 5.79 $\pm$ 0.00 & 33.90 $\pm$ 0.00 & 1.00 $\pm$ 0.00 \\
+iid & nan & 5 & fedavg & proxy & 88.55 $\pm$ 0.00 & 0.95 $\pm$ 0.00 & 35.02 $\pm$ 0.00 & 27.39 $\pm$ 0.00 & 2.00 $\pm$ 0.00 \\
+label_skew & nan & 5 & fedavg & proxy & 86.32 $\pm$ 0.00 & 0.95 $\pm$ 0.00 & 77.34 $\pm$ 0.00 & 7.19 $\pm$ 0.00 & 2.00 $\pm$ 0.00 \\
+quantity_skew & nan & 5 & fedavg & proxy & 87.19 $\pm$ 0.00 & 0.92 $\pm$ 0.00 & 47.71 $\pm$ 0.00 & 18.34 $\pm$ 0.00 & 2.00 $\pm$ 0.00 \\
+quantity_skew & nan & 5 & flame & central & 84.08 $\pm$ 0.00 & 0.95 $\pm$ 0.00 & 46.11 $\pm$ 0.00 & 21.54 $\pm$ 0.00 & 1.00 $\pm$ 0.00 \\
+quantity_skew & nan & 5 & scaffold_like & central & 66.99 $\pm$ 0.00 & 0.80 $\pm$ 0.00 & 41.25 $\pm$ 0.00 & 20.99 $\pm$ 0.00 & 2.00 $\pm$ 0.00 \\
+\hline
+\end{tabular}}
+\end{table}

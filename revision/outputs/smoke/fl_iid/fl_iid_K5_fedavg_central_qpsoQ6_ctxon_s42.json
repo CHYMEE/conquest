@@ -1,0 +1,629 @@
+{
+  "run_name": "fl_iid_K5_fedavg_central_qpsoQ6_ctxon_s42",
+  "config": {
+    "cmd": "run",
+    "partition": "iid",
+    "alpha": 0.5,
+    "K": 5,
+    "aggregator": "fedavg",
+    "mask_mode": "central",
+    "selector": "qpso",
+    "Q": 6,
+    "particles": 3,
+    "iterations": 2,
+    "k": 40,
+    "seed": 42,
+    "data_seed": 42,
+    "rounds": 6,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "lr": 0.001,
+    "kl_weight": 0.001,
+    "context": "on",
+    "n_sub": 8000,
+    "time_steps": 10,
+    "block_size": null,
+    "chunk_rows": 250,
+    "proxy_frac": 0.05,
+    "scaffold_cv_lr": "plain",
+    "flame_lambda": 0.001,
+    "client_eval_frac": 0.15,
+    "min_chunks": 2,
+    "threads": 1,
+    "inter_threads": 1,
+    "out_dir": "outputs/smoke/fl_iid",
+    "tag": "",
+    "force": false
+  },
+  "seeds": {
+    "run_seed": 42,
+    "data_seed": 42
+  },
+  "data": {
+    "mode": "blocked",
+    "counts": {
+      "train": {
+        "n_rows": 5320,
+        "n_segments": 28,
+        "benign": 2657,
+        "attack": 2663,
+        "attack_frac": 0.5005639097744361,
+        "attack_types": {
+          "Benign": 2657,
+          "DNS Flood": 177,
+          "Dictionary Attack": 36,
+          "ICMP Flood": 949,
+          "OS Scan": 132,
+          "Ping Sweep": 1,
+          "Port Scan": 1056,
+          "SYN Flood": 53,
+          "Slowloris": 82,
+          "UDP Flood": 3,
+          "Vulnerability Scan": 174
+        }
+      },
+      "val": {
+        "n_rows": 1150,
+        "n_segments": 6,
+        "benign": 467,
+        "attack": 683,
+        "attack_frac": 0.5939130434782609,
+        "attack_types": {
+          "Benign": 467,
+          "Ping Sweep": 147,
+          "Port Scan": 536
+        }
+      },
+      "test": {
+        "n_rows": 1140,
+        "n_segments": 6,
+        "benign": 683,
+        "attack": 457,
+        "attack_frac": 0.40087719298245617,
+        "attack_types": {
+          "Benign": 683,
+          "Ping Sweep": 149,
+          "Port Scan": 308
+        }
+      }
+    },
+    "chronological_counts": {
+      "train": {
+        "n_rows": 5600,
+        "n_segments": 1,
+        "benign": 1996,
+        "attack": 3604,
+        "attack_frac": 0.6435714285714286,
+        "attack_types": {
+          "Benign": 1996,
+          "ICMP Flood": 971,
+          "OS Scan": 142,
+          "Ping Sweep": 307,
+          "Port Scan": 2000,
+          "Vulnerability Scan": 184
+        }
+      },
+      "val": {
+        "n_rows": 1200,
+        "n_segments": 1,
+        "benign": 804,
+        "attack": 396,
+        "attack_frac": 0.33,
+        "attack_types": {
+          "Benign": 804,
+          "DNS Flood": 185,
+          "Dictionary Attack": 38,
+          "ICMP Flood": 34,
+          "SYN Flood": 53,
+          "Slowloris": 82,
+          "UDP Flood": 4
+        }
+      },
+      "test": {
+        "n_rows": 1200,
+        "n_segments": 1,
+        "benign": 1200,
+        "attack": 0,
+        "attack_frac": 0.0,
+        "attack_types": {
+          "Benign": 1200
+        }
+      }
+    },
+    "chronological_min_class_frac": 0.0,
+    "time_range": {
+      "train": [
+        "2023-10-30T10:21:05",
+        "2023-11-03T14:50:30"
+      ],
+      "val": [
+        "2023-10-30T09:02:03",
+        "2023-11-03T09:41:01"
+      ],
+      "test": [
+        "2023-10-30T09:14:31",
+        "2023-11-03T13:44:51"
+      ]
+    },
+    "n_chunks": 28,
+    "chunk_rows": 250,
+    "proxy": {
+      "n_chunks": 2,
+      "n_rows": 380,
+      "attack_frac": 0.02894736842105263,
+      "types": {
+        "Benign": 369,
+        "OS Scan": 10,
+        "Ping Sweep": 1
+      }
+    },
+    "clients": [
+      {
+        "client": 0,
+        "n_train_windows": 905,
+        "n_eval_windows": 181,
+        "train_attack_frac": 0.7491712707182321,
+        "eval_attack_frac": 0.7513812154696132,
+        "n_train_chunks": 5,
+        "n_eval_chunks": 1
+      },
+      {
+        "client": 1,
+        "n_train_windows": 724,
+        "n_eval_windows": 181,
+        "train_attack_frac": 0.9668508287292817,
+        "eval_attack_frac": 0.30386740331491713,
+        "n_train_chunks": 4,
+        "n_eval_chunks": 1
+      },
+      {
+        "client": 2,
+        "n_train_windows": 724,
+        "n_eval_windows": 181,
+        "train_attack_frac": 0.2983425414364641,
+        "eval_attack_frac": 0.0,
+        "n_train_chunks": 4,
+        "n_eval_chunks": 1
+      },
+      {
+        "client": 3,
+        "n_train_windows": 724,
+        "n_eval_windows": 181,
+        "train_attack_frac": 0.580110497237569,
+        "eval_attack_frac": 0.3259668508287293,
+        "n_train_chunks": 4,
+        "n_eval_chunks": 1
+      },
+      {
+        "client": 4,
+        "n_train_windows": 724,
+        "n_eval_windows": 181,
+        "train_attack_frac": 0.3701657458563536,
+        "eval_attack_frac": 0.0,
+        "n_train_chunks": 4,
+        "n_eval_chunks": 1
+      }
+    ],
+    "n_test_windows": 1086
+  },
+  "mask": {
+    "mode": "central",
+    "selection": {
+      "indices": [
+        2,
+        5,
+        9,
+        10,
+        12,
+        14,
+        16,
+        19,
+        20,
+        21,
+        23,
+        24,
+        26,
+        27,
+        30,
+        32,
+        37,
+        39,
+        41,
+        43,
+        47,
+        48,
+        52,
+        56,
+        57,
+        58,
+        60,
+        62,
+        64,
+        65,
+        66,
+        68,
+        69,
+        70,
+        73,
+        76,
+        78,
+        81,
+        83,
+        91
+      ],
+      "wall_time_s": 0.09372000000439584,
+      "n_fitness_evals": 9,
+      "best_fitness": 240.26460424872988,
+      "final_mask_fitness": 230.38005401983094,
+      "extra": {
+        "Q": 6,
+        "particles": 3,
+        "iterations": 2,
+        "qpso_internal_time_s": 0.09354114532470703,
+        "qpso_tracemalloc_peak_mb": 3.3290653228759766,
+        "note": "final subset = one measurement of g_best_state (original behaviour)"
+      }
+    },
+    "selection_time_total_s": 0.10742729999765288,
+    "indices": [
+      2,
+      5,
+      9,
+      10,
+      12,
+      14,
+      16,
+      19,
+      20,
+      21,
+      23,
+      24,
+      26,
+      27,
+      30,
+      32,
+      37,
+      39,
+      41,
+      43,
+      47,
+      48,
+      52,
+      56,
+      57,
+      58,
+      60,
+      62,
+      64,
+      65,
+      66,
+      68,
+      69,
+      70,
+      73,
+      76,
+      78,
+      81,
+      83,
+      91
+    ],
+    "names": [
+      "Protocol",
+      "Total Bwd packets",
+      "Fwd Packet Length Min",
+      "Fwd Packet Length Mean",
+      "Bwd Packet Length Max",
+      "Bwd Packet Length Mean",
+      "Flow Bytes/s",
+      "Flow IAT Std",
+      "Flow IAT Max",
+      "Flow IAT Min",
+      "Fwd IAT Mean",
+      "Fwd IAT Std",
+      "Fwd IAT Min",
+      "Bwd IAT Total",
+      "Bwd IAT Max",
+      "Fwd PSH Flags",
+      "Bwd Header Length",
+      "Bwd Packets/s",
+      "Packet Length Max",
+      "Packet Length Std",
+      "RST Flag Count",
+      "PSH Flag Count",
+      "ECE Flag Count",
+      "Bwd Segment Size Avg",
+      "Fwd Bytes/Bulk Avg",
+      "Fwd Packet/Bulk Avg",
+      "Bwd Bytes/Bulk Avg",
+      "Bwd Bulk Rate Avg",
+      "Subflow Fwd Bytes",
+      "Subflow Bwd Packets",
+      "Subflow Bwd Bytes",
+      "Bwd Init Win Bytes",
+      "Fwd Act Data Pkts",
+      "Fwd Seg Size Min",
+      "Active Max",
+      "pkt_rate_src_10",
+      "n_flows_src_60",
+      "dt_prev_src",
+      "max_gap_src_60",
+      "dport_switch"
+    ]
+  },
+  "model": {
+    "params": {
+      "trainable": 788514,
+      "non_trainable": 0,
+      "total": 788514
+    }
+  },
+  "final": {
+    "test_f1": 0.8934827841731338,
+    "test_accuracy": 0.8931860036832413,
+    "test_auc": 0.9523853211009174,
+    "test_f1_attack": 0.8693693693693694,
+    "client_f1_min": 0.09900748056519826,
+    "client_f1_mean": 0.6396398208444227,
+    "client_f1_std_pop": 0.3371382046724231,
+    "R90": 1,
+    "best_test_f1": 0.8934827841731338
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "test_accuracy": 0.8167587476979742,
+      "test_f1": 0.817902967782758,
+      "test_f1_attack": 0.8092042186001918,
+      "test_auc": 0.9551376146788991,
+      "client_f1_min": 0.0972375690607735,
+      "client_f1_mean": 0.6121712809087336,
+      "client_f1_std_pop": 0.3293629749557327,
+      "client_f1": [
+        0.0972375690607735,
+        0.5311155843858395,
+        0.9567723342939481,
+        0.4925848493873765,
+        0.9831460674157304
+      ],
+      "client_acc": [
+        0.2430939226519337,
+        0.5193370165745856,
+        0.9171270718232044,
+        0.56353591160221,
+        0.9668508287292817
+      ],
+      "agg_kept": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "agg_info": {},
+      "round_train_time_s": 28.470555099993362,
+      "client_fit_times_s": [
+        9.670485599999665,
+        4.572979399992619,
+        4.68172439999762,
+        5.275399600010132,
+        4.070534500002395
+      ],
+      "round_total_time_s": 32.28536090000125
+    },
+    {
+      "round": 2,
+      "test_accuracy": 0.8784530386740331,
+      "test_f1": 0.8795387697158171,
+      "test_f1_attack": 0.8604651162790697,
+      "test_auc": 0.9624029640084686,
+      "client_f1_min": 0.09900748056519826,
+      "client_f1_mean": 0.6472022662328086,
+      "client_f1_std_pop": 0.33569290774255944,
+      "client_f1": [
+        0.09900748056519826,
+        0.5968845721238532,
+        1.0,
+        0.5401192784749917,
+        1.0
+      ],
+      "client_acc": [
+        0.24861878453038674,
+        0.580110497237569,
+        1.0,
+        0.6685082872928176,
+        1.0
+      ],
+      "agg_kept": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "agg_info": {},
+      "round_train_time_s": 24.74584839999443,
+      "client_fit_times_s": [
+        5.067033600003924,
+        5.336462500010384,
+        4.703225200006273,
+        4.140047699998831,
+        5.299119599992991
+      ],
+      "round_total_time_s": 26.79648210000596
+    },
+    {
+      "round": 3,
+      "test_accuracy": 0.8867403314917127,
+      "test_f1": 0.8875570434739177,
+      "test_f1_attack": 0.866738894907909,
+      "test_auc": 0.9605010585744531,
+      "client_f1_min": 0.09900748056519826,
+      "client_f1_mean": 0.6405299758794498,
+      "client_f1_std_pop": 0.33692307175855424,
+      "client_f1": [
+        0.09900748056519826,
+        0.560856628542315,
+        1.0,
+        0.5427857702897362,
+        1.0
+      ],
+      "client_acc": [
+        0.24861878453038674,
+        0.585635359116022,
+        1.0,
+        0.6740331491712708,
+        1.0
+      ],
+      "agg_kept": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "agg_info": {},
+      "round_train_time_s": 22.499239099997794,
+      "client_fit_times_s": [
+        5.188272100000177,
+        4.189575199998217,
+        4.668533399992157,
+        4.101653999998234,
+        4.12952669999504
+      ],
+      "round_total_time_s": 25.134913400004734
+    },
+    {
+      "round": 4,
+      "test_accuracy": 0.8839779005524862,
+      "test_f1": 0.8847804982122286,
+      "test_f1_attack": 0.8630434782608696,
+      "test_auc": 0.9585885673959069,
+      "client_f1_min": 0.09900748056519826,
+      "client_f1_mean": 0.6452257936961605,
+      "client_f1_std_pop": 0.3359421022366882,
+      "client_f1": [
+        0.09900748056519826,
+        0.5843357176258681,
+        1.0,
+        0.5427857702897362,
+        1.0
+      ],
+      "client_acc": [
+        0.24861878453038674,
+        0.6187845303867403,
+        1.0,
+        0.6740331491712708,
+        1.0
+      ],
+      "agg_kept": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "agg_info": {},
+      "round_train_time_s": 23.014283799988334,
+      "client_fit_times_s": [
+        5.1314268999994965,
+        4.129932499999995,
+        4.064448799996171,
+        4.712146400008351,
+        4.746456300010323
+      ],
+      "round_total_time_s": 25.062327599996934
+    },
+    {
+      "round": 5,
+      "test_accuracy": 0.8922651933701657,
+      "test_f1": 0.8928534668892909,
+      "test_f1_attack": 0.8710033076074972,
+      "test_auc": 0.9573959068454481,
+      "client_f1_min": 0.09900748056519826,
+      "client_f1_mean": 0.6443439093842719,
+      "client_f1_std_pop": 0.3361065351055166,
+      "client_f1": [
+        0.09900748056519826,
+        0.5799262960664251,
+        1.0,
+        0.5427857702897362,
+        1.0
+      ],
+      "client_acc": [
+        0.24861878453038674,
+        0.6187845303867403,
+        1.0,
+        0.6740331491712708,
+        1.0
+      ],
+      "agg_kept": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "agg_info": {},
+      "round_train_time_s": 24.037273300011293,
+      "client_fit_times_s": [
+        5.098339100004523,
+        4.299055900002713,
+        4.6327518000034615,
+        4.885842300005606,
+        4.832916100000148
+      ],
+      "round_total_time_s": 26.360971400004928
+    },
+    {
+      "round": 6,
+      "test_accuracy": 0.8931860036832413,
+      "test_f1": 0.8934827841731338,
+      "test_f1_attack": 0.8693693693693694,
+      "test_auc": 0.9523853211009174,
+      "client_f1_min": 0.09900748056519826,
+      "client_f1_mean": 0.6396398208444227,
+      "client_f1_std_pop": 0.3371382046724231,
+      "client_f1": [
+        0.09900748056519826,
+        0.5564058533671793,
+        1.0,
+        0.5427857702897362,
+        1.0
+      ],
+      "client_acc": [
+        0.24861878453038674,
+        0.6243093922651933,
+        1.0,
+        0.6740331491712708,
+        1.0
+      ],
+      "agg_kept": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "agg_info": {},
+      "round_train_time_s": 26.188882100002957,
+      "client_fit_times_s": [
+        6.044522900003358,
+        5.095529500002158,
+        4.969220399987535,
+        4.892150200001197,
+        4.9548792999994475
+      ],
+      "round_total_time_s": 28.305750100000296
+    }
+  ],
+  "timing": {
+    "wall_total_s": 168.9822998046875,
+    "mean_round_time_s": 27.324300916669017,
+    "peak_rss_mb": 616.33203125
+  },
+  "env": {
+    "tf": "2.20.0",
+    "threads_intra": 1,
+    "python": "3.13.5"
+  }
+}

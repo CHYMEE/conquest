@@ -1,0 +1,77 @@
+{
+ "blocks": [
+  {
+   "out_dir": "outputs/smoke/federated",
+   "base": {
+    "n_sub": 4000,
+    "rounds": 3,
+    "particles": 3,
+    "iterations": 2,
+    "selector": "qpso",
+    "Q": 6,
+    "context": "on",
+    "K": 5,
+    "aggregator": "fedavg",
+    "mask_mode": "proxy"
+   },
+   "grid": {
+    "partition": [
+     "iid",
+     "label_skew",
+     "quantity_skew"
+    ],
+    "seed": [
+     42
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/smoke/federated",
+   "base": {
+    "n_sub": 4000,
+    "rounds": 3,
+    "particles": 3,
+    "iterations": 2,
+    "selector": "qpso",
+    "Q": 6,
+    "context": "on",
+    "K": 5,
+    "aggregator": "fedavg",
+    "mask_mode": "vote",
+    "partition": "dirichlet",
+    "alpha": 0.1
+   },
+   "grid": {
+    "seed": [
+     42
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/smoke/federated",
+   "base": {
+    "n_sub": 4000,
+    "rounds": 3,
+    "particles": 3,
+    "iterations": 2,
+    "selector": "qpso",
+    "Q": 6,
+    "context": "on",
+    "K": 5,
+    "partition": "quantity_skew",
+    "mask_mode": "central"
+   },
+   "grid": {
+    "aggregator": [
+     "scaffold",
+     "flame",
+     "fedavgm",
+     "cosine_trust"
+    ],
+    "seed": [
+     42
+    ]
+   }
+  }
+ ]
+}

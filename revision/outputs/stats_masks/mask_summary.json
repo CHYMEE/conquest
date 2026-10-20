@@ -1,0 +1,503 @@
+{
+ "d": 86,
+ "k": 40,
+ "n_families": 52,
+ "family_threshold_abs_rho": 0.9,
+ "random_feat_jaccard": [
+  0.30479239116585444,
+  0.04954975443799869
+ ],
+ "random_family_jaccard": [
+  0.4491291900262886,
+  0.06436152126718006
+ ],
+ "per_q": [
+  {
+   "Q": 1,
+   "n": 10,
+   "feat_jaccard": 0.3578810897601274,
+   "feat_jaccard_std": 0.051142787959846094,
+   "fam_jaccard": 0.4989556965360089,
+   "fam_jaccard_std": 0.06658484983950452,
+   "n_families_selected": 26.9,
+   "context_selected": 7.3
+  },
+  {
+   "Q": 2,
+   "n": 10,
+   "feat_jaccard": 0.36164519930178385,
+   "feat_jaccard_std": 0.047734193372907234,
+   "fam_jaccard": 0.5383692617923279,
+   "fam_jaccard_std": 0.06668748928463214,
+   "n_families_selected": 29.1,
+   "context_selected": 7.2
+  },
+  {
+   "Q": 3,
+   "n": 10,
+   "feat_jaccard": 0.3431456000728986,
+   "feat_jaccard_std": 0.042826111985099134,
+   "fam_jaccard": 0.5240646541978062,
+   "fam_jaccard_std": 0.0702067954471735,
+   "n_families_selected": 28.2,
+   "context_selected": 7.6
+  },
+  {
+   "Q": 4,
+   "n": 10,
+   "feat_jaccard": 0.3796366141077476,
+   "feat_jaccard_std": 0.051817914593940216,
+   "fam_jaccard": 0.5048575300765917,
+   "fam_jaccard_std": 0.07765994410178588,
+   "n_families_selected": 27.1,
+   "context_selected": 5.2
+  },
+  {
+   "Q": 5,
+   "n": 10,
+   "feat_jaccard": 0.36904177861418624,
+   "feat_jaccard_std": 0.050031821561467314,
+   "fam_jaccard": 0.5477876489814874,
+   "fam_jaccard_std": 0.06047352416346047,
+   "n_families_selected": 29.6,
+   "context_selected": 7.3
+  },
+  {
+   "Q": 6,
+   "n": 10,
+   "feat_jaccard": 0.35901583396993975,
+   "feat_jaccard_std": 0.0458561874506563,
+   "fam_jaccard": 0.524671282650215,
+   "fam_jaccard_std": 0.07007398805987967,
+   "n_families_selected": 28.3,
+   "context_selected": 8.2
+  },
+  {
+   "Q": 7,
+   "n": 10,
+   "feat_jaccard": 0.34612605141490893,
+   "feat_jaccard_std": 0.05684041305530919,
+   "fam_jaccard": 0.5366942233343586,
+   "fam_jaccard_std": 0.057591870736296895,
+   "n_families_selected": 29.3,
+   "context_selected": 7.0
+  },
+  {
+   "Q": 8,
+   "n": 10,
+   "feat_jaccard": 0.37217523734026575,
+   "feat_jaccard_std": 0.04196393282435715,
+   "fam_jaccard": 0.5376772222244359,
+   "fam_jaccard_std": 0.07358310339417497,
+   "n_families_selected": 28.6,
+   "context_selected": 6.6
+  },
+  {
+   "Q": 9,
+   "n": 5,
+   "feat_jaccard": 0.37123262833084697,
+   "feat_jaccard_std": 0.07067543088809876,
+   "fam_jaccard": 0.5100635163793058,
+   "fam_jaccard_std": 0.0626317013356328,
+   "n_families_selected": 28.2,
+   "context_selected": 6.4
+  },
+  {
+   "Q": 10,
+   "n": 5,
+   "feat_jaccard": 0.37207776592778696,
+   "feat_jaccard_std": 0.055505252506634885,
+   "fam_jaccard": 0.4934746363822103,
+   "fam_jaccard_std": 0.06367745636598048,
+   "n_families_selected": 28.2,
+   "context_selected": 7.2
+  }
+ ],
+ "deployed": {
+  "run": "qpso_ctxon_Q6_P20_I30_k40_s45",
+  "seed": 45,
+  "val_f1": 0.9710521820313919,
+  "test_f1": 0.9703557709476198,
+  "indices": [
+   2,
+   11,
+   12,
+   13,
+   16,
+   17,
+   18,
+   20,
+   23,
+   30,
+   31,
+   34,
+   35,
+   36,
+   38,
+   40,
+   41,
+   42,
+   43,
+   44,
+   45,
+   47,
+   48,
+   49,
+   51,
+   52,
+   53,
+   54,
+   55,
+   62,
+   68,
+   69,
+   70,
+   71,
+   73,
+   74,
+   76,
+   79,
+   83,
+   84
+  ],
+  "names": [
+   "Protocol",
+   "Fwd Packet Length Std",
+   "Bwd Packet Length Max",
+   "Bwd Packet Length Min",
+   "Flow Bytes/s",
+   "Flow Packets/s",
+   "Flow IAT Mean",
+   "Flow IAT Max",
+   "Fwd IAT Mean",
+   "Bwd IAT Max",
+   "Bwd IAT Min",
+   "Fwd Header Length",
+   "Bwd Header Length",
+   "Fwd Packets/s",
+   "Packet Length Min",
+   "Packet Length Mean",
+   "Packet Length Std",
+   "Packet Length Variance",
+   "FIN Flag Count",
+   "SYN Flag Count",
+   "RST Flag Count",
+   "ACK Flag Count",
+   "URG Flag Count",
+   "CWR Flag Count",
+   "Down/Up Ratio",
+   "Average Packet Size",
+   "Fwd Segment Size Avg",
+   "Bwd Segment Size Avg",
+   "Bwd Bytes/Bulk Avg",
+   "Bwd Init Win Bytes",
+   "Active Min",
+   "n_flows_src_10",
+   "pkt_rate_src_10",
+   "bytes_rate_src_10",
+   "pkt_rate_src_60",
+   "bytes_rate_src_60",
+   "dt_prev_src_log",
+   "n_distinct_dport_10",
+   "n_proto_switch_60",
+   "syn_frac_src_60"
+  ],
+  "n_context": 9
+ },
+ "qstar_core_ge80": [
+  "Fwd Packets/s",
+  "bytes_rate_src_60",
+  "syn_frac_src_60"
+ ],
+ "never_selected_any_run": [
+  "Src Port",
+  "Subflow Fwd Packets",
+  "dport_switch"
+ ],
+ "families": {
+  "1": [
+   "CWR Flag Count",
+   "ECE Flag Count"
+  ],
+  "2": [
+   "Fwd URG Flags",
+   "URG Flag Count"
+  ],
+  "3": [
+   "Dst Port"
+  ],
+  "4": [
+   "dport_switch"
+  ],
+  "5": [
+   "Total Bwd packets",
+   "Bwd Header Length"
+  ],
+  "6": [
+   "Subflow Fwd Packets"
+  ],
+  "7": [
+   "Down/Up Ratio"
+  ],
+  "8": [
+   "ACK Flag Count"
+  ],
+  "9": [
+   "FWD Init Win Bytes"
+  ],
+  "10": [
+   "Fwd Seg Size Min"
+  ],
+  "11": [
+   "Fwd Header Length"
+  ],
+  "12": [
+   "Flow IAT Min"
+  ],
+  "13": [
+   "bytes_rate_src_10"
+  ],
+  "14": [
+   "bytes_rate_src_60"
+  ],
+  "15": [
+   "n_proto_switch_60"
+  ],
+  "16": [
+   "dt_prev_src",
+   "dt_prev_src_log"
+  ],
+  "17": [
+   "n_distinct_dst_10"
+  ],
+  "18": [
+   "n_distinct_dst_60"
+  ],
+  "19": [
+   "n_flows_src_10",
+   "pkt_rate_src_10",
+   "n_flows_src_60",
+   "pkt_rate_src_60"
+  ],
+  "20": [
+   "n_distinct_dport_10"
+  ],
+  "21": [
+   "n_distinct_dport_60"
+  ],
+  "22": [
+   "SYN Flag Count"
+  ],
+  "23": [
+   "syn_frac_src_60"
+  ],
+  "24": [
+   "RST Flag Count"
+  ],
+  "25": [
+   "max_gap_src_60"
+  ],
+  "26": [
+   "Flow Duration",
+   "Flow Packets/s",
+   "Flow IAT Mean",
+   "Flow IAT Max",
+   "Fwd Packets/s"
+  ],
+  "27": [
+   "Fwd IAT Total",
+   "Fwd IAT Mean",
+   "Fwd IAT Max",
+   "Fwd IAT Min"
+  ],
+  "28": [
+   "Total Fwd Packet"
+  ],
+  "29": [
+   "Bwd Packets/s"
+  ],
+  "30": [
+   "Src Port"
+  ],
+  "31": [
+   "Fwd Packet Length Min",
+   "Packet Length Min"
+  ],
+  "32": [
+   "Protocol"
+  ],
+  "33": [
+   "Total Length of Bwd Packet",
+   "Bwd Packet Length Max",
+   "Bwd Packet Length Mean",
+   "Bwd Segment Size Avg",
+   "Subflow Bwd Bytes"
+  ],
+  "34": [
+   "Packet Length Std",
+   "Packet Length Variance"
+  ],
+  "35": [
+   "Total Length of Fwd Packet",
+   "Fwd Packet Length Max",
+   "Fwd Packet Length Mean",
+   "Packet Length Max",
+   "Packet Length Mean",
+   "Average Packet Size",
+   "Fwd Segment Size Avg",
+   "Subflow Fwd Bytes"
+  ],
+  "36": [
+   "Flow Bytes/s"
+  ],
+  "37": [
+   "Bwd Packet Length Min"
+  ],
+  "38": [
+   "Bwd IAT Total",
+   "Bwd IAT Mean",
+   "Bwd IAT Max",
+   "Bwd IAT Min"
+  ],
+  "39": [
+   "Bwd IAT Std"
+  ],
+  "40": [
+   "Flow IAT Std"
+  ],
+  "41": [
+   "Fwd IAT Std"
+  ],
+  "42": [
+   "Fwd Act Data Pkts"
+  ],
+  "43": [
+   "Active Mean",
+   "Active Max",
+   "Active Min"
+  ],
+  "44": [
+   "Active Std"
+  ],
+  "45": [
+   "Bwd Bytes/Bulk Avg",
+   "Bwd Packet/Bulk Avg",
+   "Bwd Bulk Rate Avg"
+  ],
+  "46": [
+   "Bwd Packet Length Std"
+  ],
+  "47": [
+   "Fwd Packet Length Std"
+  ],
+  "48": [
+   "PSH Flag Count"
+  ],
+  "49": [
+   "Bwd Init Win Bytes"
+  ],
+  "50": [
+   "Fwd PSH Flags"
+  ],
+  "51": [
+   "proto_switch"
+  ],
+  "52": [
+   "FIN Flag Count"
+  ]
+ },
+ "consensus": {
+  "indices": [
+   2,
+   6,
+   7,
+   9,
+   11,
+   12,
+   13,
+   17,
+   19,
+   20,
+   23,
+   24,
+   30,
+   31,
+   33,
+   34,
+   36,
+   41,
+   44,
+   45,
+   46,
+   47,
+   48,
+   49,
+   50,
+   52,
+   53,
+   54,
+   56,
+   57,
+   60,
+   67,
+   69,
+   70,
+   71,
+   72,
+   74,
+   79,
+   83,
+   84
+  ],
+  "names": [
+   "Protocol",
+   "Total Length of Fwd Packet",
+   "Total Length of Bwd Packet",
+   "Fwd Packet Length Min",
+   "Fwd Packet Length Std",
+   "Bwd Packet Length Max",
+   "Bwd Packet Length Min",
+   "Flow Packets/s",
+   "Flow IAT Std",
+   "Flow IAT Max",
+   "Fwd IAT Mean",
+   "Fwd IAT Std",
+   "Bwd IAT Max",
+   "Bwd IAT Min",
+   "Fwd URG Flags",
+   "Fwd Header Length",
+   "Fwd Packets/s",
+   "Packet Length Std",
+   "SYN Flag Count",
+   "RST Flag Count",
+   "PSH Flag Count",
+   "ACK Flag Count",
+   "URG Flag Count",
+   "CWR Flag Count",
+   "ECE Flag Count",
+   "Average Packet Size",
+   "Fwd Segment Size Avg",
+   "Bwd Segment Size Avg",
+   "Bwd Packet/Bulk Avg",
+   "Bwd Bulk Rate Avg",
+   "Subflow Bwd Bytes",
+   "Active Max",
+   "n_flows_src_10",
+   "pkt_rate_src_10",
+   "bytes_rate_src_10",
+   "n_flows_src_60",
+   "bytes_rate_src_60",
+   "n_distinct_dport_10",
+   "n_proto_switch_60",
+   "syn_frac_src_60"
+  ],
+  "fitness": 5089.02711835362,
+  "n_context": 8,
+  "min_freq": 0.5
+ },
+ "qstar_single_run_fitness": [
+  4400.659196932387,
+  296.95883992591996,
+  10
+ ]
+}

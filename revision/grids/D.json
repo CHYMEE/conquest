@@ -1,0 +1,53 @@
+{
+ "blocks": [
+  {
+   "out_dir": "outputs/central",
+   "base": {
+    "selector": "pso",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on"
+   },
+   "grid": {
+    "seed": [
+     42,
+     43,
+     44,
+     45,
+     46,
+     47,
+     48,
+     49,
+     50,
+     51
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/central",
+   "base": {
+    "selector": "qpso",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "Q": "auto:outputs/central",
+    "context": "on"
+   },
+   "grid": {
+    "seed": [
+     42,
+     43,
+     44,
+     45,
+     46,
+     47,
+     48,
+     49,
+     50,
+     51
+    ]
+   }
+  }
+ ]
+}

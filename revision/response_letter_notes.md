@@ -1,0 +1,13 @@
+# Notes for the response letter (text moved out of revision.tex, 2026-10-15)
+
+These explained old vs. new numbers to the reviewers; they belong in the reply, not the paper.
+
+- R1.10 / R2.4 (latency): The 3.60 s inference time in the original submission was the total time to classify the whole test set (~12,000 windows), not a per-detection latency; it corresponds to ~0.3 ms/window, consistent with the new batched measurement (0.25 ms/window at batch 64). The 61.2 ms end-to-end latency, the latency-budget share eta, the per-Q memory values of 512-1126 MB, and the decomposition that placed QPSO on the inference path are replaced by isolated measurements (Table latency_profile_qcids, Fig. deploy_cost) and Eq. (15). QPSO runs only at training time.
+- R1.6 / R2.3 (overall comparison): The +2.21 pp gain over OS-CIDS reported in the original submission does not hold under the leakage-free protocol (CONQUEST 97.13% vs OS-CIDS 96.96%, Wilcoxon p = 0.32); the pipelines differ in error type (miss rate vs false alarms).
+- R1.2 (Q ablation): Validation still selects Q* = 6, the same as the original submission, but it is statistically indistinguishable from other Q. The earlier description of Q = 6 as stability-optimal rested on three seeds with a single QPSO run per Q.
+- R1.3 (budget): The degradation reported for Q = 7 and 8 in the original submission is not reproduced at any budget.
+- R1.8 / R1.9 / R2.2 (FL configuration): The original submission used different configurations (aggregator comparison: 8 rounds, 1 local epoch; heterogeneity sweep: 15 rounds; extended run: 60 rounds), giving two different FedAvg quantity-skew results (F1 0.910 and 0.869). All FL experiments were re-run with one configuration: 30 rounds, 2 local epochs, batch 64, full participation, proxy mask, 3 seeds.
+- R1.8 / R1.9 / R2.2 (convergence metric): The 90% convergence threshold of the original submission is reached in round 1 in every regime under the corrected protocol, so R99 is used.
+- R1.9 (heterogeneity): The earlier observation that quantity skew outperforms IID is not reproduced (difference 0.11 pp).
+- R1.8 (aggregators): The SCAFFOLD collapse (F1 0.522) in the original submission is not reproduced; it came from a server-momentum approximation, whereas the revision implements the published SCAFFOLD and FLAME algorithms.
+- R1.11 (optimizer): Adam is not used. SGD with Nesterov momentum 0.9 (lr 1e-3) is used in every reported experiment, centralized and federated. The comparison of SGD, Adam, and Newton-Hessian updates belongs to the conference version [ajakweconquest], which retained SGD and from which the S-CIDS results are quoted.

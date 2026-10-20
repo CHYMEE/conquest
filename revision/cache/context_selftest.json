@@ -1,0 +1,80 @@
+{
+  "stream_start": {
+    "start": 0,
+    "n": 5000,
+    "max_abs_diff_per_feature": {
+      "n_flows_src_10": 0.0,
+      "pkt_rate_src_10": 0.0,
+      "bytes_rate_src_10": 0.0,
+      "n_flows_src_60": 0.0,
+      "pkt_rate_src_60": 0.0,
+      "bytes_rate_src_60": 0.0,
+      "dt_prev_src": 0.0,
+      "dt_prev_src_log": 0.0,
+      "max_gap_src_60": 0.0,
+      "n_distinct_dst_10": 0.0,
+      "n_distinct_dport_10": 0.0,
+      "n_distinct_dst_60": 0.0,
+      "n_distinct_dport_60": 0.0,
+      "proto_switch": 0.0,
+      "n_proto_switch_60": 0.0,
+      "syn_frac_src_60": 0.0,
+      "dport_switch": 0.0
+    },
+    "identical": true,
+    "allclose": true,
+    "n_attack": 2570
+  },
+  "attack_dense_region": {
+    "start": 510268,
+    "n": 5000,
+    "max_abs_diff_per_feature": {
+      "n_flows_src_10": 0.0,
+      "pkt_rate_src_10": 0.0,
+      "bytes_rate_src_10": 0.0,
+      "n_flows_src_60": 0.0,
+      "pkt_rate_src_60": 0.0,
+      "bytes_rate_src_60": 0.0,
+      "dt_prev_src": 0.0,
+      "dt_prev_src_log": 0.0,
+      "max_gap_src_60": 0.0,
+      "n_distinct_dst_10": 0.0,
+      "n_distinct_dport_10": 0.0,
+      "n_distinct_dst_60": 0.0,
+      "n_distinct_dport_60": 0.0,
+      "proto_switch": 0.0,
+      "n_proto_switch_60": 0.0,
+      "syn_frac_src_60": 0.0,
+      "dport_switch": 0.0
+    },
+    "identical": true,
+    "allclose": true,
+    "n_attack": 4217
+  },
+  "mid_stream": {
+    "start": 615705,
+    "n": 5000,
+    "max_abs_diff_per_feature": {
+      "n_flows_src_10": 0.0,
+      "pkt_rate_src_10": 0.0,
+      "bytes_rate_src_10": 0.0,
+      "n_flows_src_60": 0.0,
+      "pkt_rate_src_60": 0.0,
+      "bytes_rate_src_60": 0.0,
+      "dt_prev_src": 0.0,
+      "dt_prev_src_log": 0.0,
+      "max_gap_src_60": 0.0,
+      "n_distinct_dst_10": 0.0,
+      "n_distinct_dport_10": 0.0,
+      "n_distinct_dst_60": 0.0,
+      "n_distinct_dport_60": 0.0,
+      "proto_switch": 0.0,
+      "n_proto_switch_60": 0.0,
+      "syn_frac_src_60": 0.0,
+      "dport_switch": 0.0
+    },
+    "identical": true,
+    "allclose": true,
+    "n_attack": 2002
+  }
+}

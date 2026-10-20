@@ -1,0 +1,796 @@
+selector,context,Q,particles,iterations,k,feature,count,frequency
+qpso,on,1,20,30,40,Protocol,10,1.0
+qpso,on,1,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,1,20,30,40,bytes_rate_src_10,9,0.9
+qpso,on,1,20,30,40,Flow IAT Std,8,0.8
+qpso,on,1,20,30,40,Bwd IAT Total,8,0.8
+qpso,on,1,20,30,40,Bwd Bytes/Bulk Avg,8,0.8
+qpso,on,1,20,30,40,pkt_rate_src_10,8,0.8
+qpso,on,1,20,30,40,Total Bwd packets,7,0.7
+qpso,on,1,20,30,40,Bwd Header Length,7,0.7
+qpso,on,1,20,30,40,bytes_rate_src_60,7,0.7
+qpso,on,1,20,30,40,Total Length of Bwd Packet,7,0.7
+qpso,on,1,20,30,40,Total Fwd Packet,6,0.6
+qpso,on,1,20,30,40,Total Length of Fwd Packet,6,0.6
+qpso,on,1,20,30,40,Fwd Packet Length Mean,6,0.6
+qpso,on,1,20,30,40,Bwd Packet Length Mean,6,0.6
+qpso,on,1,20,30,40,Fwd IAT Std,6,0.6
+qpso,on,1,20,30,40,Bwd Packets/s,6,0.6
+qpso,on,1,20,30,40,Packet Length Mean,6,0.6
+qpso,on,1,20,30,40,Average Packet Size,6,0.6
+qpso,on,1,20,30,40,Fwd Bytes/Bulk Avg,6,0.6
+qpso,on,1,20,30,40,Bwd Bulk Rate Avg,6,0.6
+qpso,on,1,20,30,40,Bwd IAT Mean,6,0.6
+qpso,on,1,20,30,40,Bwd IAT Min,6,0.6
+qpso,on,1,20,30,40,ACK Flag Count,6,0.6
+qpso,on,1,20,30,40,Subflow Bwd Bytes,6,0.6
+qpso,on,1,20,30,40,n_flows_src_60,6,0.6
+qpso,on,1,20,30,40,Fwd Bulk Rate Avg,6,0.6
+qpso,on,1,20,30,40,Fwd Packet Length Max,5,0.5
+qpso,on,1,20,30,40,Fwd IAT Total,5,0.5
+qpso,on,1,20,30,40,Fwd Packets/s,5,0.5
+qpso,on,1,20,30,40,FIN Flag Count,5,0.5
+qpso,on,1,20,30,40,Fwd Packet/Bulk Avg,5,0.5
+qpso,on,1,20,30,40,Fwd Act Data Pkts,5,0.5
+qpso,on,1,20,30,40,Active Mean,5,0.5
+qpso,on,1,20,30,40,Active Std,5,0.5
+qpso,on,1,20,30,40,Bwd Packet Length Max,5,0.5
+qpso,on,1,20,30,40,Bwd Packet Length Min,5,0.5
+qpso,on,1,20,30,40,Flow IAT Max,5,0.5
+qpso,on,1,20,30,40,Packet Length Std,5,0.5
+qpso,on,1,20,30,40,Bwd Segment Size Avg,5,0.5
+qpso,on,1,20,30,40,Bwd Packet/Bulk Avg,5,0.5
+qpso,on,1,20,30,40,Subflow Bwd Packets,5,0.5
+qpso,on,1,20,30,40,n_flows_src_10,5,0.5
+qpso,on,1,20,30,40,RST Flag Count,5,0.5
+qpso,on,1,20,30,40,Fwd Packet Length Min,4,0.4
+qpso,on,1,20,30,40,Flow IAT Min,4,0.4
+qpso,on,1,20,30,40,Fwd URG Flags,4,0.4
+qpso,on,1,20,30,40,PSH Flag Count,4,0.4
+qpso,on,1,20,30,40,n_distinct_dport_10,4,0.4
+qpso,on,1,20,30,40,proto_switch,4,0.4
+qpso,on,1,20,30,40,Flow Duration,4,0.4
+qpso,on,1,20,30,40,Fwd Packet Length Std,4,0.4
+qpso,on,1,20,30,40,Bwd Packet Length Std,4,0.4
+qpso,on,1,20,30,40,n_proto_switch_60,4,0.4
+qpso,on,1,20,30,40,Bwd IAT Max,4,0.4
+qpso,on,1,20,30,40,Packet Length Min,4,0.4
+qpso,on,1,20,30,40,SYN Flag Count,4,0.4
+qpso,on,1,20,30,40,Bwd Init Win Bytes,4,0.4
+qpso,on,1,20,30,40,Active Min,4,0.4
+qpso,on,1,20,30,40,n_distinct_dst_10,4,0.4
+qpso,on,1,20,30,40,Fwd IAT Mean,4,0.4
+qpso,on,1,20,30,40,dt_prev_src,4,0.4
+qpso,on,1,20,30,40,ECE Flag Count,4,0.4
+qpso,on,1,20,30,40,pkt_rate_src_60,4,0.4
+qpso,on,1,20,30,40,Flow Packets/s,3,0.3
+qpso,on,1,20,30,40,Bwd PSH Flags,3,0.3
+qpso,on,1,20,30,40,Bwd URG Flags,3,0.3
+qpso,on,1,20,30,40,CWR Flag Count,3,0.3
+qpso,on,1,20,30,40,Down/Up Ratio,3,0.3
+qpso,on,1,20,30,40,Fwd Header Length,3,0.3
+qpso,on,1,20,30,40,Bwd IAT Std,3,0.3
+qpso,on,1,20,30,40,Active Max,3,0.3
+qpso,on,1,20,30,40,Flow IAT Mean,3,0.3
+qpso,on,1,20,30,40,Packet Length Max,3,0.3
+qpso,on,1,20,30,40,Subflow Fwd Bytes,3,0.3
+qpso,on,1,20,30,40,dt_prev_src_log,2,0.2
+qpso,on,1,20,30,40,Flow Bytes/s,2,0.2
+qpso,on,1,20,30,40,Fwd Segment Size Avg,2,0.2
+qpso,on,1,20,30,40,n_distinct_dst_60,2,0.2
+qpso,on,1,20,30,40,URG Flag Count,2,0.2
+qpso,on,1,20,30,40,n_distinct_dport_60,2,0.2
+qpso,on,1,20,30,40,FWD Init Win Bytes,1,0.1
+qpso,on,1,20,30,40,Fwd IAT Min,1,0.1
+qpso,on,1,20,30,40,Packet Length Variance,1,0.1
+qpso,on,1,20,30,40,Fwd IAT Max,1,0.1
+qpso,on,1,20,30,40,Fwd Seg Size Min,1,0.1
+qpso,on,2,20,30,40,RST Flag Count,10,1.0
+qpso,on,2,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,2,20,30,40,FIN Flag Count,9,0.9
+qpso,on,2,20,30,40,Protocol,8,0.8
+qpso,on,2,20,30,40,Flow IAT Std,8,0.8
+qpso,on,2,20,30,40,Bwd Packets/s,8,0.8
+qpso,on,2,20,30,40,PSH Flag Count,8,0.8
+qpso,on,2,20,30,40,Active Max,8,0.8
+qpso,on,2,20,30,40,Packet Length Std,8,0.8
+qpso,on,2,20,30,40,Total Length of Fwd Packet,7,0.7
+qpso,on,2,20,30,40,n_distinct_dport_60,7,0.7
+qpso,on,2,20,30,40,Fwd URG Flags,7,0.7
+qpso,on,2,20,30,40,Fwd Segment Size Avg,7,0.7
+qpso,on,2,20,30,40,URG Flag Count,7,0.7
+qpso,on,2,20,30,40,Bwd Packet Length Std,6,0.6
+qpso,on,2,20,30,40,Flow Packets/s,6,0.6
+qpso,on,2,20,30,40,Packet Length Mean,6,0.6
+qpso,on,2,20,30,40,ACK Flag Count,6,0.6
+qpso,on,2,20,30,40,Fwd Packet/Bulk Avg,6,0.6
+qpso,on,2,20,30,40,Subflow Bwd Packets,6,0.6
+qpso,on,2,20,30,40,bytes_rate_src_10,6,0.6
+qpso,on,2,20,30,40,n_proto_switch_60,6,0.6
+qpso,on,2,20,30,40,Bwd Bulk Rate Avg,6,0.6
+qpso,on,2,20,30,40,Bwd Init Win Bytes,6,0.6
+qpso,on,2,20,30,40,Active Std,6,0.6
+qpso,on,2,20,30,40,Flow IAT Mean,5,0.5
+qpso,on,2,20,30,40,Fwd Packets/s,5,0.5
+qpso,on,2,20,30,40,Packet Length Max,5,0.5
+qpso,on,2,20,30,40,ECE Flag Count,5,0.5
+qpso,on,2,20,30,40,Fwd Bytes/Bulk Avg,5,0.5
+qpso,on,2,20,30,40,Subflow Fwd Bytes,5,0.5
+qpso,on,2,20,30,40,Fwd Act Data Pkts,5,0.5
+qpso,on,2,20,30,40,pkt_rate_src_10,5,0.5
+qpso,on,2,20,30,40,n_flows_src_60,5,0.5
+qpso,on,2,20,30,40,n_distinct_dst_10,5,0.5
+qpso,on,2,20,30,40,Total Bwd packets,5,0.5
+qpso,on,2,20,30,40,Total Length of Bwd Packet,5,0.5
+qpso,on,2,20,30,40,Bwd Packet Length Max,5,0.5
+qpso,on,2,20,30,40,Flow IAT Min,5,0.5
+qpso,on,2,20,30,40,Fwd IAT Min,5,0.5
+qpso,on,2,20,30,40,Bwd IAT Std,5,0.5
+qpso,on,2,20,30,40,Bwd Packet/Bulk Avg,5,0.5
+qpso,on,2,20,30,40,Fwd IAT Std,4,0.4
+qpso,on,2,20,30,40,Bwd Header Length,4,0.4
+qpso,on,2,20,30,40,Down/Up Ratio,4,0.4
+qpso,on,2,20,30,40,Fwd Bulk Rate Avg,4,0.4
+qpso,on,2,20,30,40,Subflow Bwd Bytes,4,0.4
+qpso,on,2,20,30,40,Active Mean,4,0.4
+qpso,on,2,20,30,40,Active Min,4,0.4
+qpso,on,2,20,30,40,pkt_rate_src_60,4,0.4
+qpso,on,2,20,30,40,n_distinct_dst_60,4,0.4
+qpso,on,2,20,30,40,Bwd Packet Length Mean,4,0.4
+qpso,on,2,20,30,40,Flow Bytes/s,4,0.4
+qpso,on,2,20,30,40,Bwd IAT Max,4,0.4
+qpso,on,2,20,30,40,Packet Length Min,4,0.4
+qpso,on,2,20,30,40,Packet Length Variance,4,0.4
+qpso,on,2,20,30,40,CWR Flag Count,4,0.4
+qpso,on,2,20,30,40,bytes_rate_src_60,4,0.4
+qpso,on,2,20,30,40,Bwd IAT Mean,4,0.4
+qpso,on,2,20,30,40,Average Packet Size,4,0.4
+qpso,on,2,20,30,40,Bwd Bytes/Bulk Avg,4,0.4
+qpso,on,2,20,30,40,Total Fwd Packet,4,0.4
+qpso,on,2,20,30,40,Fwd Packet Length Mean,4,0.4
+qpso,on,2,20,30,40,Fwd Packet Length Max,4,0.4
+qpso,on,2,20,30,40,Bwd Segment Size Avg,4,0.4
+qpso,on,2,20,30,40,Fwd Packet Length Min,3,0.3
+qpso,on,2,20,30,40,Bwd IAT Min,3,0.3
+qpso,on,2,20,30,40,SYN Flag Count,3,0.3
+qpso,on,2,20,30,40,Bwd Packet Length Min,3,0.3
+qpso,on,2,20,30,40,Fwd PSH Flags,3,0.3
+qpso,on,2,20,30,40,Fwd Packet Length Std,3,0.3
+qpso,on,2,20,30,40,Bwd IAT Total,3,0.3
+qpso,on,2,20,30,40,Bwd URG Flags,3,0.3
+qpso,on,2,20,30,40,Bwd PSH Flags,3,0.3
+qpso,on,2,20,30,40,Fwd Header Length,3,0.3
+qpso,on,2,20,30,40,n_distinct_dport_10,3,0.3
+qpso,on,2,20,30,40,n_flows_src_10,2,0.2
+qpso,on,2,20,30,40,Flow Duration,2,0.2
+qpso,on,2,20,30,40,Fwd IAT Mean,2,0.2
+qpso,on,2,20,30,40,dt_prev_src,1,0.1
+qpso,on,2,20,30,40,Dst Port,1,0.1
+qpso,on,2,20,30,40,Fwd IAT Max,1,0.1
+qpso,on,2,20,30,40,FWD Init Win Bytes,1,0.1
+qpso,on,2,20,30,40,Fwd IAT Total,1,0.1
+qpso,on,2,20,30,40,Flow IAT Max,1,0.1
+qpso,on,3,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,3,20,30,40,Protocol,9,0.9
+qpso,on,3,20,30,40,Fwd Packet/Bulk Avg,8,0.8
+qpso,on,3,20,30,40,Active Std,8,0.8
+qpso,on,3,20,30,40,bytes_rate_src_60,8,0.8
+qpso,on,3,20,30,40,Packet Length Variance,8,0.8
+qpso,on,3,20,30,40,SYN Flag Count,8,0.8
+qpso,on,3,20,30,40,Total Length of Fwd Packet,7,0.7
+qpso,on,3,20,30,40,Bwd IAT Min,7,0.7
+qpso,on,3,20,30,40,RST Flag Count,7,0.7
+qpso,on,3,20,30,40,ACK Flag Count,7,0.7
+qpso,on,3,20,30,40,URG Flag Count,7,0.7
+qpso,on,3,20,30,40,Subflow Bwd Packets,7,0.7
+qpso,on,3,20,30,40,n_distinct_dport_10,7,0.7
+qpso,on,3,20,30,40,Bwd Packet Length Max,7,0.7
+qpso,on,3,20,30,40,Fwd Header Length,7,0.7
+qpso,on,3,20,30,40,Average Packet Size,7,0.7
+qpso,on,3,20,30,40,Bwd Packet Length Min,6,0.6
+qpso,on,3,20,30,40,Bwd Packet Length Mean,6,0.6
+qpso,on,3,20,30,40,Flow IAT Min,6,0.6
+qpso,on,3,20,30,40,Packet Length Min,6,0.6
+qpso,on,3,20,30,40,Packet Length Mean,6,0.6
+qpso,on,3,20,30,40,Bwd Init Win Bytes,6,0.6
+qpso,on,3,20,30,40,bytes_rate_src_10,6,0.6
+qpso,on,3,20,30,40,pkt_rate_src_60,6,0.6
+qpso,on,3,20,30,40,n_proto_switch_60,6,0.6
+qpso,on,3,20,30,40,Total Bwd packets,6,0.6
+qpso,on,3,20,30,40,Bwd URG Flags,6,0.6
+qpso,on,3,20,30,40,n_flows_src_60,6,0.6
+qpso,on,3,20,30,40,Bwd IAT Std,6,0.6
+qpso,on,3,20,30,40,Total Length of Bwd Packet,5,0.5
+qpso,on,3,20,30,40,Bwd IAT Mean,5,0.5
+qpso,on,3,20,30,40,Bwd Header Length,5,0.5
+qpso,on,3,20,30,40,PSH Flag Count,5,0.5
+qpso,on,3,20,30,40,CWR Flag Count,5,0.5
+qpso,on,3,20,30,40,Fwd Bulk Rate Avg,5,0.5
+qpso,on,3,20,30,40,Bwd Bulk Rate Avg,5,0.5
+qpso,on,3,20,30,40,Fwd Act Data Pkts,5,0.5
+qpso,on,3,20,30,40,Active Max,5,0.5
+qpso,on,3,20,30,40,proto_switch,5,0.5
+qpso,on,3,20,30,40,Total Fwd Packet,5,0.5
+qpso,on,3,20,30,40,Bwd Packet Length Std,5,0.5
+qpso,on,3,20,30,40,Fwd IAT Total,5,0.5
+qpso,on,3,20,30,40,n_flows_src_10,5,0.5
+qpso,on,3,20,30,40,Fwd IAT Mean,5,0.5
+qpso,on,3,20,30,40,Bwd Packet/Bulk Avg,5,0.5
+qpso,on,3,20,30,40,n_distinct_dport_60,5,0.5
+qpso,on,3,20,30,40,Flow Bytes/s,4,0.4
+qpso,on,3,20,30,40,Flow Packets/s,4,0.4
+qpso,on,3,20,30,40,Fwd IAT Std,4,0.4
+qpso,on,3,20,30,40,Bwd Packets/s,4,0.4
+qpso,on,3,20,30,40,Active Mean,4,0.4
+qpso,on,3,20,30,40,pkt_rate_src_10,4,0.4
+qpso,on,3,20,30,40,Bwd IAT Max,4,0.4
+qpso,on,3,20,30,40,Fwd URG Flags,4,0.4
+qpso,on,3,20,30,40,ECE Flag Count,4,0.4
+qpso,on,3,20,30,40,Down/Up Ratio,4,0.4
+qpso,on,3,20,30,40,Subflow Bwd Bytes,4,0.4
+qpso,on,3,20,30,40,Active Min,4,0.4
+qpso,on,3,20,30,40,Fwd Packet Length Mean,4,0.4
+qpso,on,3,20,30,40,Packet Length Std,4,0.4
+qpso,on,3,20,30,40,Flow IAT Mean,4,0.4
+qpso,on,3,20,30,40,Fwd Packet Length Max,4,0.4
+qpso,on,3,20,30,40,Fwd Packets/s,4,0.4
+qpso,on,3,20,30,40,Bwd Bytes/Bulk Avg,3,0.3
+qpso,on,3,20,30,40,Fwd Packet Length Min,3,0.3
+qpso,on,3,20,30,40,Flow IAT Std,3,0.3
+qpso,on,3,20,30,40,Bwd PSH Flags,3,0.3
+qpso,on,3,20,30,40,Packet Length Max,3,0.3
+qpso,on,3,20,30,40,Bwd Segment Size Avg,3,0.3
+qpso,on,3,20,30,40,Subflow Fwd Bytes,3,0.3
+qpso,on,3,20,30,40,Fwd Segment Size Avg,3,0.3
+qpso,on,3,20,30,40,FIN Flag Count,2,0.2
+qpso,on,3,20,30,40,Fwd IAT Max,2,0.2
+qpso,on,3,20,30,40,Fwd Packet Length Std,2,0.2
+qpso,on,3,20,30,40,Fwd Bytes/Bulk Avg,2,0.2
+qpso,on,3,20,30,40,Fwd IAT Min,2,0.2
+qpso,on,3,20,30,40,Bwd IAT Total,2,0.2
+qpso,on,3,20,30,40,Flow Duration,1,0.1
+qpso,on,3,20,30,40,n_distinct_dst_10,1,0.1
+qpso,on,3,20,30,40,Fwd PSH Flags,1,0.1
+qpso,on,3,20,30,40,dt_prev_src,1,0.1
+qpso,on,4,20,30,40,Protocol,10,1.0
+qpso,on,4,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,4,20,30,40,Fwd Packet Length Mean,8,0.8
+qpso,on,4,20,30,40,Total Length of Fwd Packet,7,0.7
+qpso,on,4,20,30,40,Total Length of Bwd Packet,7,0.7
+qpso,on,4,20,30,40,Bwd Packet Length Max,7,0.7
+qpso,on,4,20,30,40,Flow Packets/s,7,0.7
+qpso,on,4,20,30,40,Fwd IAT Mean,7,0.7
+qpso,on,4,20,30,40,Bwd IAT Std,7,0.7
+qpso,on,4,20,30,40,Packet Length Std,7,0.7
+qpso,on,4,20,30,40,ECE Flag Count,7,0.7
+qpso,on,4,20,30,40,Bwd Segment Size Avg,7,0.7
+qpso,on,4,20,30,40,Bwd Bulk Rate Avg,7,0.7
+qpso,on,4,20,30,40,Subflow Bwd Packets,7,0.7
+qpso,on,4,20,30,40,Active Std,7,0.7
+qpso,on,4,20,30,40,bytes_rate_src_10,7,0.7
+qpso,on,4,20,30,40,Fwd IAT Std,7,0.7
+qpso,on,4,20,30,40,Fwd Packet Length Max,6,0.6
+qpso,on,4,20,30,40,Fwd Packet Length Min,6,0.6
+qpso,on,4,20,30,40,Bwd IAT Mean,6,0.6
+qpso,on,4,20,30,40,Bwd URG Flags,6,0.6
+qpso,on,4,20,30,40,Packet Length Variance,6,0.6
+qpso,on,4,20,30,40,Average Packet Size,6,0.6
+qpso,on,4,20,30,40,Fwd Bulk Rate Avg,6,0.6
+qpso,on,4,20,30,40,n_distinct_dport_60,6,0.6
+qpso,on,4,20,30,40,n_flows_src_60,6,0.6
+qpso,on,4,20,30,40,bytes_rate_src_60,6,0.6
+qpso,on,4,20,30,40,Active Min,6,0.6
+qpso,on,4,20,30,40,Bwd Packet Length Mean,5,0.5
+qpso,on,4,20,30,40,Bwd IAT Total,5,0.5
+qpso,on,4,20,30,40,Packet Length Mean,5,0.5
+qpso,on,4,20,30,40,PSH Flag Count,5,0.5
+qpso,on,4,20,30,40,Fwd Act Data Pkts,5,0.5
+qpso,on,4,20,30,40,n_distinct_dst_10,5,0.5
+qpso,on,4,20,30,40,Total Fwd Packet,5,0.5
+qpso,on,4,20,30,40,Bwd Packet Length Std,5,0.5
+qpso,on,4,20,30,40,Bwd Header Length,5,0.5
+qpso,on,4,20,30,40,Bwd Packets/s,5,0.5
+qpso,on,4,20,30,40,RST Flag Count,5,0.5
+qpso,on,4,20,30,40,Down/Up Ratio,5,0.5
+qpso,on,4,20,30,40,Fwd Packet/Bulk Avg,5,0.5
+qpso,on,4,20,30,40,Subflow Bwd Bytes,5,0.5
+qpso,on,4,20,30,40,URG Flag Count,5,0.5
+qpso,on,4,20,30,40,Bwd Init Win Bytes,5,0.5
+qpso,on,4,20,30,40,CWR Flag Count,5,0.5
+qpso,on,4,20,30,40,ACK Flag Count,5,0.5
+qpso,on,4,20,30,40,Total Bwd packets,4,0.4
+qpso,on,4,20,30,40,Fwd Packet Length Std,4,0.4
+qpso,on,4,20,30,40,Fwd URG Flags,4,0.4
+qpso,on,4,20,30,40,Packet Length Max,4,0.4
+qpso,on,4,20,30,40,Fwd Bytes/Bulk Avg,4,0.4
+qpso,on,4,20,30,40,n_distinct_dport_10,4,0.4
+qpso,on,4,20,30,40,n_proto_switch_60,4,0.4
+qpso,on,4,20,30,40,Flow Duration,4,0.4
+qpso,on,4,20,30,40,Flow IAT Max,4,0.4
+qpso,on,4,20,30,40,Bwd IAT Max,4,0.4
+qpso,on,4,20,30,40,SYN Flag Count,4,0.4
+qpso,on,4,20,30,40,Active Mean,4,0.4
+qpso,on,4,20,30,40,pkt_rate_src_10,4,0.4
+qpso,on,4,20,30,40,Bwd PSH Flags,4,0.4
+qpso,on,4,20,30,40,Fwd Packets/s,4,0.4
+qpso,on,4,20,30,40,Fwd Segment Size Avg,4,0.4
+qpso,on,4,20,30,40,Bwd Bytes/Bulk Avg,4,0.4
+qpso,on,4,20,30,40,Flow IAT Min,4,0.4
+qpso,on,4,20,30,40,Active Max,4,0.4
+qpso,on,4,20,30,40,Bwd IAT Min,3,0.3
+qpso,on,4,20,30,40,Flow Bytes/s,3,0.3
+qpso,on,4,20,30,40,n_flows_src_10,3,0.3
+qpso,on,4,20,30,40,Bwd Packet Length Min,3,0.3
+qpso,on,4,20,30,40,Packet Length Min,3,0.3
+qpso,on,4,20,30,40,pkt_rate_src_60,3,0.3
+qpso,on,4,20,30,40,FIN Flag Count,3,0.3
+qpso,on,4,20,30,40,Bwd Packet/Bulk Avg,3,0.3
+qpso,on,4,20,30,40,Flow IAT Std,2,0.2
+qpso,on,4,20,30,40,proto_switch,2,0.2
+qpso,on,4,20,30,40,Fwd IAT Max,2,0.2
+qpso,on,4,20,30,40,dt_prev_src,2,0.2
+qpso,on,4,20,30,40,Fwd Header Length,2,0.2
+qpso,on,4,20,30,40,Subflow Fwd Bytes,2,0.2
+qpso,on,4,20,30,40,n_distinct_dst_60,2,0.2
+qpso,on,4,20,30,40,Flow IAT Mean,1,0.1
+qpso,on,4,20,30,40,Fwd PSH Flags,1,0.1
+qpso,on,4,20,30,40,FWD Init Win Bytes,1,0.1
+qpso,on,4,20,30,40,Fwd IAT Min,1,0.1
+qpso,on,5,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,5,20,30,40,Subflow Bwd Packets,9,0.9
+qpso,on,5,20,30,40,Protocol,8,0.8
+qpso,on,5,20,30,40,Active Std,8,0.8
+qpso,on,5,20,30,40,Total Fwd Packet,7,0.7
+qpso,on,5,20,30,40,Fwd Packet Length Max,7,0.7
+qpso,on,5,20,30,40,PSH Flag Count,7,0.7
+qpso,on,5,20,30,40,Bwd Packet/Bulk Avg,7,0.7
+qpso,on,5,20,30,40,Bwd Init Win Bytes,7,0.7
+qpso,on,5,20,30,40,ACK Flag Count,7,0.7
+qpso,on,5,20,30,40,Active Min,7,0.7
+qpso,on,5,20,30,40,n_distinct_dst_10,7,0.7
+qpso,on,5,20,30,40,Bwd Bulk Rate Avg,7,0.7
+qpso,on,5,20,30,40,Flow Bytes/s,6,0.6
+qpso,on,5,20,30,40,Bwd URG Flags,6,0.6
+qpso,on,5,20,30,40,Bwd Header Length,6,0.6
+qpso,on,5,20,30,40,CWR Flag Count,6,0.6
+qpso,on,5,20,30,40,ECE Flag Count,6,0.6
+qpso,on,5,20,30,40,Down/Up Ratio,6,0.6
+qpso,on,5,20,30,40,Fwd Packet/Bulk Avg,6,0.6
+qpso,on,5,20,30,40,Bwd Bytes/Bulk Avg,6,0.6
+qpso,on,5,20,30,40,Fwd Act Data Pkts,6,0.6
+qpso,on,5,20,30,40,n_proto_switch_60,6,0.6
+qpso,on,5,20,30,40,Total Bwd packets,6,0.6
+qpso,on,5,20,30,40,Bwd IAT Max,6,0.6
+qpso,on,5,20,30,40,Bwd PSH Flags,6,0.6
+qpso,on,5,20,30,40,Packet Length Std,6,0.6
+qpso,on,5,20,30,40,Fwd Bytes/Bulk Avg,6,0.6
+qpso,on,5,20,30,40,Total Length of Bwd Packet,6,0.6
+qpso,on,5,20,30,40,Fwd Packet Length Std,5,0.5
+qpso,on,5,20,30,40,Fwd IAT Std,5,0.5
+qpso,on,5,20,30,40,Fwd IAT Min,5,0.5
+qpso,on,5,20,30,40,Fwd Header Length,5,0.5
+qpso,on,5,20,30,40,Fwd Packets/s,5,0.5
+qpso,on,5,20,30,40,Bwd Packets/s,5,0.5
+qpso,on,5,20,30,40,Packet Length Min,5,0.5
+qpso,on,5,20,30,40,SYN Flag Count,5,0.5
+qpso,on,5,20,30,40,Fwd Bulk Rate Avg,5,0.5
+qpso,on,5,20,30,40,Active Max,5,0.5
+qpso,on,5,20,30,40,Total Length of Fwd Packet,5,0.5
+qpso,on,5,20,30,40,Bwd Packet Length Min,5,0.5
+qpso,on,5,20,30,40,Flow Packets/s,5,0.5
+qpso,on,5,20,30,40,Flow IAT Min,5,0.5
+qpso,on,5,20,30,40,Packet Length Variance,5,0.5
+qpso,on,5,20,30,40,RST Flag Count,5,0.5
+qpso,on,5,20,30,40,Bwd Segment Size Avg,5,0.5
+qpso,on,5,20,30,40,Active Mean,5,0.5
+qpso,on,5,20,30,40,Bwd Packet Length Max,5,0.5
+qpso,on,5,20,30,40,Packet Length Max,5,0.5
+qpso,on,5,20,30,40,Subflow Bwd Bytes,5,0.5
+qpso,on,5,20,30,40,Flow IAT Mean,4,0.4
+qpso,on,5,20,30,40,Flow IAT Std,4,0.4
+qpso,on,5,20,30,40,Packet Length Mean,4,0.4
+qpso,on,5,20,30,40,URG Flag Count,4,0.4
+qpso,on,5,20,30,40,Average Packet Size,4,0.4
+qpso,on,5,20,30,40,Fwd Packet Length Mean,4,0.4
+qpso,on,5,20,30,40,Flow IAT Max,4,0.4
+qpso,on,5,20,30,40,Bwd IAT Std,4,0.4
+qpso,on,5,20,30,40,pkt_rate_src_60,4,0.4
+qpso,on,5,20,30,40,Flow Duration,4,0.4
+qpso,on,5,20,30,40,Bwd Packet Length Std,4,0.4
+qpso,on,5,20,30,40,bytes_rate_src_10,4,0.4
+qpso,on,5,20,30,40,Fwd IAT Max,3,0.3
+qpso,on,5,20,30,40,Fwd URG Flags,3,0.3
+qpso,on,5,20,30,40,FIN Flag Count,3,0.3
+qpso,on,5,20,30,40,n_flows_src_10,3,0.3
+qpso,on,5,20,30,40,bytes_rate_src_60,3,0.3
+qpso,on,5,20,30,40,n_distinct_dport_10,3,0.3
+qpso,on,5,20,30,40,Fwd Packet Length Min,3,0.3
+qpso,on,5,20,30,40,Bwd Packet Length Mean,3,0.3
+qpso,on,5,20,30,40,Bwd IAT Mean,3,0.3
+qpso,on,5,20,30,40,Subflow Fwd Bytes,3,0.3
+qpso,on,5,20,30,40,n_flows_src_60,3,0.3
+qpso,on,5,20,30,40,Bwd IAT Min,3,0.3
+qpso,on,5,20,30,40,Fwd Segment Size Avg,3,0.3
+qpso,on,5,20,30,40,n_distinct_dport_60,3,0.3
+qpso,on,5,20,30,40,Fwd PSH Flags,2,0.2
+qpso,on,5,20,30,40,dt_prev_src,2,0.2
+qpso,on,5,20,30,40,pkt_rate_src_10,2,0.2
+qpso,on,5,20,30,40,proto_switch,2,0.2
+qpso,on,5,20,30,40,Fwd IAT Total,1,0.1
+qpso,on,5,20,30,40,Fwd IAT Mean,1,0.1
+qpso,on,5,20,30,40,FWD Init Win Bytes,1,0.1
+qpso,on,6,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,6,20,30,40,Total Length of Fwd Packet,8,0.8
+qpso,on,6,20,30,40,bytes_rate_src_10,8,0.8
+qpso,on,6,20,30,40,Total Fwd Packet,8,0.8
+qpso,on,6,20,30,40,Protocol,7,0.7
+qpso,on,6,20,30,40,Fwd Packet Length Min,7,0.7
+qpso,on,6,20,30,40,Bwd URG Flags,7,0.7
+qpso,on,6,20,30,40,Packet Length Max,7,0.7
+qpso,on,6,20,30,40,Fwd Segment Size Avg,7,0.7
+qpso,on,6,20,30,40,Bwd Packet/Bulk Avg,7,0.7
+qpso,on,6,20,30,40,Bwd Bulk Rate Avg,7,0.7
+qpso,on,6,20,30,40,Subflow Fwd Bytes,7,0.7
+qpso,on,6,20,30,40,Total Length of Bwd Packet,6,0.6
+qpso,on,6,20,30,40,Fwd Packet Length Max,6,0.6
+qpso,on,6,20,30,40,Fwd IAT Mean,6,0.6
+qpso,on,6,20,30,40,Fwd IAT Min,6,0.6
+qpso,on,6,20,30,40,Bwd PSH Flags,6,0.6
+qpso,on,6,20,30,40,URG Flag Count,6,0.6
+qpso,on,6,20,30,40,Fwd Bulk Rate Avg,6,0.6
+qpso,on,6,20,30,40,Active Mean,6,0.6
+qpso,on,6,20,30,40,dt_prev_src,6,0.6
+qpso,on,6,20,30,40,Fwd IAT Std,6,0.6
+qpso,on,6,20,30,40,Bwd IAT Min,6,0.6
+qpso,on,6,20,30,40,Fwd Header Length,6,0.6
+qpso,on,6,20,30,40,RST Flag Count,6,0.6
+qpso,on,6,20,30,40,Bwd Bytes/Bulk Avg,6,0.6
+qpso,on,6,20,30,40,Bwd Init Win Bytes,6,0.6
+qpso,on,6,20,30,40,Fwd Act Data Pkts,6,0.6
+qpso,on,6,20,30,40,ECE Flag Count,6,0.6
+qpso,on,6,20,30,40,Total Bwd packets,5,0.5
+qpso,on,6,20,30,40,Bwd Packet Length Min,5,0.5
+qpso,on,6,20,30,40,Bwd Packet Length Std,5,0.5
+qpso,on,6,20,30,40,Bwd IAT Total,5,0.5
+qpso,on,6,20,30,40,Bwd Header Length,5,0.5
+qpso,on,6,20,30,40,Packet Length Mean,5,0.5
+qpso,on,6,20,30,40,Packet Length Variance,5,0.5
+qpso,on,6,20,30,40,SYN Flag Count,5,0.5
+qpso,on,6,20,30,40,PSH Flag Count,5,0.5
+qpso,on,6,20,30,40,CWR Flag Count,5,0.5
+qpso,on,6,20,30,40,n_flows_src_10,5,0.5
+qpso,on,6,20,30,40,pkt_rate_src_10,5,0.5
+qpso,on,6,20,30,40,n_proto_switch_60,5,0.5
+qpso,on,6,20,30,40,Bwd Packet Length Max,5,0.5
+qpso,on,6,20,30,40,ACK Flag Count,5,0.5
+qpso,on,6,20,30,40,Down/Up Ratio,5,0.5
+qpso,on,6,20,30,40,Bwd Segment Size Avg,5,0.5
+qpso,on,6,20,30,40,Subflow Bwd Packets,5,0.5
+qpso,on,6,20,30,40,Active Max,5,0.5
+qpso,on,6,20,30,40,n_distinct_dport_10,5,0.5
+qpso,on,6,20,30,40,Flow Packets/s,5,0.5
+qpso,on,6,20,30,40,Packet Length Min,5,0.5
+qpso,on,6,20,30,40,n_distinct_dport_60,5,0.5
+qpso,on,6,20,30,40,bytes_rate_src_60,5,0.5
+qpso,on,6,20,30,40,Bwd Packet Length Mean,4,0.4
+qpso,on,6,20,30,40,Bwd IAT Std,4,0.4
+qpso,on,6,20,30,40,Fwd Bytes/Bulk Avg,4,0.4
+qpso,on,6,20,30,40,Flow IAT Mean,4,0.4
+qpso,on,6,20,30,40,Active Min,4,0.4
+qpso,on,6,20,30,40,Flow IAT Std,4,0.4
+qpso,on,6,20,30,40,Fwd IAT Max,4,0.4
+qpso,on,6,20,30,40,Packet Length Std,4,0.4
+qpso,on,6,20,30,40,Fwd URG Flags,4,0.4
+qpso,on,6,20,30,40,Fwd Packet Length Mean,4,0.4
+qpso,on,6,20,30,40,Fwd PSH Flags,3,0.3
+qpso,on,6,20,30,40,n_distinct_dst_60,3,0.3
+qpso,on,6,20,30,40,Fwd Packet Length Std,3,0.3
+qpso,on,6,20,30,40,Fwd Packets/s,3,0.3
+qpso,on,6,20,30,40,Active Std,3,0.3
+qpso,on,6,20,30,40,n_distinct_dst_10,3,0.3
+qpso,on,6,20,30,40,Bwd IAT Max,3,0.3
+qpso,on,6,20,30,40,Bwd Packets/s,3,0.3
+qpso,on,6,20,30,40,Flow Bytes/s,3,0.3
+qpso,on,6,20,30,40,Fwd IAT Total,2,0.2
+qpso,on,6,20,30,40,FIN Flag Count,2,0.2
+qpso,on,6,20,30,40,n_flows_src_60,2,0.2
+qpso,on,6,20,30,40,Flow IAT Min,2,0.2
+qpso,on,6,20,30,40,Average Packet Size,2,0.2
+qpso,on,6,20,30,40,Flow IAT Max,2,0.2
+qpso,on,6,20,30,40,Fwd Packet/Bulk Avg,2,0.2
+qpso,on,6,20,30,40,pkt_rate_src_60,2,0.2
+qpso,on,6,20,30,40,Flow Duration,2,0.2
+qpso,on,6,20,30,40,proto_switch,1,0.1
+qpso,on,6,20,30,40,Subflow Bwd Bytes,1,0.1
+qpso,on,6,20,30,40,FWD Init Win Bytes,1,0.1
+qpso,on,6,20,60,40,Protocol,5,1.0
+qpso,on,6,20,60,40,Fwd Segment Size Avg,5,1.0
+qpso,on,6,20,60,40,Subflow Bwd Packets,5,1.0
+qpso,on,6,20,60,40,syn_frac_src_60,5,1.0
+qpso,on,6,20,60,40,Total Bwd packets,4,0.8
+qpso,on,6,20,60,40,Flow Packets/s,4,0.8
+qpso,on,6,20,60,40,Fwd IAT Mean,4,0.8
+qpso,on,6,20,60,40,Bwd URG Flags,4,0.8
+qpso,on,6,20,60,40,Fwd Bytes/Bulk Avg,4,0.8
+qpso,on,6,20,60,40,Bwd Packet/Bulk Avg,4,0.8
+qpso,on,6,20,60,40,Subflow Bwd Bytes,4,0.8
+qpso,on,6,20,60,40,Bwd Init Win Bytes,4,0.8
+qpso,on,6,20,60,40,n_distinct_dst_10,4,0.8
+qpso,on,6,20,60,40,Flow IAT Std,4,0.8
+qpso,on,6,20,60,40,Fwd Bulk Rate Avg,4,0.8
+qpso,on,6,20,60,40,Subflow Fwd Bytes,4,0.8
+qpso,on,6,20,60,40,n_proto_switch_60,4,0.8
+qpso,on,6,20,60,40,Fwd Packet Length Max,3,0.6
+qpso,on,6,20,60,40,Fwd IAT Std,3,0.6
+qpso,on,6,20,60,40,Fwd IAT Min,3,0.6
+qpso,on,6,20,60,40,Bwd Packets/s,3,0.6
+qpso,on,6,20,60,40,FIN Flag Count,3,0.6
+qpso,on,6,20,60,40,RST Flag Count,3,0.6
+qpso,on,6,20,60,40,PSH Flag Count,3,0.6
+qpso,on,6,20,60,40,ECE Flag Count,3,0.6
+qpso,on,6,20,60,40,Down/Up Ratio,3,0.6
+qpso,on,6,20,60,40,Fwd Act Data Pkts,3,0.6
+qpso,on,6,20,60,40,pkt_rate_src_10,3,0.6
+qpso,on,6,20,60,40,bytes_rate_src_60,3,0.6
+qpso,on,6,20,60,40,Flow IAT Min,3,0.6
+qpso,on,6,20,60,40,ACK Flag Count,3,0.6
+qpso,on,6,20,60,40,Bwd Bytes/Bulk Avg,3,0.6
+qpso,on,6,20,60,40,Total Length of Fwd Packet,2,0.4
+qpso,on,6,20,60,40,Fwd Packet Length Mean,2,0.4
+qpso,on,6,20,60,40,Fwd Packet Length Std,2,0.4
+qpso,on,6,20,60,40,Bwd Packet Length Std,2,0.4
+qpso,on,6,20,60,40,Flow Bytes/s,2,0.4
+qpso,on,6,20,60,40,Bwd IAT Total,2,0.4
+qpso,on,6,20,60,40,Fwd URG Flags,2,0.4
+qpso,on,6,20,60,40,Packet Length Max,2,0.4
+qpso,on,6,20,60,40,CWR Flag Count,2,0.4
+qpso,on,6,20,60,40,Bwd Segment Size Avg,2,0.4
+qpso,on,6,20,60,40,Active Mean,2,0.4
+qpso,on,6,20,60,40,n_flows_src_10,2,0.4
+qpso,on,6,20,60,40,bytes_rate_src_10,2,0.4
+qpso,on,6,20,60,40,n_flows_src_60,2,0.4
+qpso,on,6,20,60,40,n_distinct_dport_60,2,0.4
+qpso,on,6,20,60,40,Bwd IAT Mean,2,0.4
+qpso,on,6,20,60,40,Bwd IAT Std,2,0.4
+qpso,on,6,20,60,40,Bwd IAT Max,2,0.4
+qpso,on,6,20,60,40,Bwd IAT Min,2,0.4
+qpso,on,6,20,60,40,Bwd Header Length,2,0.4
+qpso,on,6,20,60,40,Packet Length Min,2,0.4
+qpso,on,6,20,60,40,Packet Length Mean,2,0.4
+qpso,on,6,20,60,40,Packet Length Std,2,0.4
+qpso,on,6,20,60,40,URG Flag Count,2,0.4
+qpso,on,6,20,60,40,Total Length of Bwd Packet,2,0.4
+qpso,on,6,20,60,40,Fwd Packet Length Min,2,0.4
+qpso,on,6,20,60,40,Bwd Packet Length Min,2,0.4
+qpso,on,6,20,60,40,Packet Length Variance,2,0.4
+qpso,on,6,20,60,40,Bwd Bulk Rate Avg,2,0.4
+qpso,on,6,20,60,40,pkt_rate_src_60,2,0.4
+qpso,on,6,20,60,40,Total Fwd Packet,2,0.4
+qpso,on,6,20,60,40,Bwd Packet Length Mean,2,0.4
+qpso,on,6,20,60,40,Fwd Header Length,2,0.4
+qpso,on,6,20,60,40,Average Packet Size,2,0.4
+qpso,on,6,20,60,40,Active Std,2,0.4
+qpso,on,6,20,60,40,Bwd Packet Length Max,1,0.2
+qpso,on,6,20,60,40,Bwd PSH Flags,1,0.2
+qpso,on,6,20,60,40,Fwd Seg Size Min,1,0.2
+qpso,on,6,20,60,40,n_distinct_dport_10,1,0.2
+qpso,on,6,20,60,40,proto_switch,1,0.2
+qpso,on,6,20,60,40,Flow IAT Mean,1,0.2
+qpso,on,6,20,60,40,Fwd IAT Total,1,0.2
+qpso,on,6,20,60,40,SYN Flag Count,1,0.2
+qpso,on,6,20,60,40,Active Min,1,0.2
+qpso,on,6,20,60,40,Fwd Packets/s,1,0.2
+qpso,on,6,20,60,40,Flow IAT Max,1,0.2
+qpso,on,6,20,60,40,Active Max,1,0.2
+qpso,on,6,20,60,40,dt_prev_src,1,0.2
+qpso,on,6,40,30,40,Protocol,1,1.0
+qpso,on,6,40,30,40,Total Bwd packets,1,1.0
+qpso,on,6,40,30,40,Total Length of Fwd Packet,1,1.0
+qpso,on,6,40,30,40,Total Length of Bwd Packet,1,1.0
+qpso,on,6,40,30,40,Fwd Packet Length Max,1,1.0
+qpso,on,6,40,30,40,Fwd Packet Length Min,1,1.0
+qpso,on,6,40,30,40,Bwd Packet Length Min,1,1.0
+qpso,on,6,40,30,40,Bwd Packet Length Std,1,1.0
+qpso,on,6,40,30,40,Flow Bytes/s,1,1.0
+qpso,on,6,40,30,40,Flow IAT Mean,1,1.0
+qpso,on,6,40,30,40,Flow IAT Max,1,1.0
+qpso,on,6,40,30,40,Flow IAT Min,1,1.0
+qpso,on,6,40,30,40,Fwd IAT Std,1,1.0
+qpso,on,6,40,30,40,Fwd IAT Max,1,1.0
+qpso,on,6,40,30,40,Bwd IAT Mean,1,1.0
+qpso,on,6,40,30,40,Bwd IAT Min,1,1.0
+qpso,on,6,40,30,40,Fwd PSH Flags,1,1.0
+qpso,on,6,40,30,40,Bwd URG Flags,1,1.0
+qpso,on,6,40,30,40,Fwd Header Length,1,1.0
+qpso,on,6,40,30,40,Bwd Header Length,1,1.0
+qpso,on,6,40,30,40,Fwd Packets/s,1,1.0
+qpso,on,6,40,30,40,Packet Length Max,1,1.0
+qpso,on,6,40,30,40,Packet Length Variance,1,1.0
+qpso,on,6,40,30,40,RST Flag Count,1,1.0
+qpso,on,6,40,30,40,PSH Flag Count,1,1.0
+qpso,on,6,40,30,40,URG Flag Count,1,1.0
+qpso,on,6,40,30,40,CWR Flag Count,1,1.0
+qpso,on,6,40,30,40,ECE Flag Count,1,1.0
+qpso,on,6,40,30,40,Average Packet Size,1,1.0
+qpso,on,6,40,30,40,Bwd Segment Size Avg,1,1.0
+qpso,on,6,40,30,40,Fwd Bytes/Bulk Avg,1,1.0
+qpso,on,6,40,30,40,Fwd Bulk Rate Avg,1,1.0
+qpso,on,6,40,30,40,Bwd Bytes/Bulk Avg,1,1.0
+qpso,on,6,40,30,40,Subflow Bwd Packets,1,1.0
+qpso,on,6,40,30,40,Active Mean,1,1.0
+qpso,on,6,40,30,40,bytes_rate_src_60,1,1.0
+qpso,on,6,40,30,40,dt_prev_src,1,1.0
+qpso,on,6,40,30,40,n_distinct_dport_60,1,1.0
+qpso,on,6,40,30,40,proto_switch,1,1.0
+qpso,on,6,40,30,40,syn_frac_src_60,1,1.0
+qpso,on,7,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,7,20,30,40,Protocol,9,0.9
+qpso,on,7,20,30,40,Fwd Packet Length Mean,8,0.8
+qpso,on,7,20,30,40,Bwd Bytes/Bulk Avg,8,0.8
+qpso,on,7,20,30,40,Fwd IAT Std,7,0.7
+qpso,on,7,20,30,40,Bwd IAT Mean,7,0.7
+qpso,on,7,20,30,40,Bwd IAT Std,7,0.7
+qpso,on,7,20,30,40,Packet Length Mean,7,0.7
+qpso,on,7,20,30,40,SYN Flag Count,7,0.7
+qpso,on,7,20,30,40,RST Flag Count,7,0.7
+qpso,on,7,20,30,40,Bwd Bulk Rate Avg,7,0.7
+qpso,on,7,20,30,40,Bwd Init Win Bytes,7,0.7
+qpso,on,7,20,30,40,Flow Duration,7,0.7
+qpso,on,7,20,30,40,Total Length of Bwd Packet,7,0.7
+qpso,on,7,20,30,40,Bwd Packet Length Std,7,0.7
+qpso,on,7,20,30,40,Bwd Header Length,7,0.7
+qpso,on,7,20,30,40,Fwd Act Data Pkts,7,0.7
+qpso,on,7,20,30,40,Active Min,7,0.7
+qpso,on,7,20,30,40,n_proto_switch_60,7,0.7
+qpso,on,7,20,30,40,Total Bwd packets,6,0.6
+qpso,on,7,20,30,40,Fwd Packet Length Min,6,0.6
+qpso,on,7,20,30,40,URG Flag Count,6,0.6
+qpso,on,7,20,30,40,CWR Flag Count,6,0.6
+qpso,on,7,20,30,40,Down/Up Ratio,6,0.6
+qpso,on,7,20,30,40,Subflow Fwd Bytes,6,0.6
+qpso,on,7,20,30,40,pkt_rate_src_10,6,0.6
+qpso,on,7,20,30,40,n_distinct_dport_10,6,0.6
+qpso,on,7,20,30,40,Fwd URG Flags,6,0.6
+qpso,on,7,20,30,40,Fwd Packet Length Std,6,0.6
+qpso,on,7,20,30,40,Flow IAT Std,6,0.6
+qpso,on,7,20,30,40,Total Length of Fwd Packet,5,0.5
+qpso,on,7,20,30,40,Fwd IAT Mean,5,0.5
+qpso,on,7,20,30,40,Bwd IAT Total,5,0.5
+qpso,on,7,20,30,40,Bwd PSH Flags,5,0.5
+qpso,on,7,20,30,40,Bwd Packets/s,5,0.5
+qpso,on,7,20,30,40,Packet Length Std,5,0.5
+qpso,on,7,20,30,40,ECE Flag Count,5,0.5
+qpso,on,7,20,30,40,Subflow Bwd Bytes,5,0.5
+qpso,on,7,20,30,40,ACK Flag Count,5,0.5
+qpso,on,7,20,30,40,Bwd Segment Size Avg,5,0.5
+qpso,on,7,20,30,40,Fwd IAT Min,5,0.5
+qpso,on,7,20,30,40,Bwd URG Flags,5,0.5
+qpso,on,7,20,30,40,Bwd Packet Length Mean,4,0.4
+qpso,on,7,20,30,40,Bwd IAT Max,4,0.4
+qpso,on,7,20,30,40,Average Packet Size,4,0.4
+qpso,on,7,20,30,40,Fwd Bytes/Bulk Avg,4,0.4
+qpso,on,7,20,30,40,Fwd Bulk Rate Avg,4,0.4
+qpso,on,7,20,30,40,Active Std,4,0.4
+qpso,on,7,20,30,40,n_distinct_dport_60,4,0.4
+qpso,on,7,20,30,40,Flow Packets/s,4,0.4
+qpso,on,7,20,30,40,Packet Length Variance,4,0.4
+qpso,on,7,20,30,40,PSH Flag Count,4,0.4
+qpso,on,7,20,30,40,Fwd Segment Size Avg,4,0.4
+qpso,on,7,20,30,40,Bwd Packet/Bulk Avg,4,0.4
+qpso,on,7,20,30,40,Active Mean,4,0.4
+qpso,on,7,20,30,40,Active Max,4,0.4
+qpso,on,7,20,30,40,n_flows_src_60,4,0.4
+qpso,on,7,20,30,40,Fwd Packet Length Max,4,0.4
+qpso,on,7,20,30,40,Bwd Packet Length Min,4,0.4
+qpso,on,7,20,30,40,bytes_rate_src_10,4,0.4
+qpso,on,7,20,30,40,bytes_rate_src_60,4,0.4
+qpso,on,7,20,30,40,Bwd IAT Min,4,0.4
+qpso,on,7,20,30,40,FIN Flag Count,4,0.4
+qpso,on,7,20,30,40,n_flows_src_10,4,0.4
+qpso,on,7,20,30,40,Flow IAT Mean,3,0.3
+qpso,on,7,20,30,40,Fwd Packets/s,3,0.3
+qpso,on,7,20,30,40,n_distinct_dst_60,3,0.3
+qpso,on,7,20,30,40,Bwd Packet Length Max,3,0.3
+qpso,on,7,20,30,40,Fwd Header Length,3,0.3
+qpso,on,7,20,30,40,Flow Bytes/s,3,0.3
+qpso,on,7,20,30,40,Fwd IAT Max,3,0.3
+qpso,on,7,20,30,40,Subflow Bwd Packets,3,0.3
+qpso,on,7,20,30,40,pkt_rate_src_60,3,0.3
+qpso,on,7,20,30,40,Flow IAT Min,2,0.2
+qpso,on,7,20,30,40,Total Fwd Packet,2,0.2
+qpso,on,7,20,30,40,Packet Length Max,2,0.2
+qpso,on,7,20,30,40,dt_prev_src,2,0.2
+qpso,on,7,20,30,40,Flow IAT Max,2,0.2
+qpso,on,7,20,30,40,n_distinct_dst_10,2,0.2
+qpso,on,7,20,30,40,Fwd IAT Total,2,0.2
+qpso,on,7,20,30,40,Fwd Seg Size Min,1,0.1
+qpso,on,7,20,30,40,Fwd PSH Flags,1,0.1
+qpso,on,7,20,30,40,Packet Length Min,1,0.1
+qpso,on,7,20,30,40,Fwd Packet/Bulk Avg,1,0.1
+qpso,on,7,20,30,40,proto_switch,1,0.1
+qpso,on,8,20,30,40,syn_frac_src_60,10,1.0
+qpso,on,8,20,30,40,Total Bwd packets,8,0.8
+qpso,on,8,20,30,40,SYN Flag Count,8,0.8
+qpso,on,8,20,30,40,PSH Flag Count,8,0.8
+qpso,on,8,20,30,40,RST Flag Count,8,0.8
+qpso,on,8,20,30,40,Protocol,8,0.8
+qpso,on,8,20,30,40,Fwd Packet Length Mean,7,0.7
+qpso,on,8,20,30,40,Fwd IAT Max,7,0.7
+qpso,on,8,20,30,40,Fwd Bulk Rate Avg,7,0.7
+qpso,on,8,20,30,40,Bwd Packet/Bulk Avg,7,0.7
+qpso,on,8,20,30,40,Total Length of Bwd Packet,7,0.7
+qpso,on,8,20,30,40,Flow Bytes/s,7,0.7
+qpso,on,8,20,30,40,Fwd IAT Std,7,0.7
+qpso,on,8,20,30,40,Bwd IAT Max,7,0.7
+qpso,on,8,20,30,40,Bwd Bytes/Bulk Avg,7,0.7
+qpso,on,8,20,30,40,Total Fwd Packet,6,0.6
+qpso,on,8,20,30,40,Bwd IAT Mean,6,0.6
+qpso,on,8,20,30,40,Fwd Header Length,6,0.6
+qpso,on,8,20,30,40,Packet Length Max,6,0.6
+qpso,on,8,20,30,40,Fwd Packet/Bulk Avg,6,0.6
+qpso,on,8,20,30,40,n_flows_src_10,6,0.6
+qpso,on,8,20,30,40,Bwd Packet Length Std,6,0.6
+qpso,on,8,20,30,40,Packet Length Variance,6,0.6
+qpso,on,8,20,30,40,bytes_rate_src_60,6,0.6
+qpso,on,8,20,30,40,n_distinct_dport_60,6,0.6
+qpso,on,8,20,30,40,Flow Packets/s,6,0.6
+qpso,on,8,20,30,40,FIN Flag Count,6,0.6
+qpso,on,8,20,30,40,Fwd IAT Total,5,0.5
+qpso,on,8,20,30,40,Bwd IAT Min,5,0.5
+qpso,on,8,20,30,40,Bwd PSH Flags,5,0.5
+qpso,on,8,20,30,40,Fwd URG Flags,5,0.5
+qpso,on,8,20,30,40,Bwd URG Flags,5,0.5
+qpso,on,8,20,30,40,Down/Up Ratio,5,0.5
+qpso,on,8,20,30,40,Fwd Bytes/Bulk Avg,5,0.5
+qpso,on,8,20,30,40,Active Std,5,0.5
+qpso,on,8,20,30,40,n_flows_src_60,5,0.5
+qpso,on,8,20,30,40,n_proto_switch_60,5,0.5
+qpso,on,8,20,30,40,URG Flag Count,5,0.5
+qpso,on,8,20,30,40,ECE Flag Count,5,0.5
+qpso,on,8,20,30,40,Bwd Segment Size Avg,5,0.5
+qpso,on,8,20,30,40,Bwd Init Win Bytes,5,0.5
+qpso,on,8,20,30,40,Active Max,5,0.5
+qpso,on,8,20,30,40,bytes_rate_src_10,5,0.5
+qpso,on,8,20,30,40,Flow IAT Mean,5,0.5
+qpso,on,8,20,30,40,Total Length of Fwd Packet,4,0.4
+qpso,on,8,20,30,40,Fwd Packet Length Max,4,0.4
+qpso,on,8,20,30,40,Bwd Packet Length Min,4,0.4
+qpso,on,8,20,30,40,Flow IAT Std,4,0.4
+qpso,on,8,20,30,40,Packet Length Mean,4,0.4
+qpso,on,8,20,30,40,CWR Flag Count,4,0.4
+qpso,on,8,20,30,40,Average Packet Size,4,0.4
+qpso,on,8,20,30,40,Subflow Bwd Bytes,4,0.4
+qpso,on,8,20,30,40,n_distinct_dst_10,4,0.4
+qpso,on,8,20,30,40,Fwd IAT Mean,4,0.4
+qpso,on,8,20,30,40,Subflow Bwd Packets,4,0.4
+qpso,on,8,20,30,40,Active Min,4,0.4
+qpso,on,8,20,30,40,Fwd Packet Length Min,4,0.4
+qpso,on,8,20,30,40,Bwd IAT Std,4,0.4
+qpso,on,8,20,30,40,Active Mean,4,0.4
+qpso,on,8,20,30,40,ACK Flag Count,4,0.4
+qpso,on,8,20,30,40,Fwd Act Data Pkts,4,0.4
+qpso,on,8,20,30,40,Bwd Header Length,4,0.4
+qpso,on,8,20,30,40,pkt_rate_src_10,4,0.4
+qpso,on,8,20,30,40,Bwd Packet Length Max,3,0.3
+qpso,on,8,20,30,40,Fwd Packets/s,3,0.3
+qpso,on,8,20,30,40,Bwd Packets/s,3,0.3
+qpso,on,8,20,30,40,Packet Length Min,3,0.3
+qpso,on,8,20,30,40,Subflow Fwd Bytes,3,0.3
+qpso,on,8,20,30,40,Fwd Packet Length Std,3,0.3
+qpso,on,8,20,30,40,Bwd Bulk Rate Avg,3,0.3
+qpso,on,8,20,30,40,dt_prev_src,3,0.3
+qpso,on,8,20,30,40,n_distinct_dst_60,3,0.3
+qpso,on,8,20,30,40,Bwd Packet Length Mean,3,0.3
+qpso,on,8,20,30,40,Fwd PSH Flags,3,0.3
+qpso,on,8,20,30,40,Fwd Segment Size Avg,2,0.2
+qpso,on,8,20,30,40,proto_switch,2,0.2
+qpso,on,8,20,30,40,Bwd IAT Total,2,0.2
+qpso,on,8,20,30,40,n_distinct_dport_10,2,0.2
+qpso,on,8,20,30,40,Fwd IAT Min,2,0.2
+qpso,on,8,20,30,40,pkt_rate_src_60,2,0.2
+qpso,on,8,20,30,40,Flow Duration,2,0.2
+qpso,on,8,20,30,40,Packet Length Std,2,0.2
+qpso,on,8,20,30,40,Fwd Seg Size Min,2,0.2
+qpso,on,8,20,30,40,Flow IAT Min,1,0.1
+qpso,on,8,20,30,40,Flow IAT Max,1,0.1
+qpso,on,8,20,30,40,dt_prev_src_log,1,0.1

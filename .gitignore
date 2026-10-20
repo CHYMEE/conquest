@@ -4,3 +4,15 @@
 # Python cache
 __pycache__/
 *.pyc
+
+# Local revision work: experiment code, results, response-letter sources, reference PDFs
+revision/
+paper/revision_hitex.pdf
+paper/*FranklinOPEN*.pdf
+paper/Conquest_by_Sandra*.pdf
+
+# LaTeX build files
+*.aux
+*.log
+*.out
+*.synctex.gz

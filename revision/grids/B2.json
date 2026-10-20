@@ -1,0 +1,30 @@
+{
+ "out_dir": "outputs/central",
+ "base": {
+  "selector": "qpso",
+  "k": 40,
+  "context": "on"
+ },
+ "grid": {
+  "Q": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "particles": [
+   40
+  ],
+  "iterations": [
+   60
+  ],
+  "seed": [
+   42,
+   43,
+   44,
+   45,
+   46
+  ]
+ }
+}

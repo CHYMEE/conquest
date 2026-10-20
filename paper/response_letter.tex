@@ -412,7 +412,7 @@ amplitudes remain spread out and rarely reproduce the best subset.}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\linewidth]{images/qpso_dynamics_vs_Q.png}
-\caption{\textcolor{red}{QPSO search dynamics versus register size over ten seeds: measurement entropy (left), mask diversity (middle), and best fitness (right).}}
+\caption{\textcolor{red}{QPSO search dynamics versus register size over ten seeds: measurement entropy (a), mask diversity (b), and best fitness (c).}}
 
 \end{figure}
 
@@ -616,7 +616,7 @@ amplitudes remain spread out and rarely reproduce the best subset.}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\linewidth]{images/qpso_dynamics_vs_Q.png}
-\caption{\textcolor{black}{QPSO search dynamics versus register size over ten seeds: measurement entropy (left), mask diversity (middle), and best fitness (right).}}
+\caption{\textcolor{black}{QPSO search dynamics versus register size over ten seeds: measurement entropy (a), mask diversity (b), and best fitness (c).}}
 
 \end{figure}
 
@@ -1226,7 +1226,7 @@ amplitudes remain spread out and rarely reproduce the best subset.}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\linewidth]{images/qpso_dynamics_vs_Q.png}
-\caption{\textcolor{black}{QPSO search dynamics versus register size over ten seeds: measurement entropy (left), mask diversity (middle), and best fitness (right).}}
+\caption{\textcolor{black}{QPSO search dynamics versus register size over ten seeds: measurement entropy (a), mask diversity (b), and best fitness (c).}}
 
 \end{figure}
 
@@ -2677,7 +2677,7 @@ amplitudes remain spread out and rarely reproduce the best subset.}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\linewidth]{images/qpso_dynamics_vs_Q.png}
-\caption{\textcolor{black}{QPSO search dynamics versus register size over ten seeds: measurement entropy (left), mask diversity (middle), and best fitness (right).}}
+\caption{\textcolor{black}{QPSO search dynamics versus register size over ten seeds: measurement entropy (a), mask diversity (b), and best fitness (c).}}
 
 \end{figure}
 
@@ -2840,7 +2840,7 @@ effect of each factor and their interaction can be estimated. A
 classical binary PSO selector provides a controlled comparison of
 quantum-inspired and classical updates. It uses inertia 0.7,
 acceleration coefficients $c_1=c_2=1.5$, a sigmoid position mapping,
-top-$k$ decoding, the same trace-ratio fitness of Eq.~(12), and the
+sampling of $k$ features without replacement as in QPSO, the same trace-ratio fitness of Eq.~(12), and the
 same budget of 620 fitness evaluations.}
 \end{excerpt}
 
@@ -4006,7 +4006,7 @@ motivates the tail-aware reporting adopted here.}
 
 \reply We agree and have added the requested controlled comparison. A
 classical binary PSO selector uses the same fitness, the same feature budget
-$k=40$, the same top-$k$ decoding, and the same budget of 620 fitness
+$k=40$, the same sampling of $k$ features without replacement, and the same budget of 620 fitness
 evaluations as QPSO. Classical PSO reaches a higher fitness than QPSO (4919
 versus 4401) in less time (76\,s versus 106\,s), while the resulting detectors
 are statistically indistinguishable ($p=0.23$ for F1 and $p=0.49$ for missed
@@ -4231,7 +4231,7 @@ effect of each factor and their interaction can be estimated. \textcolor{red}{A
 classical binary PSO selector provides a controlled comparison of
 quantum-inspired and classical updates. It uses inertia 0.7,
 acceleration coefficients $c_1=c_2=1.5$, a sigmoid position mapping,
-top-$k$ decoding, the same trace-ratio fitness of Eq.~(12), and the
+sampling of $k$ features without replacement as in QPSO, the same trace-ratio fitness of Eq.~(12), and the
 same budget of 620 fitness evaluations.}}
 \end{excerpt}
 
@@ -4672,44 +4672,6 @@ or deployment constraints. They establish performance
 ceilings on well-studied benchmarks but do not address the
 reproducibility, bounded overhead, or mission-edge feasibility
 requirements central to this work.
-
-\setcounter{table}{16}
-\begin{table}[H]
-\centering
-\scriptsize
-\caption{Comparison with representative IDS and FL approaches; results come from different datasets and are not directly comparable.}
-
-\def\rc#1{\textcolor{black}{#1}}
-\setlength{\tabcolsep}{5pt}
-\renewcommand{\arraystretch}{1.3}
-\begin{adjustbox}{max width=\linewidth}
-\begin{tabular}{>{\raggedright\arraybackslash}p{1.0cm} >{\raggedright\arraybackslash}p{2.6cm} >{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.4cm}}
-\hline\toprule
-\textbf{Ref.} & \textbf{Approach} & \textbf{Key result} & \textbf{Limitation} & \textbf{Gap addressed by CONQUEST} \\
-\hline\toprule
-{[10]} & CNN--LSTM + attention + PSO & 98.73--99.87\% accuracy on WIoTSN; centralized & No FL, stability, or deployment analysis & \rc{Worst-client F1 of 96.4\%; 2.98\,ms per window, 541\,MB} \\
-\midrule
-{[11]} & Multi-scale windows + transformer + focal loss & 99.6\% accuracy, 99.2\% F1; 10.8\,ms per sample; 37.2M parameters & High complexity; no FL or resource bounds & \rc{789k parameters, 541\,MB}; FL under four heterogeneity regimes \\
-\midrule
-{[12]} & LPPSO + ELSTM-RNN & 99.95\% DR on NSL-KDD, 99.4\% on UNSW-NB15; centralized & No study of optimizer settings; no FL & \rc{Register-size ablation, $Q=1$ to 10}; FL under quantity and Dirichlet skew \\
-\midrule
-{[13]} & Ensemble + GA-PSO & Binary and multiclass accuracy gains; centralized & No temporal modeling; no FL & Context-aware temporal modeling; non-IID FL evaluation \\
-\midrule
-{[14]} & Federated DNN, CNN, and RNN & Up to 99.71\% on InSDN; global metrics only & Trusted aggregator; no heterogeneity tests & Four heterogeneity regimes; worst-client and dispersion metrics \\
-\midrule
-{[15]} & FedAvg vs.\ FedProx & 98.75\% IID, 98.44\% non-IID; two clients & No worst-client or convergence analysis & \rc{5, 10, and 20 clients}; worst-client F1 and $R_{99}$ \\
-\midrule
-{[16]} & Empirical FL heterogeneity study & ${\sim}$1.5K configurations; up to $4.6\times$ quality loss & General FL; not IDS-specific & Heterogeneity findings applied to cyberworm IDS \\
-\midrule
-{[17]} & FedAMKD & 98.83\% on MNIST; outperforms FedAvg and SCAFFOLD & Not IDS-specific; no deployment metrics & Quantity-skew analysis for IDS with tail-aware metrics \\
-\midrule
-{[9]} & Conference CONQUEST: QPSO + LSTM-VAE, centralized & 97.5\% DR, 0.8\% FPR on ACI-IoT; three optimizers compared & No register-size ablation, non-quantum baseline, or FL & Register-size ablation, OS-CIDS and \rc{equal-budget PSO} baselines; FL under four regimes \\
-\midrule
-\textbf{This work} & Context-aware preprocessing + variable-qubit QPSO + LSTM(+VAE); centralized and FL & \rc{97.13\% F1, 0.9924 AUC; 2.98\,ms per window, 541\,MB; federated: 96.66\% F1, worst client 96.4\%} & \rc{F1 on par with variance ranking and PSO; more false alarms than variance ranking} & \rc{Explicit role of the register size in the search}; unified centralized and federated evaluation with deployment metrics \\
-\hline\toprule
-\end{tabular}
-\end{adjustbox}
-\end{table}
 
 FL-based systems~{[14, 15]}
 demonstrate that \textcolor{black}{collaborative} detection is feasible

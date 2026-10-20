@@ -1,0 +1,181 @@
+{
+ "blocks": [
+  {
+   "out_dir": "outputs/federated",
+   "base": {
+    "selector": "qpso",
+    "Q": "auto:outputs/central",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on",
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "K": 5,
+    "aggregator": "fedavg",
+    "mask_mode": "proxy"
+   },
+   "grid": {
+    "partition": [
+     "iid",
+     "label_skew",
+     "quantity_skew"
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/federated",
+   "base": {
+    "selector": "qpso",
+    "Q": "auto:outputs/central",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on",
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "K": 5,
+    "aggregator": "fedavg",
+    "mask_mode": "proxy",
+    "partition": "dirichlet"
+   },
+   "grid": {
+    "alpha": [
+     0.1,
+     0.3,
+     0.5,
+     1.0
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/federated",
+   "base": {
+    "selector": "qpso",
+    "Q": "auto:outputs/central",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on",
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "K": 5,
+    "partition": "quantity_skew",
+    "mask_mode": "proxy"
+   },
+   "grid": {
+    "aggregator": [
+     "fedavg",
+     "scaffold",
+     "flame"
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/federated",
+   "base": {
+    "selector": "qpso",
+    "Q": "auto:outputs/central",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on",
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "partition": "quantity_skew",
+    "aggregator": "fedavg",
+    "mask_mode": "proxy"
+   },
+   "grid": {
+    "K": [
+     5,
+     10,
+     20
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/federated",
+   "base": {
+    "selector": "qpso",
+    "Q": "auto:outputs/central",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on",
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "K": 5,
+    "aggregator": "fedavg",
+    "partition": "quantity_skew"
+   },
+   "grid": {
+    "mask_mode": [
+     "proxy",
+     "vote",
+     "central"
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  },
+  {
+   "out_dir": "outputs/federated",
+   "base": {
+    "selector": "qpso",
+    "Q": "auto:outputs/central",
+    "particles": 20,
+    "iterations": 30,
+    "k": 40,
+    "context": "on",
+    "rounds": 30,
+    "local_epochs": 2,
+    "batch_size": 64,
+    "K": 5,
+    "aggregator": "fedavg",
+    "partition": "dirichlet",
+    "alpha": 0.1
+   },
+   "grid": {
+    "mask_mode": [
+     "proxy",
+     "vote",
+     "central"
+    ],
+    "seed": [
+     42,
+     43,
+     44
+    ]
+   }
+  }
+ ]
+}
