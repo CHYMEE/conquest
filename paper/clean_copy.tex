@@ -538,7 +538,6 @@ Section~\ref{subsec:obj2_latency}.}
 features. Default is the value used when the source has no earlier
 flow.}}
 \label{tab:context_features}
-\color{red}
 \setlength{\tabcolsep}{6pt}
 \renewcommand{\arraystretch}{1.25}
 \begin{tabular}{l l >{\raggedright\arraybackslash}p{4.3cm} c c c}
@@ -698,7 +697,6 @@ register size for the 86 input features.}}
 \label{tab:q_constants}
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.05}
-\color{red}
 \begin{tabular}{cccccc}
 \hline\toprule
 $Q$ & \makecell{Initial\\perturb.} & \makecell{Max.\ rot.\\(deg)} & \makecell{Reset\\prob.} & \makecell{Resets per\\particle-iter.} & Regime \\
@@ -722,7 +720,6 @@ $Q$ & \makecell{Initial\\perturb.} & \makecell{Max.\ rot.\\(deg)} & \makecell{Re
 selection. Steps commented with Q are the only ones that depend on
 the register size.}}
 \label{alg:qpso}
-\color{red}
 \small
 \begin{algorithmic}[1]
 \Require $\mathbf{Z}_{\rm tr}\in[0,1]^{N\times d}$, labels $\mathbf{y}_{\rm tr}$, register size $Q$, particles $P$, iterations $I$, subset size $k$
@@ -881,7 +878,6 @@ selects a round, a model, or a setting.}
 selection, and stopping step. The test set is used only for
 reporting.}}
 \label{tab:data_usage}
-\color{red}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.05}
 \begin{tabular}{p{2.6cm} p{3.6cm} c}
@@ -1217,7 +1213,6 @@ federations or for record-level DP-SGD within each site.}
 under an honest-but-curious server. SecAgg: secure aggregation; DP:
 client-level differential privacy.}}
 \label{tab:privacy_scope}
-\color{red}
 \setlength{\tabcolsep}{3pt}
 \renewcommand{\arraystretch}{1.08}
 \begin{tabular}{p{1.7cm} p{1.6cm} p{1.75cm} p{1.75cm}}
@@ -1343,7 +1338,6 @@ represented.}
 \centering
 \caption{\textcolor{black}{Centralized detection over ten seeds, with Wilcoxon p-values against CONQUEST. \textsuperscript{\textdagger}Conference result~\cite{ajakweconquest}, not directly comparable.}}
 \label{tab:cyberworm_high_impact}
-\color{red}
 \setlength{\tabcolsep}{3pt}
 \resizebox{\textwidth}{!}{
 \begin{tabular}{lccccccccc}
@@ -1422,7 +1416,6 @@ static features, as listed in Table~\ref{tab:selected_features}.}
 \scriptsize
 \caption{\textcolor{black}{Factorial ablation of context features and QPSO over ten seeds.}}
 \label{tab:centralized_compare}
-\color{red}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{lccc}
 \hline\toprule
@@ -1441,7 +1434,6 @@ Static only & 96.96 / 1.43 / 4.21 & 95.90 / 4.95 / 3.49 & \makecell{$-1.07$\\($p
 \scriptsize
 \caption{\textcolor{black}{Deployed consensus mask at Q = 6; context features in italics.}}
 \label{tab:selected_features}
-\color{red}
 \setlength{\tabcolsep}{2.5pt}
 \renewcommand{\arraystretch}{1.02}
 \begin{tabular}{>{\raggedright\arraybackslash}p{3.0cm}c >{\raggedright\arraybackslash}p{3.0cm}c}
@@ -1511,7 +1503,6 @@ features.}
 \scriptsize
 \caption{\textcolor{black}{Selector comparison under feature budgets of 40, 20, and 10 over five seeds; the consensus mask uses ten. Ctx.: context features kept. Wins: seeds on which QPSO has the higher F1.}}
 \label{tab:kbudget}
-\color{red}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{clccccc}
 \hline\toprule
